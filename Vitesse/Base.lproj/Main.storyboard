@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_0" orientation="landscape" appearance="light"/>
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -14,18 +14,18 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Vitesse" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="12" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1fm-rp-JOI">
-                                <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
+                            <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="12" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1fm-rp-JOI">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="240"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6OV-Y5-NzA">
-                                <rect key="frame" x="479" y="259" width="69" height="41"/>
+                                <rect key="frame" x="231" y="507" width="69" height="41"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="Button">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -34,29 +34,56 @@
                                     <action selector="changeUnite" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vzx-Qn-sFL"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="location.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="9FS-7V-gH9">
+                                <rect key="frame" x="74" y="205.5" width="172.5" height="167"/>
+                                <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="120" scale="large"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="location.slash.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="KWs-Tq-NWu">
+                                <rect key="frame" x="90.5" y="220.5" width="139.5" height="135"/>
+                                <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="120"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="location" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="vbD-iJ-llM">
+                                <rect key="frame" x="90.5" y="220.5" width="139.5" height="135"/>
+                                <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="120"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="vbD-iJ-llM" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="5dy-fr-2S1"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6OV-Y5-NzA" secondAttribute="bottom" constant="20" id="7Mx-WY-Zi2"/>
-                            <constraint firstItem="1fm-rp-JOI" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="ZaQ-Qs-0sm"/>
+                            <constraint firstItem="KWs-Tq-NWu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Nyu-Y5-j7w"/>
+                            <constraint firstItem="9FS-7V-gH9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Wv5-en-Opl"/>
+                            <constraint firstItem="1fm-rp-JOI" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="ZaQ-Qs-0sm"/>
+                            <constraint firstItem="KWs-Tq-NWu" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Zuw-ej-KoT"/>
                             <constraint firstItem="1fm-rp-JOI" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="bRC-vf-U74"/>
                             <constraint firstItem="1fm-rp-JOI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="nsd-ve-rF8"/>
+                            <constraint firstItem="9FS-7V-gH9" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="oC1-iY-wj5"/>
+                            <constraint firstItem="vbD-iJ-llM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="qPp-LU-phi"/>
                             <constraint firstItem="1fm-rp-JOI" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="wMh-rf-MT6"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6OV-Y5-NzA" secondAttribute="trailing" constant="20" id="y3B-kd-sqh"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="affichageUnite" destination="6OV-Y5-NzA" id="TIA-57-8ct"/>
-                        <outlet property="affichageVitesse" destination="1fm-rp-JOI" id="HZ5-6n-a9p"/>
+                        <outlet property="affichageUnite" destination="6OV-Y5-NzA" id="rte-S2-Tno"/>
+                        <outlet property="affichageVitesse" destination="1fm-rp-JOI" id="QjK-Ne-QgE"/>
+                        <outlet property="imageLocalisation" destination="9FS-7V-gH9" id="Ndh-q7-IbM"/>
+                        <outlet property="imageLocalisationPerdue" destination="vbD-iJ-llM" id="pMb-go-CMt"/>
+                        <outlet property="imagePasLocalisation" destination="KWs-Tq-NWu" id="4gE-F9-sAr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="19.014084507042252" y="93.75"/>
+            <point key="canvasLocation" x="18.75" y="92.957746478873247"/>
         </scene>
     </scenes>
     <resources>
+        <image name="location" catalog="system" width="128" height="121"/>
+        <image name="location.fill" catalog="system" width="128" height="121"/>
+        <image name="location.slash.fill" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

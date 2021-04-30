@@ -9,13 +9,13 @@
 /* Begin PBXBuildFile section */
 		B55EFC062635BF4D002DF429 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC052635BF4D002DF429 /* AppDelegate.swift */; };
 		B55EFC082635BF4D002DF429 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC072635BF4D002DF429 /* SceneDelegate.swift */; };
-		B55EFC0A2635BF4D002DF429 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC092635BF4D002DF429 /* ViewController.swift */; };
 		B55EFC0D2635BF4D002DF429 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B55EFC0B2635BF4D002DF429 /* Main.storyboard */; };
 		B55EFC102635BF4D002DF429 /* Vitesse.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC0E2635BF4D002DF429 /* Vitesse.xcdatamodeld */; };
 		B55EFC122635BF51002DF429 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B55EFC112635BF51002DF429 /* Assets.xcassets */; };
 		B55EFC152635BF51002DF429 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B55EFC132635BF51002DF429 /* LaunchScreen.storyboard */; };
 		B55EFC202635BF52002DF429 /* VitesseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC1F2635BF52002DF429 /* VitesseTests.swift */; };
 		B55EFC2B2635BF52002DF429 /* VitesseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC2A2635BF52002DF429 /* VitesseUITests.swift */; };
+		B5CF5FAA263B42C400DA78A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC092635BF4D002DF429 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -261,9 +261,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B55EFC0A2635BF4D002DF429 /* ViewController.swift in Sources */,
 				B55EFC062635BF4D002DF429 /* AppDelegate.swift in Sources */,
 				B55EFC082635BF4D002DF429 /* SceneDelegate.swift in Sources */,
+				B5CF5FAA263B42C400DA78A3 /* ViewController.swift in Sources */,
 				B55EFC102635BF4D002DF429 /* Vitesse.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -441,7 +441,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -462,7 +462,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
