@@ -1,0 +1,33 @@
+
+/* Class = "UILabel"; text = " "; ObjectID = "1fm-rp-JOI"; */
+"1fm-rp-JOI.text" = " ";
+
+/* Class = "UILabel"; text = "Distance totale"; ObjectID = "3Mt-SE-ISl"; */
+"3Mt-SE-ISl.text" = "Distance totale";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "6OV-Y5-NzA"; */
+"6OV-Y5-NzA.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Trajet en cours"; ObjectID = "Bkh-FM-OWL"; */
+"Bkh-FM-OWL.text" = "Trajet en cours";
+
+/* Class = "UIButton"; normalTitle = "X"; ObjectID = "Odv-QU-GcL"; */
+"Odv-QU-GcL.normalTitle" = "X";
+
+/* Class = "UILabel"; text = "XXX km/h"; ObjectID = "QJS-Fs-B8p"; */
+"QJS-Fs-B8p.text" = "XXX km/h";
+
+/* Class = "UILabel"; text = "XX km/h "; ObjectID = "Szv-Tc-GeT"; */
+"Szv-Tc-GeT.text" = "XX km/h ";
+
+/* Class = "UILabel"; text = "Vitesse maximum"; ObjectID = "n8s-fh-bMJ"; */
+"n8s-fh-bMJ.text" = "Vitesse maximum";
+
+/* Class = "UILabel"; text = "XXX km"; ObjectID = "pHB-vp-FP8"; */
+"pHB-vp-FP8.text" = "XXX km";
+
+/* Class = "UILabel"; text = "Infos debug"; ObjectID = "vqO-TX-K1R"; */
+"vqO-TX-K1R.text" = "Infos debug";
+
+/* Class = "UILabel"; text = "XXX km"; ObjectID = "wwI-Iu-Hlb"; */
+"wwI-Iu-Hlb.text" = "XXX km";
