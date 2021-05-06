@@ -16,6 +16,7 @@
 		B55EFC152635BF51002DF429 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B55EFC132635BF51002DF429 /* LaunchScreen.storyboard */; };
 		B55EFC202635BF52002DF429 /* VitesseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC1F2635BF52002DF429 /* VitesseTests.swift */; };
 		B55EFC2B2635BF52002DF429 /* VitesseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC2A2635BF52002DF429 /* VitesseUITests.swift */; };
+		B593A48C263F1AF30072A2B3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B593A48A263F1AF30072A2B3 /* Localizable.strings */; };
 		B5CF5FAA263B42C400DA78A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC092635BF4D002DF429 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -42,10 +43,8 @@
 		B55EFC052635BF4D002DF429 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B55EFC072635BF4D002DF429 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B55EFC092635BF4D002DF429 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		B55EFC0C2635BF4D002DF429 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B55EFC0F2635BF4D002DF429 /* Vitesse.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Vitesse.xcdatamodel; sourceTree = "<group>"; };
 		B55EFC112635BF51002DF429 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B55EFC142635BF51002DF429 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B55EFC162635BF51002DF429 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B55EFC1B2635BF52002DF429 /* VitesseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VitesseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B55EFC1F2635BF52002DF429 /* VitesseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitesseTests.swift; sourceTree = "<group>"; };
@@ -53,7 +52,9 @@
 		B55EFC262635BF52002DF429 /* VitesseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VitesseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B55EFC2A2635BF52002DF429 /* VitesseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitesseUITests.swift; sourceTree = "<group>"; };
 		B55EFC2C2635BF52002DF429 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B5E18225263F07E700A5CCDA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B593A488263F1A820072A2B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B593A489263F1A820072A2B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B593A48B263F1AF30072A2B3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Vitesse/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +109,7 @@
 				B55EFC072635BF4D002DF429 /* SceneDelegate.swift */,
 				B55EFC092635BF4D002DF429 /* ViewController.swift */,
 				B53935FD263D9ED200C37623 /* StatsModalViewController.swift */,
+				B593A48A263F1AF30072A2B3 /* Localizable.strings */,
 				B55EFC0B2635BF4D002DF429 /* Main.storyboard */,
 				B55EFC112635BF51002DF429 /* Assets.xcassets */,
 				B55EFC132635BF51002DF429 /* LaunchScreen.storyboard */,
@@ -239,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B55EFC152635BF51002DF429 /* LaunchScreen.storyboard in Resources */,
+				B593A48C263F1AF30072A2B3 /* Localizable.strings in Resources */,
 				B55EFC122635BF51002DF429 /* Assets.xcassets in Resources */,
 				B55EFC0D2635BF4D002DF429 /* Main.storyboard in Resources */,
 			);
@@ -308,8 +311,7 @@
 		B55EFC0B2635BF4D002DF429 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B55EFC0C2635BF4D002DF429 /* Base */,
-				B5E18225263F07E700A5CCDA /* en */,
+				B593A488263F1A820072A2B3 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -317,9 +319,17 @@
 		B55EFC132635BF51002DF429 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B55EFC142635BF51002DF429 /* Base */,
+				B593A489263F1A820072A2B3 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		B593A48A263F1AF30072A2B3 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B593A48B263F1AF30072A2B3 /* en */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -449,7 +459,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -470,7 +480,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;

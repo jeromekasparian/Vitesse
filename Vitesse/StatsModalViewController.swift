@@ -22,6 +22,16 @@ class StatsModalViewController: UIViewController {
         afficherStats()
         NotificationCenter.default.addObserver(self, selector: #selector(afficherStats), name: NSNotification.Name(rawValue: notificationMiseAJourStats), object: nil)
         // Do any additional setup after loading the view.
+        
+        // mise en place de la détection du swipe up pour fermer le tiroir des stats
+        let swipeBas = UISwipeGestureRecognizer(target:self, action: #selector(fermerStats))
+        swipeBas.direction = UISwipeGestureRecognizer.Direction.down
+        self.view.addGestureRecognizer(swipeBas)
+
+    }
+    
+    @IBAction func fermerStats () {
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func effacerSession() {

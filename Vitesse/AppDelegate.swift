@@ -16,6 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         UIApplication.shared.isIdleTimerDisabled = true
+        luminositeEcranSysteme = UIScreen.main.brightness
+        luminositeEstForcee = false
 //        print("didfinishlaunchingwithoptions")
         return true
     }
@@ -81,11 +83,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillEnterForeground(_ application: UIApplication) {
          UIApplication.shared.isIdleTimerDisabled = true
+        if luminositeEstForcee { UIScreen.main.brightness = luminositeEcranSysteme }
+        luminositeEstForcee = false
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
           UIApplication.shared.isIdleTimerDisabled = true
     }
+    
+    
+    static var orientationLock = UIInterfaceOrientationMask.portrait
+
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return AppDelegate.orientationLock
+    }
+    
     
 }
 
