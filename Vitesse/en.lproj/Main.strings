@@ -2,14 +2,14 @@
 /* Class = "UILabel"; text = " "; ObjectID = "1fm-rp-JOI"; */
 "1fm-rp-JOI.text" = " ";
 
-/* Class = "UILabel"; text = "Distance totale"; ObjectID = "3Mt-SE-ISl"; */
-"3Mt-SE-ISl.text" = "Distance totale";
+/* Class = "UILabel"; text = "Total distance"; ObjectID = "3Mt-SE-ISl"; */
+"3Mt-SE-ISl.text" = "Total distance";
 
 /* Class = "UIButton"; normalTitle = "km/h"; ObjectID = "6OV-Y5-NzA"; */
 "6OV-Y5-NzA.normalTitle" = "km/h";
 
-/* Class = "UILabel"; text = "Trajet en cours"; ObjectID = "Bkh-FM-OWL"; */
-"Bkh-FM-OWL.text" = "Trajet en cours";
+/* Class = "UILabel"; text = "Current trip"; ObjectID = "Bkh-FM-OWL"; */
+"Bkh-FM-OWL.text" = "Current trip";
 
 /* Class = "UIButton"; normalTitle = "X"; ObjectID = "Odv-QU-GcL"; */
 "Odv-QU-GcL.normalTitle" = "X";
@@ -20,8 +20,8 @@
 /* Class = "UILabel"; text = "XX km/h "; ObjectID = "Szv-Tc-GeT"; */
 "Szv-Tc-GeT.text" = "XX km/h ";
 
-/* Class = "UILabel"; text = "Vitesse maximum"; ObjectID = "n8s-fh-bMJ"; */
-"n8s-fh-bMJ.text" = "Vitesse maximum";
+/* Class = "UILabel"; text = "Max speed"; ObjectID = "n8s-fh-bMJ"; */
+"n8s-fh-bMJ.text" = "Max speed";
 
 /* Class = "UILabel"; text = "XXX km"; ObjectID = "pHB-vp-FP8"; */
 "pHB-vp-FP8.text" = "XXX km";

@@ -1,0 +1,25 @@
+/* 
+  Localizable.strings
+  Vitesse
+
+  Created by Jérôme Kasparian on 02/05/2021.
+  
+*/
+
+
+"Pour votre sécurité"="Pour votre sécurité";
+
+"avant de conduire, assurez-vous que le mode Avion ou \"Ne pas déranger en voiture\" est activé"="avant de conduire, assurez-vous que le mode Avion ou \"Ne pas déranger en voiture\" est activé";
+
+"OK" = "OK";
+
+"Pour afficher la vitesse, autorisez l'app à accéder à la localisation : \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne"="Pour afficher la vitesse, autorisez l'app à accéder à la localisation : \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne";
+
+"Pour afficher la vitesse, activez la localisation sur votre appareil : \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne"="Pour afficher la vitesse, activez la localisation sur votre appareil : \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne";
+
+"m/s"="m/s";
+"km/h"="km/h";
+"mph"="mph";
+"m"="m";
+"km"="km";
+"mi"="mi";

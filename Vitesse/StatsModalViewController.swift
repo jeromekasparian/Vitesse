@@ -23,7 +23,7 @@ class StatsModalViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(afficherStats), name: NSNotification.Name(rawValue: notificationMiseAJourStats), object: nil)
         // Do any additional setup after loading the view.
         
-        // mise en place de la détection du swipe up pour fermer le tiroir des stats
+        // mise en place de la détection du swipe down pour fermer le tiroir des stats
         let swipeBas = UISwipeGestureRecognizer(target:self, action: #selector(fermerStats))
         swipeBas.direction = UISwipeGestureRecognizer.Direction.down
         self.view.addGestureRecognizer(swipeBas)
@@ -48,7 +48,6 @@ class StatsModalViewController: UIViewController {
         
         if (unite == 0) { labelDistanceTotale.text = String(format: "%.0f ", distanceTotale * facteurUnitesDistance[unite]) }
         else { labelDistanceTotale.text = String(format: "%.1f ", distanceTotale * facteurUnitesDistance[unite]) }
-//        labelDistanceTotale.text = String(format: "%.0f ", distanceTotale * facteurUnitesDistance[unite])
         labelDistanceTotale.text?.append(textesUnitesDistance[unite])
         if (unite == 0) { labelDistanceTotaleSession.text = String(format: "%.0f ", distanceTotaleSession * facteurUnitesDistance[unite]) }
         else { labelDistanceTotaleSession.text = String(format: "%.1f ", distanceTotaleSession * facteurUnitesDistance[unite]) }

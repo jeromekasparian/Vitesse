@@ -7,15 +7,14 @@
 
 /// feuille de route
 // la statusbar ne se cache pas sous ios 14.5 ??
-// localisation FR
-// localisation EN
 // Localisation DE
-// autres localisations ?
 // icone non SF
 // Nom de l'app
 //
 // arrêter la luminosité élevée si on sort le tiroir
 // Erreurs d'arrondis sur le cummul ??
+// incohérences sur la vitesse max / distance totale au démarrage
+// la localisation n'accroche pas quand on démarre dans le train
 
 
 import UIKit
@@ -44,6 +43,7 @@ var nombrePositionsLues = 0
 var timeStampDernierePosition = 0.0
 var luminositeEcranSysteme = CGFloat(0.0)
 var luminositeEstForcee = false
+let autoriseAffichageTeteHauteBlanc = false
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -55,6 +55,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var positionTeteHaute: Bool = false
     var anciennePositionTeteHaute: Bool = false
     var locationPrecedente: CLLocation! = nil
+    var affichageTeteHauteBlanc = false
+    var timer = Timer()
     
     let motionManager = CMMotionManager()
     
@@ -88,6 +90,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    @objc func changeCouleurTeteHaute() {
+        if autoriseAffichageTeteHauteBlanc{
+            affichageTeteHauteBlanc = !affichageTeteHauteBlanc
+        }
+    }
     
     override func viewDidLoad() {
         //        justLoaded = true
@@ -101,11 +108,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let swipeHaut = UISwipeGestureRecognizer(target:self, action: #selector(ouvreStats))
         swipeHaut.direction = UISwipeGestureRecognizer.Direction.up
         self.view.addGestureRecognizer(swipeHaut)
-        
+
+        // mise en place de la détection du swipe left à 3 doigts pour activer le mode debug
         let swipeDebug = UISwipeGestureRecognizer(target:self, action: #selector(changeDebugMode))
         swipeDebug.direction = UISwipeGestureRecognizer.Direction.left
         swipeDebug.numberOfTouchesRequired = 3
         self.view.addGestureRecognizer(swipeDebug)
+        
+        if autoriseAffichageTeteHauteBlanc{
+        // mise en place de la détection du swipe right à 3 doigts pour activer le mode tête haute blanc
+        let swipeBlanc = UISwipeGestureRecognizer(target:self, action: #selector(self.changeCouleurTeteHaute))
+        swipeBlanc.direction = UISwipeGestureRecognizer.Direction.right
+        swipeBlanc.numberOfTouchesRequired = 3
+        self.view.addGestureRecognizer(swipeBlanc)
+        }
+
         
         //        locationManager.requestWhenInUseAuthorization()
         gereDroitsLocalisation(origineViewDidLoad: true, origineViewDidAppear: false)
@@ -129,8 +146,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             self.affichageUnite.setTitle(textesUnites[unite], for: .normal)
             self.present(alert, animated: true)
         }
+        scheduledTimerWithTimeInterval()
         super.viewDidLoad()
         print("init ok")
+    }
+    
+    
+    func scheduledTimerWithTimeInterval(){
+        // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.verifieQueLocalisationEstActive), userInfo: nil, repeats: true)
+    }
+    
+    @objc func verifieQueLocalisationEstActive() {
+        if ((self.imagePasLocalisation.isHidden == true) && ((Date().timeIntervalSince1970 -  timeStampDernierePosition) > 5)) {
+            DispatchQueue.main.async{
+                self.messageSecret.text = "Localisation perdue"
+                self.affichageVitesse.text = ""
+                self.roueAttente.startAnimating()
+            }
+        }
     }
     
     
@@ -139,6 +173,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         userDefaults.set(vitesseMax, forKey: keyVitesseMax)
         if luminositeEstForcee { UIScreen.main.brightness = luminositeEcranSysteme }
         luminositeEstForcee = false
+        timer.invalidate()
         super.viewWillDisappear(true)
     }
     //    override func viewDidAppear(_ animated: Bool) {
@@ -164,7 +199,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 self.anciennePositionTeteHaute = self.positionTeteHaute
             } // position a changé
             if self.positionTeteHaute {  // le téléphone est à plat -> on affiche le texte en blanc pour réflexion sur le pare-brise
-                self.affichageVitesse.textColor = .white
+                if self.affichageTeteHauteBlanc {
+                    self.affichageVitesse.textColor = .black
+                    self.affichageVitesse.backgroundColor = .white
+                }
+                else {
+                    self.affichageVitesse.textColor = .white
+                }
                 // on force l'écran à rester en mode portrait
                 if !luminositeEstForcee { // && self.view.isFirstResponder) {
                     luminositeEcranSysteme = UIScreen.main.brightness   // on note la luminosité de l'écran, pour pouvoir y revenir plus tard
@@ -179,6 +220,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }  // téléphone à plat -> position tête haute
             else { // le téléphone est penché -> on affiche le texte en gris pour lecture directe
                 self.affichageVitesse.textColor = .lightGray
+                if self.affichageTeteHauteBlanc {
+                    self.affichageVitesse.backgroundColor = .black
+                }
                 if luminositeEstForcee { // on revient au contraste par défaut du système
                     UIScreen.main.brightness = luminositeEcranSysteme
                     luminositeEstForcee = false
@@ -212,7 +256,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 print("acces localisation ok")
                 //            self.imagePasDeVitesse.image = UIImage(systemName: "location.fill")
                 DispatchQueue.main.async{
-                    self.messageSecret.text = ""
+                    self.messageSecret.text = "Localisation autorisée"
                     self.messageSecret.isHidden = !debugMode
                     self.affichageVitesse.text = ""
                     //                    self.imageLocalisation.isHidden = false
@@ -304,10 +348,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         afficherVitesse(vitesse: location.speed * facteurUnites[unite], precisionOK: vitesseOK)  // course (= le cap) est -1 la plupart du temps pendant que le système affine la localisaiton lorsqu'il vient d'avoir le droit d'y accéder
         let affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.3f, t %.0f \nN %f", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, location.timestamp.timeIntervalSince1970,nombreLocations)
-            messageSecret.text = affichageSecret
+        DispatchQueue.main.async{
+            self.messageSecret.text = affichageSecret
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        DispatchQueue.main.async{
+            self.messageSecret.text = "Erreur de localisation"
+        }
         print(error)
     }
     

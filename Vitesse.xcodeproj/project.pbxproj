@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B52C72A626487F6D00185CBB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B52C72A826487F6D00185CBB /* InfoPlist.strings */; };
 		B53935FE263D9ED200C37623 /* StatsModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53935FD263D9ED200C37623 /* StatsModalViewController.swift */; };
 		B55EFC062635BF4D002DF429 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC052635BF4D002DF429 /* AppDelegate.swift */; };
 		B55EFC082635BF4D002DF429 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC072635BF4D002DF429 /* SceneDelegate.swift */; };
@@ -38,6 +39,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B52C72462647D7D300185CBB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
+		B52C72472647D7D300185CBB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		B52C72482647D7D400185CBB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Vitesse/fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B52C727D2647E3FA00185CBB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		B52C729426487CA700185CBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
+		B52C72A726487F6D00185CBB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B52C72AC26487F7200185CBB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B53935FD263D9ED200C37623 /* StatsModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsModalViewController.swift; sourceTree = "<group>"; };
 		B55EFC022635BF4D002DF429 /* Vitesse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vitesse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B55EFC052635BF4D002DF429 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -45,7 +53,6 @@
 		B55EFC092635BF4D002DF429 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B55EFC0F2635BF4D002DF429 /* Vitesse.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Vitesse.xcdatamodel; sourceTree = "<group>"; };
 		B55EFC112635BF51002DF429 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B55EFC162635BF51002DF429 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B55EFC1B2635BF52002DF429 /* VitesseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VitesseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B55EFC1F2635BF52002DF429 /* VitesseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitesseTests.swift; sourceTree = "<group>"; };
 		B55EFC212635BF52002DF429 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -55,6 +62,13 @@
 		B593A488263F1A820072A2B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B593A489263F1A820072A2B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B593A48B263F1AF30072A2B3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Vitesse/en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B5E2579A264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/Main.strings"; sourceTree = "<group>"; };
+		B5E2579B264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		B5E2579C264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "Vitesse/fr-FR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		B5E2579D264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "fr-FR"; path = "fr-FR.lproj/Info.plist"; sourceTree = "<group>"; };
+		B5E2579E264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		B5E257A2264A84F700D0FF4D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = fr; path = fr.lproj/Info.plist; sourceTree = "<group>"; };
+		B5E257A3264A850000D0FF4D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +99,7 @@
 		B55EFBF92635BF4D002DF429 = {
 			isa = PBXGroup;
 			children = (
+				B593A48A263F1AF30072A2B3 /* Localizable.strings */,
 				B55EFC042635BF4D002DF429 /* Vitesse */,
 				B55EFC1E2635BF52002DF429 /* VitesseTests */,
 				B55EFC292635BF52002DF429 /* VitesseUITests */,
@@ -109,11 +124,11 @@
 				B55EFC072635BF4D002DF429 /* SceneDelegate.swift */,
 				B55EFC092635BF4D002DF429 /* ViewController.swift */,
 				B53935FD263D9ED200C37623 /* StatsModalViewController.swift */,
-				B593A48A263F1AF30072A2B3 /* Localizable.strings */,
 				B55EFC0B2635BF4D002DF429 /* Main.storyboard */,
 				B55EFC112635BF51002DF429 /* Assets.xcassets */,
 				B55EFC132635BF51002DF429 /* LaunchScreen.storyboard */,
-				B55EFC162635BF51002DF429 /* Info.plist */,
+				B52C729526487CA700185CBB /* Info.plist */,
+				B52C72A826487F6D00185CBB /* InfoPlist.strings */,
 				B55EFC0E2635BF4D002DF429 /* Vitesse.xcdatamodeld */,
 			);
 			path = Vitesse;
@@ -217,11 +232,13 @@
 			};
 			buildConfigurationList = B55EFBFD2635BF4D002DF429 /* Build configuration list for PBXProject "Vitesse" */;
 			compatibilityVersion = "Xcode 9.3";
-			developmentRegion = en;
+			developmentRegion = fr;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				fr,
 				en,
 				Base,
+				"fr-FR",
 			);
 			mainGroup = B55EFBF92635BF4D002DF429;
 			productRefGroup = B55EFC032635BF4D002DF429 /* Products */;
@@ -241,6 +258,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B55EFC152635BF51002DF429 /* LaunchScreen.storyboard in Resources */,
+				B52C72A626487F6D00185CBB /* InfoPlist.strings in Resources */,
 				B593A48C263F1AF30072A2B3 /* Localizable.strings in Resources */,
 				B55EFC122635BF51002DF429 /* Assets.xcassets in Resources */,
 				B55EFC0D2635BF4D002DF429 /* Main.storyboard in Resources */,
@@ -308,10 +326,34 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		B52C729526487CA700185CBB /* Info.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B52C729426487CA700185CBB /* Base */,
+				B5E2579D264A847400D0FF4D /* fr-FR */,
+				B5E257A2264A84F700D0FF4D /* fr */,
+				B5E257A3264A850000D0FF4D /* en */,
+			);
+			name = Info.plist;
+			sourceTree = "<group>";
+		};
+		B52C72A826487F6D00185CBB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B52C72A726487F6D00185CBB /* en */,
+				B52C72AC26487F7200185CBB /* fr */,
+				B5E2579E264A847400D0FF4D /* fr-FR */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		B55EFC0B2635BF4D002DF429 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				B593A488263F1A820072A2B3 /* Base */,
+				B52C72462647D7D300185CBB /* fr */,
+				B52C727D2647E3FA00185CBB /* en */,
+				B5E2579A264A847400D0FF4D /* fr-FR */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -320,6 +362,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				B593A489263F1A820072A2B3 /* Base */,
+				B52C72472647D7D300185CBB /* fr */,
+				B5E2579B264A847400D0FF4D /* fr-FR */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -328,6 +372,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				B593A48B263F1AF30072A2B3 /* en */,
+				B52C72482647D7D400185CBB /* fr */,
+				B5E2579C264A847400D0FF4D /* fr-FR */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -459,7 +505,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 29;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -480,7 +526,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 29;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
