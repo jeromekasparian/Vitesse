@@ -17,8 +17,12 @@ class StatsModalViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        statsEstOuvert = true
+        if luminositeEstForcee { UIScreen.main.brightness = luminositeEcranSysteme }
+        luminositeEstForcee = false
         boutonEffacerSession.setTitle("", for: .normal)
-        boutonEffacerSession.setImage(UIImage(systemName: "xmark"), for: .normal)
+        boutonEffacerSession.setImage(UIImage(systemName: "delete.left"), for: .normal)
+//        boutonEffacerSession.setImage(UIImage(systemName: "xmark"), for: .normal)
         afficherStats()
         NotificationCenter.default.addObserver(self, selector: #selector(afficherStats), name: NSNotification.Name(rawValue: notificationMiseAJourStats), object: nil)
         // Do any additional setup after loading the view.
@@ -27,8 +31,8 @@ class StatsModalViewController: UIViewController {
         let swipeBas = UISwipeGestureRecognizer(target:self, action: #selector(fermerStats))
         swipeBas.direction = UISwipeGestureRecognizer.Direction.down
         self.view.addGestureRecognizer(swipeBas)
-
     }
+    
     
     @IBAction func fermerStats () {
         self.dismiss(animated: true, completion: nil)
@@ -41,6 +45,13 @@ class StatsModalViewController: UIViewController {
     }
     
     @objc func afficherStats(){
+        if demoMode {
+            labelVitesseMax.text = "112 km/h"
+            labelVitesseMaxSession.text = "83 km/h"
+            labelDistanceTotale.text = "1848.5 km"
+            labelDistanceTotaleSession.text = "24.0 km"
+        }
+        else {
         labelVitesseMax.text = String(format: "%.0f ", vitesseMax * facteurUnites[unite])
         labelVitesseMax.text?.append(textesUnites[unite])
         labelVitesseMaxSession.text = String(format: "%.0f ", vitesseMaxSession * facteurUnites[unite])
@@ -52,6 +63,7 @@ class StatsModalViewController: UIViewController {
         if (unite == 0) { labelDistanceTotaleSession.text = String(format: "%.0f ", distanceTotaleSession * facteurUnitesDistance[unite]) }
         else { labelDistanceTotaleSession.text = String(format: "%.1f ", distanceTotaleSession * facteurUnitesDistance[unite]) }
         labelDistanceTotaleSession.text?.append(textesUnitesDistance[unite])
+        }
     }
 
     /*
@@ -64,4 +76,9 @@ class StatsModalViewController: UIViewController {
     }
     */
 
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        statsEstOuvert = false
+        super.viewWillDisappear(true)
+    }
 }

@@ -8,14 +8,10 @@
 /// feuille de route
 // la statusbar ne se cache pas sous ios 14.5 ??
 // Localisation DE
-// icone non SF
-// Nom de l'app
 //
-// arrêter la luminosité élevée si on sort le tiroir
 // Erreurs d'arrondis sur le cummul ??
 // incohérences sur la vitesse max / distance totale au démarrage
 // la localisation n'accroche pas quand on démarre dans le train
-
 
 import UIKit
 import CoreLocation
@@ -44,6 +40,10 @@ var timeStampDernierePosition = 0.0
 var luminositeEcranSysteme = CGFloat(0.0)
 var luminositeEstForcee = false
 let autoriseAffichageTeteHauteBlanc = false
+let tempsMaxEntrePositions = 10.0 // temps en secondes au-delà duquel on considère qu'on a perdu la position
+let nbPositionsMiniAuDemarrage = 5 // nombre de positions qu'on lit avant de les prendre en compte.
+let demoMode = false // pour faire les captures d'écran pour l'app store
+var statsEstOuvert = false
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -78,8 +78,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
     @objc func ouvreStats() {
         //        print("perform segue")
-        if luminositeEstForcee { UIScreen.main.brightness = luminositeEcranSysteme }
-        luminositeEstForcee = false
         performSegue(withIdentifier:"OuvreStats", sender: self)
     }
     
@@ -158,11 +156,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @objc func verifieQueLocalisationEstActive() {
-        if ((self.imagePasLocalisation.isHidden == true) && ((Date().timeIntervalSince1970 -  timeStampDernierePosition) > 5)) {
+        if ((self.imagePasLocalisation.isHidden == true) && ((Date().timeIntervalSince1970 -  timeStampDernierePosition) > tempsMaxEntrePositions)) {
             DispatchQueue.main.async{
-                self.messageSecret.text = "Localisation perdue"
+                if demoMode{
+                    self.afficherVitesse(vitesse: 74, precisionOK: true)
+                }
+                else {
+                self.messageSecret.isHidden = false
+                self.messageSecret.text = NSLocalizedString("Localisation perdue", comment:"Localisation perdue")
                 self.affichageVitesse.text = ""
-                self.roueAttente.startAnimating()
+                self.imagePasLocalisation.isHidden = false
+                }
+                self.roueAttente.stopAnimating()
             }
         }
     }
@@ -191,7 +196,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //            nouveauDresse = (abs(roulis) > inclinaisonMax)
         //        nouveauDresse = (!(UIDevice.current.orientation.isLandscape) || (abs(roulis) > inclinaisonMax))
 //        nouveauDresse = ((abs(roulis) < abs(tangage) + inclinaisonMin) || (abs(roulis) > inclinaisonMax) || (abs(roulis) < inclinaisonMin))
-        positionTeteHaute = (abs(roulis) < inclinaisonMax) && (abs(roulis) > inclinaisonMin) && (abs(roulis) > abs(tangage) + inclinaisonMin)
+        positionTeteHaute = (abs(roulis) < inclinaisonMax) && (abs(roulis) > inclinaisonMin) && (abs(roulis) > abs(tangage) + inclinaisonMin) && (UIApplication.shared.windows.first?.windowScene?.interfaceOrientation.isLandscape ?? false) // UIDevice.current.orientation.isLandscape est l'orientation physique de l'appareil, quand on est plus ou moins à plat il dit "à plat"
         DispatchQueue.main.async{
             if (self.positionTeteHaute != self.anciennePositionTeteHaute) {
                 self.affichageVitesse.flipX()
@@ -207,15 +212,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     self.affichageVitesse.textColor = .white
                 }
                 // on force l'écran à rester en mode portrait
-                if !luminositeEstForcee { // && self.view.isFirstResponder) {
+                if !luminositeEstForcee && !statsEstOuvert { //isUserInteractionEnabled { // && self.view.isFirstResponder)
                     luminositeEcranSysteme = UIScreen.main.brightness   // on note la luminosité de l'écran, pour pouvoir y revenir plus tard
                     UIScreen.main.brightness = CGFloat(1.0)  // on met le contraste au max
                     luminositeEstForcee = true
                 }
-                AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
-                if roulis > 0 { UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation") }
-                else { UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation") }
-                UIViewController.attemptRotationToDeviceOrientation()
+//                AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
+//                if roulis > 0 { UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation") }
+//                else { UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation") }
+//                UIViewController.attemptRotationToDeviceOrientation()
+
                 //                print("à plat")
             }  // téléphone à plat -> position tête haute
             else { // le téléphone est penché -> on affiche le texte en gris pour lecture directe
@@ -227,7 +233,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     UIScreen.main.brightness = luminositeEcranSysteme
                     luminositeEstForcee = false
                 }
-                AppDelegate.orientationLock = UIInterfaceOrientationMask.all  // on déverrouille l'orientation de l'écran
+//                AppDelegate.orientationLock = UIInterfaceOrientationMask.all  // on déverrouille l'orientation de l'écran
                 //                print("dressé")
             }  // téléphone dressé
 //            self.affichageUnite.setTitle(textesUnites[unite], for: .normal) // = textesUnites[unite]
@@ -331,7 +337,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let nombreLocations = locations.count
         let location:CLLocation = locations.last!
         nombrePositionsLues = nombrePositionsLues + 1
-        let vitesseOK = ((location.speed == 0) || (location.course >= 0)) && ((location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < 2) && (nombrePositionsLues >= 5)
+        let vitesseOK = ((location.speed == 0) || (location.course >= 0)) && ((location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < 2) && (nombrePositionsLues >= nbPositionsMiniAuDemarrage)
         timeStampDernierePosition = location.timestamp.timeIntervalSince1970
         var laDistance = -3.33
         if vitesseOK {
@@ -350,12 +356,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.3f, t %.0f \nN %f", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, location.timestamp.timeIntervalSince1970,nombreLocations)
         DispatchQueue.main.async{
             self.messageSecret.text = affichageSecret
+            self.messageSecret.isHidden = !debugMode
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         DispatchQueue.main.async{
-            self.messageSecret.text = "Erreur de localisation"
+            self.messageSecret.isHidden = false
+            self.messageSecret.text = NSLocalizedString("Erreur de localisation", comment: "Erreur de localisation")
+            self.imagePasLocalisation.isHidden = false
         }
         print(error)
     }

@@ -65,10 +65,7 @@
 		B5E2579A264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/Main.strings"; sourceTree = "<group>"; };
 		B5E2579B264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		B5E2579C264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "Vitesse/fr-FR.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		B5E2579D264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "fr-FR"; path = "fr-FR.lproj/Info.plist"; sourceTree = "<group>"; };
 		B5E2579E264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		B5E257A2264A84F700D0FF4D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = fr; path = fr.lproj/Info.plist; sourceTree = "<group>"; };
-		B5E257A3264A850000D0FF4D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -330,9 +327,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				B52C729426487CA700185CBB /* Base */,
-				B5E2579D264A847400D0FF4D /* fr-FR */,
-				B5E257A2264A84F700D0FF4D /* fr */,
-				B5E257A3264A850000D0FF4D /* en */,
 			);
 			name = Info.plist;
 			sourceTree = "<group>";
@@ -505,7 +499,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -526,7 +520,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
