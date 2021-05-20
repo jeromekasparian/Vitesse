@@ -6,12 +6,12 @@
 //
 
 /// feuille de route
+//  incohérences sur la vitesse max / distance totale au démarrage
 // la statusbar ne se cache pas sous ios 14.5 ??
 // Localisation DE
-//
-// Erreurs d'arrondis sur le cummul ??
-// incohérences sur la vitesse max / distance totale au démarrage
-// la localisation n'accroche pas quand on démarre dans le train
+
+// mettre un faux bouton refresh?
+
 
 import UIKit
 import CoreLocation
@@ -40,10 +40,11 @@ var timeStampDernierePosition = 0.0
 var luminositeEcranSysteme = CGFloat(0.0)
 var luminositeEstForcee = false
 let autoriseAffichageTeteHauteBlanc = false
-let tempsMaxEntrePositions = 10.0 // temps en secondes au-delà duquel on considère qu'on a perdu la position
+let tempsMaxEntrePositions = 5.0 // temps en secondes au-delà duquel on considère qu'on a perdu la position
 let nbPositionsMiniAuDemarrage = 5 // nombre de positions qu'on lit avant de les prendre en compte.
 let demoMode = false // pour faire les captures d'écran pour l'app store
 var statsEstOuvert = false
+let tempsAvantReinitialisationAuto = Double(3600 * 12) // temps en secondes au-delà duquel on réinitialise les stats de trajet
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -97,10 +98,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         //        justLoaded = true
         debugMode = debugMode && autoriseDebug
-        messageSecret.isHidden = !debugMode
-        unite = userDefaults.value(forKey: keyUnite) as? Int ?? 1
-        vitesseMax = userDefaults.value(forKey: keyVitesseMax) as? Double ?? 0.0
-        distanceTotale = userDefaults.value(forKey: keyDistanceTotale) as? Double ?? 0.0
         
         // mise en place de la détection du swipe up pour ouvrir le tiroir des stats
         let swipeHaut = UISwipeGestureRecognizer(target:self, action: #selector(ouvreStats))
@@ -120,7 +117,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         swipeBlanc.numberOfTouchesRequired = 3
         self.view.addGestureRecognizer(swipeBlanc)
         }
-
         
         //        locationManager.requestWhenInUseAuthorization()
         gereDroitsLocalisation(origineViewDidLoad: true, origineViewDidAppear: false)
@@ -141,6 +137,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let alert = UIAlertController(title: NSLocalizedString("Pour votre sécurité", comment: "Titre alerte"), message: NSLocalizedString("avant de conduire, assurez-vous que le mode Avion ou \"Ne pas déranger en voiture\" est activé", comment: "Contenu de l'alerte de sécurité"), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "bouton OK"), style: .default, handler: {_ in print("Alerte NPD validée")}))
         DispatchQueue.main.async{
+            self.messageSecret.isHidden = !debugMode
+            unite = self.userDefaults.value(forKey: keyUnite) as? Int ?? 1
+            vitesseMax = self.userDefaults.value(forKey: keyVitesseMax) as? Double ?? 0.0
+            distanceTotale = self.userDefaults.value(forKey: keyDistanceTotale) as? Double ?? 0.0
+
             self.affichageUnite.setTitle(textesUnites[unite], for: .normal)
             self.present(alert, animated: true)
         }
@@ -156,7 +157,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @objc func verifieQueLocalisationEstActive() {
-        if ((self.imagePasLocalisation.isHidden == true) && ((Date().timeIntervalSince1970 -  timeStampDernierePosition) > tempsMaxEntrePositions)) {
+        if (self.imagePasLocalisation.isHidden && ((Date().timeIntervalSince1970 -  timeStampDernierePosition) > tempsMaxEntrePositions)) {
             DispatchQueue.main.async{
                 if demoMode{
                     self.afficherVitesse(vitesse: 74, precisionOK: true)
@@ -337,7 +338,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let nombreLocations = locations.count
         let location:CLLocation = locations.last!
         nombrePositionsLues = nombrePositionsLues + 1
-        let vitesseOK = ((location.speed == 0) || (location.course >= 0)) && ((location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < 2) && (nombrePositionsLues >= nbPositionsMiniAuDemarrage)
+        // au-delà de 12 heures en arrière-plan, on réinitialise le trajet
+        if (location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) > tempsAvantReinitialisationAuto {
+            distanceTotaleSession = 0.0
+            vitesseMaxSession = 0.0
+            NotificationCenter.default.post(name : Notification.Name(notificationMiseAJourStats),object: nil)  // on prévient le ViewController d'actualiser l'affichage et d'enregistrer
+        }
+        let vitesseOK = (((location.speed >= 0) && (location.speed < 1)) || (location.course >= 0)) && ((location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < 2) && (nombrePositionsLues >= nbPositionsMiniAuDemarrage)
         timeStampDernierePosition = location.timestamp.timeIntervalSince1970
         var laDistance = -3.33
         if vitesseOK {

@@ -23,5 +23,5 @@
 "km" = "km";
 "mi" = "mi";
 
-"Localisation perdue" = "Lost location service temporarily";
+"Localisation perdue" = "Speed unavailable or insufficient precision";
 "Erreur de localisation" = "Location error";

@@ -14,7 +14,8 @@ class StatsModalViewController: UIViewController {
     @IBOutlet var labelDistanceTotale: UILabel!
     @IBOutlet var labelDistanceTotaleSession: UILabel!
     @IBOutlet var boutonEffacerSession: UIButton!
-    
+    @IBOutlet var boutonEffacerTotal: UIButton!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         statsEstOuvert = true
@@ -22,6 +23,8 @@ class StatsModalViewController: UIViewController {
         luminositeEstForcee = false
         boutonEffacerSession.setTitle("", for: .normal)
         boutonEffacerSession.setImage(UIImage(systemName: "delete.left"), for: .normal)
+        boutonEffacerTotal.setTitle("", for: .normal)
+        boutonEffacerTotal.setImage(UIImage(systemName: "delete.left"), for: .normal)
 //        boutonEffacerSession.setImage(UIImage(systemName: "xmark"), for: .normal)
         afficherStats()
         NotificationCenter.default.addObserver(self, selector: #selector(afficherStats), name: NSNotification.Name(rawValue: notificationMiseAJourStats), object: nil)
@@ -43,7 +46,15 @@ class StatsModalViewController: UIViewController {
         distanceTotaleSession = 0.0
         afficherStats()
     }
-    
+
+    @IBAction func effacerTout() {
+        vitesseMaxSession = 0.0
+        distanceTotaleSession = 0.0
+        vitesseMax = 0.0
+        distanceTotale = 0.0
+        afficherStats()
+    }
+
     @objc func afficherStats(){
         if demoMode {
             labelVitesseMax.text = "112 km/h"
