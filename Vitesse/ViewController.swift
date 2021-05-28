@@ -9,15 +9,24 @@
 //  incohérences sur la vitesse max / distance totale au démarrage
 // la statusbar ne se cache pas sous ios 14.5 ??
 // Localisation DE
-
 // mettre un faux bouton refresh?
+// Chrono pour autres modes de transport
+
+
+// FAIT
+// chrono (voiture seulement)
+// enregistrement de la distance totale quand on quitte l'app
+// Message explicite quand la position précise n'est pas autorisée
+// réglé la compétition entre le logo localisation perdue et la roue d'attente
+// séparé l'affichage debug et l'affichage public
+// possibilité de fermer le modalview en cliquant sur le chevron
 
 
 import UIKit
 import CoreLocation
 import CoreMotion
-import SystemConfiguration
-import CallKit
+//import SystemConfiguration
+//import CallKit
 
 let autoriseDebug = true
 var debugMode: Bool = false
@@ -30,6 +39,9 @@ var vitesseMax = 0.0
 var vitesseMaxSession = 0.0
 var distanceTotale = 0.0
 var distanceTotaleSession = 0.0
+var tempsSession = 0.0  // le temps total de trajet, en secondes
+
+//var premierTempsValide = 0.0
 var unite: Int = 1 // par défaut, km/h
 let textesUnites: [String] = [NSLocalizedString("m/s", comment: "vistesse : m/s"),NSLocalizedString("km/h", comment: "vitesse : km/h"),NSLocalizedString("mph", comment: "vitesse : mph")]
 let facteurUnites: [Double] = [1.0, 3.6, 2.2369362920544]
@@ -45,10 +57,12 @@ let nbPositionsMiniAuDemarrage = 5 // nombre de positions qu'on lit avant de les
 let demoMode = false // pour faire les captures d'écran pour l'app store
 var statsEstOuvert = false
 let tempsAvantReinitialisationAuto = Double(3600 * 12) // temps en secondes au-delà duquel on réinitialise les stats de trajet
+var localisationEstPerdue = false
+let distanceMiniAvantComptageTemps = 30.0  // on considère qu'on est en marche si on a parcouru au moins 30 m
+let userDefaults = UserDefaults.standard
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
-    let userDefaults = UserDefaults.standard
     var locationManager: CLLocationManager! = CLLocationManager()
     let inclinaisonMin = 5.0 // inclinaison min en degres (sur le roulis) pour dire qu'on est en mode tête haute
     let inclinaisonMax = 38.0 // inclinaison max en degres (sur le roulis) pour dire qu'on est en mode tête haute
@@ -65,7 +79,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var affichageUnite: UIButton!
     @IBOutlet var imagePasLocalisation: UIImageView!
     @IBOutlet var roueAttente: UIActivityIndicatorView!
-    @IBOutlet var messageSecret: UILabel!  // caché dans l'interface - utile pour les tests de début
+    @IBOutlet var messagePublic: UILabel!  
+    @IBOutlet var messageDebug: UILabel!  // caché dans l'interface - utile pour les tests de début
+    @IBOutlet var boutonOuvreStats: UIButton!
     
     @IBAction func changeUnite () {
         unite = (unite + 1) % 3
@@ -76,7 +92,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             afficherVitesse(vitesse: laVitesse, precisionOK: true)
         }
     }
-        
+    
     @objc func ouvreStats() {
         //        print("perform segue")
         performSegue(withIdentifier:"OuvreStats", sender: self)
@@ -85,7 +101,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @objc func changeDebugMode() {
         debugMode = !debugMode
         DispatchQueue.main.async{
-            self.messageSecret.isHidden = !debugMode
+            self.messageDebug.isHidden = !debugMode
         }
     }
     
@@ -103,7 +119,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let swipeHaut = UISwipeGestureRecognizer(target:self, action: #selector(ouvreStats))
         swipeHaut.direction = UISwipeGestureRecognizer.Direction.up
         self.view.addGestureRecognizer(swipeHaut)
-
+        
         // mise en place de la détection du swipe left à 3 doigts pour activer le mode debug
         let swipeDebug = UISwipeGestureRecognizer(target:self, action: #selector(changeDebugMode))
         swipeDebug.direction = UISwipeGestureRecognizer.Direction.left
@@ -111,11 +127,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         self.view.addGestureRecognizer(swipeDebug)
         
         if autoriseAffichageTeteHauteBlanc{
-        // mise en place de la détection du swipe right à 3 doigts pour activer le mode tête haute blanc
-        let swipeBlanc = UISwipeGestureRecognizer(target:self, action: #selector(self.changeCouleurTeteHaute))
-        swipeBlanc.direction = UISwipeGestureRecognizer.Direction.right
-        swipeBlanc.numberOfTouchesRequired = 3
-        self.view.addGestureRecognizer(swipeBlanc)
+            // mise en place de la détection du swipe right à 3 doigts pour activer le mode tête haute blanc
+            let swipeBlanc = UISwipeGestureRecognizer(target:self, action: #selector(self.changeCouleurTeteHaute))
+            swipeBlanc.direction = UISwipeGestureRecognizer.Direction.right
+            swipeBlanc.numberOfTouchesRequired = 3
+            self.view.addGestureRecognizer(swipeBlanc)
         }
         
         //        locationManager.requestWhenInUseAuthorization()
@@ -131,17 +147,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         // tester si on a une connexion
         
-//        let envoyerAlerteSecurite = !nePasDerangerActif() || connectedToNetwork()
+        //        let envoyerAlerteSecurite = !nePasDerangerActif() || connectedToNetwork()
         //        if connectedToNetwork(){}
         
+        boutonOuvreStats.setTitle("", for: .normal)
+        boutonOuvreStats.setImage(UIImage(systemName: "chevron.compact.up", withConfiguration: UIImage.SymbolConfiguration(pointSize: 48)), for: .normal)
         let alert = UIAlertController(title: NSLocalizedString("Pour votre sécurité", comment: "Titre alerte"), message: NSLocalizedString("avant de conduire, assurez-vous que le mode Avion ou \"Ne pas déranger en voiture\" est activé", comment: "Contenu de l'alerte de sécurité"), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "bouton OK"), style: .default, handler: {_ in print("Alerte NPD validée")}))
         DispatchQueue.main.async{
-            self.messageSecret.isHidden = !debugMode
-            unite = self.userDefaults.value(forKey: keyUnite) as? Int ?? 1
-            vitesseMax = self.userDefaults.value(forKey: keyVitesseMax) as? Double ?? 0.0
-            distanceTotale = self.userDefaults.value(forKey: keyDistanceTotale) as? Double ?? 0.0
-
+            self.messageDebug.isHidden = !debugMode
+            unite = userDefaults.value(forKey: keyUnite) as? Int ?? 1
+            vitesseMax = userDefaults.value(forKey: keyVitesseMax) as? Double ?? 0.0
+            distanceTotale = userDefaults.value(forKey: keyDistanceTotale) as? Double ?? 0.0
+            
             self.affichageUnite.setTitle(textesUnites[unite], for: .normal)
             self.present(alert, animated: true)
         }
@@ -158,15 +176,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @objc func verifieQueLocalisationEstActive() {
         if (self.imagePasLocalisation.isHidden && ((Date().timeIntervalSince1970 -  timeStampDernierePosition) > tempsMaxEntrePositions)) {
+            localisationEstPerdue = true
             DispatchQueue.main.async{
                 if demoMode{
                     self.afficherVitesse(vitesse: 74, precisionOK: true)
                 }
                 else {
-                self.messageSecret.isHidden = false
-                self.messageSecret.text = NSLocalizedString("Localisation perdue", comment:"Localisation perdue")
-                self.affichageVitesse.text = ""
-                self.imagePasLocalisation.isHidden = false
+//                    self.messageSecret.isHidden = false
+                    var leMessage =  NSLocalizedString("Localisation perdue", comment:"Localisation perdue")
+                    if #available(iOS 14.0, *) {
+                        if self.locationManager.accuracyAuthorization == .reducedAccuracy{
+                            leMessage = NSLocalizedString("Précision réduite", comment:"Basse précision autorisée")
+                        }
+                    }
+                    self.messagePublic.text = leMessage
+                    self.affichageVitesse.text = ""
+                    self.imagePasLocalisation.isHidden = false
                 }
                 self.roueAttente.stopAnimating()
             }
@@ -196,7 +221,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //        print(String(format:"orientation : %.2f, %.2f, %.2f", tangage, roulis, azimutInverse))
         //            nouveauDresse = (abs(roulis) > inclinaisonMax)
         //        nouveauDresse = (!(UIDevice.current.orientation.isLandscape) || (abs(roulis) > inclinaisonMax))
-//        nouveauDresse = ((abs(roulis) < abs(tangage) + inclinaisonMin) || (abs(roulis) > inclinaisonMax) || (abs(roulis) < inclinaisonMin))
+        //        nouveauDresse = ((abs(roulis) < abs(tangage) + inclinaisonMin) || (abs(roulis) > inclinaisonMax) || (abs(roulis) < inclinaisonMin))
         positionTeteHaute = (abs(roulis) < inclinaisonMax) && (abs(roulis) > inclinaisonMin) && (abs(roulis) > abs(tangage) + inclinaisonMin) && (UIApplication.shared.windows.first?.windowScene?.interfaceOrientation.isLandscape ?? false) // UIDevice.current.orientation.isLandscape est l'orientation physique de l'appareil, quand on est plus ou moins à plat il dit "à plat"
         DispatchQueue.main.async{
             if (self.positionTeteHaute != self.anciennePositionTeteHaute) {
@@ -218,11 +243,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     UIScreen.main.brightness = CGFloat(1.0)  // on met le contraste au max
                     luminositeEstForcee = true
                 }
-//                AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
-//                if roulis > 0 { UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation") }
-//                else { UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation") }
-//                UIViewController.attemptRotationToDeviceOrientation()
-
+                //                AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
+                //                if roulis > 0 { UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation") }
+                //                else { UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation") }
+                //                UIViewController.attemptRotationToDeviceOrientation()
+                
                 //                print("à plat")
             }  // téléphone à plat -> position tête haute
             else { // le téléphone est penché -> on affiche le texte en gris pour lecture directe
@@ -234,10 +259,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     UIScreen.main.brightness = luminositeEcranSysteme
                     luminositeEstForcee = false
                 }
-//                AppDelegate.orientationLock = UIInterfaceOrientationMask.all  // on déverrouille l'orientation de l'écran
+                //                AppDelegate.orientationLock = UIInterfaceOrientationMask.all  // on déverrouille l'orientation de l'écran
                 //                print("dressé")
             }  // téléphone dressé
-//            self.affichageUnite.setTitle(textesUnites[unite], for: .normal) // = textesUnites[unite]
+            //            self.affichageUnite.setTitle(textesUnites[unite], for: .normal) // = textesUnites[unite]
         } // DispatchQueue.main.async
     }
     
@@ -263,19 +288,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 print("acces localisation ok")
                 //            self.imagePasDeVitesse.image = UIImage(systemName: "location.fill")
                 DispatchQueue.main.async{
-                    self.messageSecret.text = "Localisation autorisée"
-                    self.messageSecret.isHidden = !debugMode
-                    self.affichageVitesse.text = ""
-                    //                    self.imageLocalisation.isHidden = false
-                    self.imagePasLocalisation.isHidden = true
-                    //                    self.imageLocalisationPerdue.isHidden = true
-                    self.roueAttente.startAnimating()  //isHidden = true
+                    self.messageDebug.text = "Localisation autorisée"
+//                    self.messageSecret.isHidden = !debugMode
+                    if self.imagePasLocalisation.isHidden {
+                        self.affichageVitesse.text = ""
+    //                    self.imagePasLocalisation.isHidden = true
+                        self.roueAttente.startAnimating()  //isHidden = true
+                    }
                 }
             case .denied, .restricted:
                 print("acces localisation pas ok pour l'app")
                 DispatchQueue.main.async{
-                    self.messageSecret.text = NSLocalizedString("Pour afficher la vitesse, autorisez l'app à accéder à la localisation : \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'app n'est pas autorisée à accéder à la localisation")
-                    self.messageSecret.isHidden = false
+                    self.messagePublic.text = NSLocalizedString("Pour afficher la vitesse, autorisez l'app à accéder à la localisation : \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'app n'est pas autorisée à accéder à la localisation")
+//                    self.messageSecret.isHidden = false
                     self.affichageVitesse.text = ""
                     //                    self.imageLocalisation.isHidden = true
                     self.imagePasLocalisation.isHidden = false
@@ -296,8 +321,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             //            alerte.addAction(UIAlertAction(title: "OK", style: .default, handler: {_ in print("Alerte localisation validée")}))
             DispatchQueue.main.async{
                 //                self.present(alerte, animated: true)
-                self.messageSecret.text = NSLocalizedString("Pour afficher la vitesse, activez la localisation sur votre appareil : \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'appareil n'est pas autorisé à lire la position")
-                self.messageSecret.isHidden = false
+                self.messagePublic.text = NSLocalizedString("Pour afficher la vitesse, activez la localisation sur votre appareil : \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'appareil n'est pas autorisé à lire la position")
+//                self.messageSecret.isHidden = false
                 self.affichageVitesse.text = ""
                 //                self.imageLocalisation.isHidden = true
                 self.imagePasLocalisation.isHidden = false
@@ -312,39 +337,40 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         print("vitesse : \(vitesse) \(textesUnites[unite])")
         DispatchQueue.main.async{
             //            self.imageLocalisation.isHidden = true
-            self.imagePasLocalisation.isHidden = true
             if ((vitesse >= 0) && precisionOK) {
-                //                self.imageLocalisationPerdue.isHidden = true
+                self.messagePublic.text = ""
+                self.imagePasLocalisation.isHidden = true
                 self.roueAttente.stopAnimating()  //isHidden = true
-                //                self.affichageVitesse.isHidden = false
-                //                if (vitesse >= 10) {
                 self.affichageVitesse.text = String(format:"%.0f",vitesse)
-                //                }
-                //                else { self.affichageVitesse.text = String(format:"%.1f",vitesse) }
+                localisationEstPerdue = false
             }
-            else {
-                //                self.affichageVitesse.isHidden = false
+            else if self.imagePasLocalisation.isHidden {
                 self.affichageVitesse.text = ""
-                //                self.imageLocalisationPerdue.isHidden = false
                 self.roueAttente.startAnimating()  //isHidden = false
                 print("pas de signal")
             }
-            //        print("locations = \(String(describing: locations))")
         }
     }
+    
     
     //    CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let nombreLocations = locations.count
         let location:CLLocation = locations.last!
+//        let modeDeTransport = locationManager.activityType
         nombrePositionsLues = nombrePositionsLues + 1
         // au-delà de 12 heures en arrière-plan, on réinitialise le trajet
         if (location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) > tempsAvantReinitialisationAuto {
             distanceTotaleSession = 0.0
             vitesseMaxSession = 0.0
+            tempsSession = 0.0
             NotificationCenter.default.post(name : Notification.Name(notificationMiseAJourStats),object: nil)  // on prévient le ViewController d'actualiser l'affichage et d'enregistrer
         }
         let vitesseOK = (((location.speed >= 0) && (location.speed < 1)) || (location.course >= 0)) && ((location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < 2) && (nombrePositionsLues >= nbPositionsMiniAuDemarrage)
+//        if (locationManager.activityType == .automotiveNavigation) &&
+        if(timeStampDernierePosition > 0.0) && (location.speed >= 1) && (distanceTotaleSession > distanceMiniAvantComptageTemps) {
+            tempsSession = tempsSession + location.timestamp.timeIntervalSince1970 - timeStampDernierePosition
+        }
         timeStampDernierePosition = location.timestamp.timeIntervalSince1970
         var laDistance = -3.33
         if vitesseOK {
@@ -357,20 +383,38 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }
             locationPrecedente = location
             NotificationCenter.default.post(name : Notification.Name(notificationMiseAJourStats),object: nil)  // on prévient le ViewController d'actualiser l'affichage et d'enregistrer
+//            if ((distanceTotaleSession > distanceMiniAvantComptageTemps) && (premierTempsValide == 0)){
+//                premierTempsValide = location.timestamp.timeIntervalSince1970
+//            }
         }   // if vitesseOK
         
         afficherVitesse(vitesse: location.speed * facteurUnites[unite], precisionOK: vitesseOK)  // course (= le cap) est -1 la plupart du temps pendant que le système affine la localisaiton lorsqu'il vient d'avoir le droit d'y accéder
-        let affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.3f, t %.0f \nN %f", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, location.timestamp.timeIntervalSince1970,nombreLocations)
+        var affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %.0f \nN %d", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, location.timestamp.timeIntervalSince1970,nombreLocations)
+//        switch locationManager.activityType{
+//        case .automotiveNavigation:
+//            affichageSecret.append(" Voiture")
+//        case .otherNavigation:
+//            affichageSecret.append(" Autre navigation")
+//        case .fitness:
+//            affichageSecret.append(" Fitness")
+//        case .airborne:
+//            affichageSecret.append(" Airborne")
+//        case .other:
+//            affichageSecret.append(" Autre")
+//        default:
+//            affichageSecret.append(" Inconnu")
+//        }
         DispatchQueue.main.async{
-            self.messageSecret.text = affichageSecret
-            self.messageSecret.isHidden = !debugMode
+            self.messageDebug.text = affichageSecret
+//            self.messageSecret.isHidden = !debugMode
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        localisationEstPerdue = true
         DispatchQueue.main.async{
-            self.messageSecret.isHidden = false
-            self.messageSecret.text = NSLocalizedString("Erreur de localisation", comment: "Erreur de localisation")
+//            self.messageSecret.isHidden = false
+            self.messagePublic.text = NSLocalizedString("Erreur de localisation", comment: "Erreur de localisation")
             self.imagePasLocalisation.isHidden = false
         }
         print(error)

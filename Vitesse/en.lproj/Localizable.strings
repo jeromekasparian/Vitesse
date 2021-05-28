@@ -25,3 +25,4 @@
 
 "Localisation perdue" = "Speed unavailable or insufficient precision";
 "Erreur de localisation" = "Location error";
+"Précision réduite" = "To display the speed, please allow your app to get your precise location: \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne";

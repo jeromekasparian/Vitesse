@@ -87,6 +87,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         luminositeEstForcee = false
     }
 
+    func applicationWillTerminate(_ application: UIApplication) {
+        userDefaults.set(distanceTotale, forKey: keyDistanceTotale)
+        userDefaults.set(vitesseMax, forKey: keyVitesseMax)
+    }
     func applicationDidBecomeActive(_ application: UIApplication) {
           UIApplication.shared.isIdleTimerDisabled = true
     }
