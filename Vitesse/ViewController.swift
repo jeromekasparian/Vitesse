@@ -10,17 +10,9 @@
 // la statusbar ne se cache pas sous ios 14.5 ??
 // Localisation DE
 // mettre un faux bouton refresh?
-// Chrono pour autres modes de transport
+// Chrono basé sur les modes de transport
 
-
-// FAIT
-// chrono (voiture seulement)
-// enregistrement de la distance totale quand on quitte l'app
-// Message explicite quand la position précise n'est pas autorisée
-// réglé la compétition entre le logo localisation perdue et la roue d'attente
-// séparé l'affichage debug et l'affichage public
-// possibilité de fermer le modalview en cliquant sur le chevron
-
+//
 
 import UIKit
 import CoreLocation
@@ -133,6 +125,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             swipeBlanc.numberOfTouchesRequired = 3
             self.view.addGestureRecognizer(swipeBlanc)
         }
+                
         
         //        locationManager.requestWhenInUseAuthorization()
         gereDroitsLocalisation(origineViewDidLoad: true, origineViewDidAppear: false)
@@ -155,7 +148,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let alert = UIAlertController(title: NSLocalizedString("Pour votre sécurité", comment: "Titre alerte"), message: NSLocalizedString("avant de conduire, assurez-vous que le mode Avion ou \"Ne pas déranger en voiture\" est activé", comment: "Contenu de l'alerte de sécurité"), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "bouton OK"), style: .default, handler: {_ in print("Alerte NPD validée")}))
         DispatchQueue.main.async{
+            self.messagePublic.text = ""
             self.messageDebug.isHidden = !debugMode
+            self.affichageVitesse.text = ""
+            let laTailleDePoliceAvecLaBonneHauteur = self.affichageVitesse.font.pointSize * self.affichageVitesse.bounds.size.height / self.affichageVitesse.font.lineHeight
+            self.affichageVitesse.font = UIFont.monospacedDigitSystemFont(ofSize: laTailleDePoliceAvecLaBonneHauteur, weight: .regular)
             unite = userDefaults.value(forKey: keyUnite) as? Int ?? 1
             vitesseMax = userDefaults.value(forKey: keyVitesseMax) as? Double ?? 0.0
             distanceTotale = userDefaults.value(forKey: keyDistanceTotale) as? Double ?? 0.0
@@ -200,8 +197,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     
     override func viewWillDisappear(_ animated: Bool) {
-        userDefaults.set(distanceTotale, forKey: keyDistanceTotale)
-        userDefaults.set(vitesseMax, forKey: keyVitesseMax)
+        enregistrerStats()
         if luminositeEstForcee { UIScreen.main.brightness = luminositeEcranSysteme }
         luminositeEstForcee = false
         timer.invalidate()
@@ -380,6 +376,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 laDistance =  location.distance(from: locationPrecedente)
                 distanceTotale = distanceTotale + laDistance
                 distanceTotaleSession = distanceTotaleSession + laDistance
+                distanceTotale = max(distanceTotale, distanceTotaleSession)
             }
             locationPrecedente = location
             NotificationCenter.default.post(name : Notification.Name(notificationMiseAJourStats),object: nil)  // on prévient le ViewController d'actualiser l'affichage et d'enregistrer
@@ -389,7 +386,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }   // if vitesseOK
         
         afficherVitesse(vitesse: location.speed * facteurUnites[unite], precisionOK: vitesseOK)  // course (= le cap) est -1 la plupart du temps pendant que le système affine la localisaiton lorsqu'il vient d'avoir le droit d'y accéder
-        var affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %.0f \nN %d", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, location.timestamp.timeIntervalSince1970,nombreLocations)
+        let affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %.0f \nN %d", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, location.timestamp.timeIntervalSince1970,nombreLocations)
 //        switch locationManager.activityType{
 //        case .automotiveNavigation:
 //            affichageSecret.append(" Voiture")
@@ -425,7 +422,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         gereDroitsLocalisation(origineViewDidLoad: false, origineViewDidAppear: false)
     }
     
-    
+    override func didReceiveMemoryWarning() {
+        enregistrerStats()
+    }
     
 }
 

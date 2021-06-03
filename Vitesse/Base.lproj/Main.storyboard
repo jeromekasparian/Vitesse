@@ -17,8 +17,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="1fm-rp-JOI">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                            <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="41" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="1fm-rp-JOI">
+                                <rect key="frame" x="0.0" y="30" width="320" height="420"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <fontDescription key="fontDescription" type="system" pointSize="360"/>
@@ -82,14 +82,14 @@
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="1fm-rp-JOI" secondAttribute="bottom" id="23J-hu-BI7"/>
+                            <constraint firstItem="Vza-qJ-9bm" firstAttribute="top" secondItem="1fm-rp-JOI" secondAttribute="bottom" id="23J-hu-BI7"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3ax-qP-XLS" secondAttribute="trailing" constant="16" id="30B-xR-2bR"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Vza-qJ-9bm" secondAttribute="bottom" id="6ds-el-r4l"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6OV-Y5-NzA" secondAttribute="bottom" constant="20" id="7Mx-WY-Zi2"/>
+                            <constraint firstItem="1fm-rp-JOI" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="8RO-JP-OG7"/>
                             <constraint firstItem="Vza-qJ-9bm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="DBI-P6-bp8"/>
-                            <constraint firstItem="1fm-rp-JOI" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="DfY-dV-sp9"/>
                             <constraint firstItem="3ax-qP-XLS" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="NLI-Va-1sM"/>
                             <constraint firstItem="KWs-Tq-NWu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Nyu-Y5-j7w"/>
                             <constraint firstItem="vqO-TX-K1R" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="SvC-aT-759"/>

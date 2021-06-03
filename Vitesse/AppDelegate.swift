@@ -87,10 +87,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         luminositeEstForcee = false
     }
 
-    func applicationWillTerminate(_ application: UIApplication) {
-        userDefaults.set(distanceTotale, forKey: keyDistanceTotale)
-        userDefaults.set(vitesseMax, forKey: keyVitesseMax)
+    func applicationWillResignActive(_ application: UIApplication) {
+        enregistrerStats()
     }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        enregistrerStats()
+    }
+    
     func applicationDidBecomeActive(_ application: UIApplication) {
           UIApplication.shared.isIdleTimerDisabled = true
     }
@@ -102,6 +106,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return AppDelegate.orientationLock
     }
     
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        enregistrerStats()
+    }
     
 }
 
+func enregistrerStats(){
+    userDefaults.set(distanceTotale, forKey: keyDistanceTotale)
+    userDefaults.set(vitesseMax, forKey: keyVitesseMax)
+
+}

@@ -27,3 +27,6 @@
 "Localisation perdue" = "Vitesse indisponible ou précision insuffisante";
 "Erreur de localisation" = "Erreur de localisation";
 "Précision réduite" = "Pour afficher la vitesse, autorisez l'app à accéder à votre position précise : \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne";
+"Effacer les statistiques ?" = "Effacer les statistiques ?";
+"Êtes-vous sûr de vouloir effacer définitivement toutes les statistiques ?" = "Êtes-vous sûr de vouloir effacer définitivement toutes les statistiques ?";
+"Annuler" = "Annuler";
