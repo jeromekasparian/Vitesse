@@ -85,11 +85,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          UIApplication.shared.isIdleTimerDisabled = true
         if luminositeEstForcee { UIScreen.main.brightness = luminositeEcranSysteme }
         luminositeEstForcee = false
-        enregistrerStats()
+//        enregistrerStats()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        enregistrerStats()
+//        enregistrerStats()
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
@@ -108,7 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        enregistrerStats()
+//        enregistrerStats()
     }
     
 }

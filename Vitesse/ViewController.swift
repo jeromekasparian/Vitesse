@@ -13,10 +13,6 @@
 // Chrono basé sur les modes de transport
 // icone en niveaux de gris
 
-// n'enregistrer les stats que là où c'est nécessaire (les retirer du appdelegate)
-// attendre 2 secondes sans signal avant de mettre le ventilateur -> machine d'états
-
-
 
 import UIKit
 import CoreLocation
@@ -68,6 +64,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var locationPrecedente: CLLocation! = nil
     var affichageTeteHauteBlanc = false
     var timer = Timer()
+    var nombrePasOK = 0 // nombre de vitesses pas ok reçues à la suite
     
     let motionManager = CMMotionManager()
     
@@ -371,11 +368,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                         self.affichageVitesse.text = String(format:"%d", Int(vitesse))
                 }
                 localisationEstPerdue = false
+                self.nombrePasOK = 0
             }
-            else if (self.imagePasLocalisation.isHidden) {
+            else {
+                if (self.imagePasLocalisation.isHidden) && (self.nombrePasOK >= 2) {
                 self.affichageVitesse.text = ""
                 self.roueAttente.startAnimating()  //isHidden = false
                 print("pas de signal")
+                }
+                self.nombrePasOK = self.nombrePasOK + 1
             }
         }
     }
