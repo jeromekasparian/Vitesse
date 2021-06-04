@@ -27,7 +27,7 @@
 "pHB-vp-FP8.text" = "XXX km";
 
 /* Class = "UILabel"; text = "Info debug\n \n \n "; ObjectID = "vqO-TX-K1R"; */
-"vqO-TX-K1R.text" = "Info debug\n \n \n ";
+"vqO-TX-K1R.text" = " ";
 
 /* Class = "UILabel"; text = "XXX km"; ObjectID = "wwI-Iu-Hlb"; */
 "wwI-Iu-Hlb.text" = "XXX km";

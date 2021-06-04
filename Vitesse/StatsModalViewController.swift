@@ -54,7 +54,7 @@ class StatsModalViewController: UIViewController {
     @IBAction func effacerTout() {
         let alert = UIAlertController(title: NSLocalizedString("Effacer les statistiques ?", comment: "Titre alerte"), message: NSLocalizedString("Êtes-vous sûr de vouloir effacer définitivement toutes les statistiques ?", comment: "Contenu de l'alerte"), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: NSLocalizedString("Annuler", comment: "bouton Annuler"), style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "bouton OK"), style: .destructive, handler: {_ in self.effacerToutVraiment()}))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Effacer", comment: "bouton OK"), style: .destructive, handler: {_ in self.effacerToutVraiment()}))
         DispatchQueue.main.async {
             self.present(alert, animated: true)
         }
