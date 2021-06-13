@@ -3,7 +3,7 @@
 "1fm-rp-JOI.text" = " ";
 
 /* Class = "UILabel"; text = "Distance totale"; ObjectID = "3Mt-SE-ISl"; */
-"3Mt-SE-ISl.text" = "Distance totale";
+"3Mt-SE-ISl.text" = "Distance";
 
 /* Class = "UIButton"; normalTitle = "km/h"; ObjectID = "6OV-Y5-NzA"; */
 "6OV-Y5-NzA.normalTitle" = "km/h";
@@ -34,3 +34,5 @@
 
 
 "NN3-8y-epC.text" = "Cummul complet";
+
+"NXB-Ci-gdW.text" = "Autoriser le mode miroir";

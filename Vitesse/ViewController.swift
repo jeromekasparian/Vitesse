@@ -7,11 +7,10 @@
 
 /// feuille de route
 //  incohérences sur la vitesse max / distance totale au démarrage
-// la statusbar ne se cache pas sous ios 14.5 ??
 // Localisation DE
 // mettre un faux bouton refresh?
 // Chrono basé sur les modes de transport
-// icone en niveaux de gris
+// luminosité forcée // gestion avec le SceneDelegate ?
 
 
 import UIKit
@@ -27,6 +26,7 @@ let demoMode = false // pour faire les captures d'écran pour l'app store
 let keyUnite = "uniteAuDemarrage"
 let keyVitesseMax = "vitesseMax"
 let keyDistanceTotale = "distanceTotale"
+let keyAutoriserAffichageTeteHaute = "autoriserAffichageTeteHaute"
 let notificationMiseAJourStats = "miseAJourStats"
 var vitesseMax = 0.0
 var vitesseMaxSession = 0.0
@@ -45,6 +45,7 @@ var timeStampDernierePosition = 0.0
 var luminositeEcranSysteme = CGFloat(0.0)
 var luminositeEstForcee = false
 let autoriseAffichageTeteHauteBlanc = false
+var autoriserAffichageTeteHaute = true
 let tempsMaxEntrePositions = 5.0 // temps en secondes au-delà duquel on considère qu'on a perdu la position
 let nbPositionsMiniAuDemarrage = 5 // nombre de positions qu'on lit avant de les prendre en compte.
 var statsEstOuvert = false
@@ -52,6 +53,7 @@ let tempsAvantReinitialisationAuto = Double(3600 * 12) // temps en secondes au-d
 var localisationEstPerdue = false
 let distanceMiniAvantComptageTemps = 30.0  // on considère qu'on est en marche si on a parcouru au moins 30 m
 let userDefaults = UserDefaults.standard
+
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -157,7 +159,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             unite = userDefaults.value(forKey: keyUnite) as? Int ?? 1
             vitesseMax = userDefaults.value(forKey: keyVitesseMax) as? Double ?? 0.0
             distanceTotale = userDefaults.value(forKey: keyDistanceTotale) as? Double ?? 0.0
-            
+            if (distanceTotale > 0) || (vitesseMax > 0){  // Transition : si on a déjà utilisé l'app, on garde le comportement précédent...
+                autoriserAffichageTeteHaute = userDefaults.value(forKey: keyAutoriserAffichageTeteHaute) as? Bool ?? true
+            }
+            else { // ... sinon par défaut on désactive le mode miroir au premier lancement. 
+                autoriserAffichageTeteHaute = userDefaults.value(forKey: keyAutoriserAffichageTeteHaute) as? Bool ?? false
+            }
             self.affichageUnite.setTitle(textesUnites[unite], for: .normal)
             self.present(alert, animated: true)
             
@@ -229,6 +236,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     //        justLoaded = false
     //    }
     
+
     func gereOrientation(motion:CMDeviceMotion?,error:Error?) {
         let tangage = motion!.attitude.pitch * radiansEnDegres  // basculement vers l'avant
         let roulis = motion!.attitude.roll * radiansEnDegres    // basculement vers le côté
@@ -237,7 +245,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //            nouveauDresse = (abs(roulis) > inclinaisonMax)
         //        nouveauDresse = (!(UIDevice.current.orientation.isLandscape) || (abs(roulis) > inclinaisonMax))
         //        nouveauDresse = ((abs(roulis) < abs(tangage) + inclinaisonMin) || (abs(roulis) > inclinaisonMax) || (abs(roulis) < inclinaisonMin))
-        positionTeteHaute = (abs(roulis) < inclinaisonMax) && (abs(roulis) > inclinaisonMin) && (abs(roulis) > abs(tangage) + inclinaisonMin) && (UIApplication.shared.windows.first?.windowScene?.interfaceOrientation.isLandscape ?? false) // UIDevice.current.orientation.isLandscape est l'orientation physique de l'appareil, quand on est plus ou moins à plat il dit "à plat"
+        positionTeteHaute = (abs(roulis) < inclinaisonMax) && (abs(roulis) > inclinaisonMin) && (abs(roulis) > abs(tangage) + inclinaisonMin) && (UIApplication.shared.windows.first?.windowScene?.interfaceOrientation.isLandscape ?? false) && autoriserAffichageTeteHaute // UIDevice.current.orientation.isLandscape est l'orientation physique de l'appareil, quand on est plus ou moins à plat il dit "à plat"
         DispatchQueue.main.async{
             if (self.positionTeteHaute != self.anciennePositionTeteHaute) {
                 self.affichageVitesse.flipX()
@@ -395,21 +403,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             tempsSession = 0.0
             NotificationCenter.default.post(name : Notification.Name(notificationMiseAJourStats),object: nil)  // on prévient le ViewController d'actualiser l'affichage et d'enregistrer
         }
-        let vitesseOK = (((location.speed >= 0) && (location.speed < 1)) || (location.course >= 0)) && ((location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < 2) && (nombrePositionsLues >= nbPositionsMiniAuDemarrage)
+        let vitesseOK = (((location.speed >= 0) && (location.speed < 1)) || (location.course >= 0)) && ((location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < 2) && ((nombrePositionsLues >= nbPositionsMiniAuDemarrage) || (location.horizontalAccuracy < 10))
         //        if (locationManager.activityType == .automotiveNavigation) &&
-        if(timeStampDernierePosition > 0.0) && (location.speed >= 1) && (distanceTotaleSession > distanceMiniAvantComptageTemps) {
-            tempsSession = tempsSession + location.timestamp.timeIntervalSince1970 - timeStampDernierePosition
-        }
-        timeStampDernierePosition = location.timestamp.timeIntervalSince1970
         var laDistance = -3.33
         if vitesseOK {
-            if (location.speed > vitesseMax) {vitesseMax = location.speed}
-            if (location.speed > vitesseMaxSession) {vitesseMaxSession = location.speed}
-            if !(locationPrecedente == nil) {
+//            if (location.speed > vitesseMax) {vitesseMax = location.speed}
+//            if (location.speed > vitesseMaxSession) {vitesseMaxSession = location.speed}
+            if (locationPrecedente != nil) {
                 laDistance =  location.distance(from: locationPrecedente)
                 distanceTotale = distanceTotale + laDistance
                 distanceTotaleSession = distanceTotaleSession + laDistance
                 distanceTotale = max(distanceTotale, distanceTotaleSession)
+            }
+            if (timeStampDernierePosition > 0.0) && (location.speed >= 0.2) && (distanceTotaleSession > distanceMiniAvantComptageTemps) {  // si on est "vraiment" en route
+                tempsSession = tempsSession + location.timestamp.timeIntervalSince1970 - timeStampDernierePosition
+                if vitesseOK {
+                    if (location.speed > vitesseMax) {vitesseMax = location.speed}
+                    if (location.speed > vitesseMaxSession) {vitesseMaxSession = location.speed}
+                }
             }
             locationPrecedente = location
             NotificationCenter.default.post(name : Notification.Name(notificationMiseAJourStats),object: nil)  // on prévient le ViewController d'actualiser l'affichage et d'enregistrer
@@ -417,7 +428,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             //                premierTempsValide = location.timestamp.timeIntervalSince1970
             //            }
         }   // if vitesseOK
-        
+        timeStampDernierePosition = location.timestamp.timeIntervalSince1970
         afficherVitesse(vitesse: location.speed * facteurUnites[unite], precisionOK: vitesseOK)  // course (= le cap) est -1 la plupart du temps pendant que le système affine la localisaiton lorsqu'il vient d'avoir le droit d'y accéder
         let affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %.0f \nN %d", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, location.timestamp.timeIntervalSince1970,nombreLocations)
         //        switch locationManager.activityType{

@@ -16,12 +16,15 @@ class StatsModalViewController: UIViewController {
     @IBOutlet var boutonEffacerSession: UIButton!
     @IBOutlet var boutonEffacerTotal: UIButton!
     @IBOutlet var affichageTempsSession: UILabel!
+    @IBOutlet var switchAffichageTeteHaute: UISwitch!
+    @IBOutlet var labelAffichageTeteHaute: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         statsEstOuvert = true
         if luminositeEstForcee { UIScreen.main.brightness = luminositeEcranSysteme }
         luminositeEstForcee = false
+        switchAffichageTeteHaute.isOn = autoriserAffichageTeteHaute
         boutonEffacerSession.setTitle("", for: .normal)
         boutonEffacerSession.setImage(UIImage(systemName: "delete.left", withConfiguration: UIImage.SymbolConfiguration(pointSize: 23)), for: .normal)
         boutonEffacerTotal.setTitle("", for: .normal)
@@ -37,6 +40,10 @@ class StatsModalViewController: UIViewController {
         self.view.addGestureRecognizer(swipeBas)
     }
     
+    @IBAction func changeAutorisationTeteHaute(){
+        autoriserAffichageTeteHaute = switchAffichageTeteHaute.isOn
+        userDefaults.set(autoriserAffichageTeteHaute, forKey: keyAutoriserAffichageTeteHaute)
+    }
     
     @IBAction func fermerStats () {
         self.dismiss(animated: true, completion: nil)

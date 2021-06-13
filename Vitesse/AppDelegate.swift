@@ -116,5 +116,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 func enregistrerStats(){
     userDefaults.set(distanceTotale, forKey: keyDistanceTotale)
     userDefaults.set(vitesseMax, forKey: keyVitesseMax)
-
 }
