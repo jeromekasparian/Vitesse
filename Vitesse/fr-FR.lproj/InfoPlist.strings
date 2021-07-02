@@ -15,3 +15,5 @@ NSLocationWhenInUseUsageDescription = "La localisation est indispensable pour af
 //FR "Location is required to display the speed. The app does not store your location, nor forwards it to anyone";
 
 //NSLocationWhenInUseUsageDescription = "La localisation est indispensable pour afficher la vitesse. L'app n'enregistre pas votre localisation ; elle ne la transmet à personne";
+
+//NSMotionUsageDescription = "Pour déterminer le mode de déplacement";

@@ -11,3 +11,4 @@ CFBundleName = "Speedometer";
 CFBundleDisplayName = "Speedometer";
 /* Privacy - Location When In Use Usage Description */
 NSLocationWhenInUseUsageDescription = "Location is required to display the speed. The app does not store your location, nor forwards it to anyone";
+//NSMotionUsageDescription = "To determine the means of transportation";

@@ -83,7 +83,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillEnterForeground(_ application: UIApplication) {
          UIApplication.shared.isIdleTimerDisabled = true
-        if luminositeEstForcee { UIScreen.main.brightness = luminositeEcranSysteme }
+        if luminositeEstForcee {
+            UIScreen.main.brightness = luminositeEcranSysteme
+            if debugMode{
+                UIScreen.main.brightness = 0.0
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    UIScreen.main.brightness = luminositeEcranSysteme
+                }
+            }
+        }
         luminositeEstForcee = false
 //        enregistrerStats()
     }

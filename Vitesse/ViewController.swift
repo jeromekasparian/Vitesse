@@ -9,8 +9,14 @@
 //  incohérences sur la vitesse max / distance totale au démarrage
 // Localisation DE
 // mettre un faux bouton refresh?
-// Chrono basé sur les modes de transport
+// Chrono basé sur les modes de transport https://stackoverflow.com/questions/56903624/swift-detect-motion-activity-in-background  https://developer.apple.com/documentation/coremotion/cmmotionactivity
 // luminosité forcée // gestion avec le SceneDelegate ?
+// les boutons effacer sont gris (page stats)
+
+//- afficher dès qu’on a une vitesse nulle / Afficher sans mettre à jour les stats
+//- Mise à jour de la durée
+//- Garder la localisation en arrière plan
+
 
 
 import UIKit
@@ -22,6 +28,12 @@ import CoreMotion
 let autoriseDebug = true
 var debugMode: Bool = false
 let demoMode = false // pour faire les captures d'écran pour l'app store
+
+//enum Etat {
+//    case indetermine, pasDeLocalisation, initialisation, precisionInsuffisante, vitesseOK
+//}
+//var timeStampDernierEtat = 0.0
+//var etatActuel : Etat = .indetermine
 
 let keyUnite = "uniteAuDemarrage"
 let keyVitesseMax = "vitesseMax"
@@ -53,11 +65,13 @@ let tempsAvantReinitialisationAuto = Double(3600 * 12) // temps en secondes au-d
 var localisationEstPerdue = false
 let distanceMiniAvantComptageTemps = 30.0  // on considère qu'on est en marche si on a parcouru au moins 30 m
 let userDefaults = UserDefaults.standard
-
+let vitesseMiniPourActiverCompteur = 0.2 // m/s : vitesse en-dessous de laquelle on considère qu'on est immobile
+var nomActiviteEnCours = "Init"
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
     var locationManager: CLLocationManager! = CLLocationManager()
+//    let activityManager = CMMotionActivityManager()
     let inclinaisonMin = 5.0 // inclinaison min en degres (sur le roulis) pour dire qu'on est en mode tête haute
     let inclinaisonMax = 38.0 // inclinaison max en degres (sur le roulis) pour dire qu'on est en mode tête haute
     let radiansEnDegres = 180.0 / 3.14
@@ -110,7 +124,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         //        justLoaded = true
         debugMode = debugMode && autoriseDebug
-        
+//        etatActuel = .indetermine
         // mise en place de la détection du swipe up pour ouvrir le tiroir des stats
         let swipeHaut = UISwipeGestureRecognizer(target:self, action: #selector(ouvreStats))
         swipeHaut.direction = UISwipeGestureRecognizer.Direction.up
@@ -135,10 +149,33 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         gereDroitsLocalisation(origineViewDidLoad: true, origineViewDidAppear: false)
         
         motionManager.deviceMotionUpdateInterval = 1
+        NotificationCenter.default.addObserver(self, selector: #selector(gereDroitsLocationDepuisNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
+        
         // Get attitude orientation
         motionManager.startDeviceMotionUpdates(to: .main, withHandler: gereOrientation) //{ (motion, error) in
+
+        // type d'activité pour savoir le mode de transport
         
-        NotificationCenter.default.addObserver(self, selector: #selector(gereDroitsLocationDepuisNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
+//        switch CMMotionActivityManager.authorizationStatus() {
+//        case CMAuthorizationStatus.authorized:
+//            print("activité autorisée")
+//            nomActiviteEnCours = "Mvt autorisé"
+//            if CMMotionActivityManager.isActivityAvailable() {
+//                startTrackingActivityType()
+//        }
+//        case CMAuthorizationStatus.denied:
+//            nomActiviteEnCours = "Mvt interdit"
+//            print("activité interdite")
+//        case CMAuthorizationStatus.restricted:
+//            nomActiviteEnCours = "Mvt restreint"
+//            print("activité restreinte")
+//        case CMAuthorizationStatus.notDetermined:
+//            nomActiviteEnCours = "Mvt indéterminé"
+//            print("activité non déterminée")
+//        default:
+//            nomActiviteEnCours = "Mvt Autre"
+//            print("activité : autre cas")
+//        }
         
         UIApplication.shared.isIdleTimerDisabled = true
         
@@ -198,6 +235,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @objc func verifieQueLocalisationEstActive() {
+        if (timeStampDernierePosition > 0.0) && ((Date().timeIntervalSince1970 - timeStampDernierePosition) > tempsAvantReinitialisationAuto) {
+            effacerStats()
+        }
         if (self.imagePasLocalisation.isHidden && ((Date().timeIntervalSince1970 -  timeStampDernierePosition) > tempsMaxEntrePositions)) {
             localisationEstPerdue = true
             DispatchQueue.main.async{
@@ -224,7 +264,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         enregistrerStats()
-        if luminositeEstForcee { UIScreen.main.brightness = luminositeEcranSysteme }
+        if luminositeEstForcee {
+            UIScreen.main.brightness = luminositeEcranSysteme
+            self.messageDebug.textColor = .green
+        }
         luminositeEstForcee = false
         timer.invalidate()
         super.viewWillDisappear(true)
@@ -264,6 +307,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 if !luminositeEstForcee && !statsEstOuvert { //isUserInteractionEnabled { // && self.view.isFirstResponder)
                     luminositeEcranSysteme = UIScreen.main.brightness   // on note la luminosité de l'écran, pour pouvoir y revenir plus tard
                     UIScreen.main.brightness = CGFloat(1.0)  // on met le contraste au max
+                    self.messageDebug.textColor = .yellow
                     luminositeEstForcee = true
                 }
                 //                AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
@@ -280,6 +324,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 }
                 if luminositeEstForcee { // on revient au contraste par défaut du système
                     UIScreen.main.brightness = luminositeEcranSysteme
+                    self.messageDebug.textColor = .red
                     luminositeEstForcee = false
                 }
                 //                AppDelegate.orientationLock = UIInterfaceOrientationMask.all  // on déverrouille l'orientation de l'écran
@@ -306,7 +351,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             
             switch CLLocationManager.authorizationStatus() {
             case .authorizedAlways, .authorizedWhenInUse:  // l'app a l'autorisation d'accéder à la localisation
-                locationManager.desiredAccuracy = kCLLocationAccuracyBest
+                locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
                 locationManager.startUpdatingLocation();
                 print("acces localisation ok")
                 //            self.imagePasDeVitesse.image = UIImage(systemName: "location.fill")
@@ -398,12 +443,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         nombrePositionsLues = nombrePositionsLues + 1
         // au-delà de 12 heures en arrière-plan, on réinitialise le trajet
         if (location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) > tempsAvantReinitialisationAuto {
-            distanceTotaleSession = 0.0
-            vitesseMaxSession = 0.0
-            tempsSession = 0.0
-            NotificationCenter.default.post(name : Notification.Name(notificationMiseAJourStats),object: nil)  // on prévient le ViewController d'actualiser l'affichage et d'enregistrer
+            effacerStats()
         }
-        let vitesseOK = (((location.speed >= 0) && (location.speed < 1)) || (location.course >= 0)) && ((location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < 2) && ((nombrePositionsLues >= nbPositionsMiniAuDemarrage) || (location.horizontalAccuracy < 10))
+        let vitesseOK = (((location.speed >= 0) && (location.speed < 1)) || (location.course >= 0))
+            && ((location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < 2)
+            && ((nombrePositionsLues >= nbPositionsMiniAuDemarrage) || (location.horizontalAccuracy <= 10))
         //        if (locationManager.activityType == .automotiveNavigation) &&
         var laDistance = -3.33
         if vitesseOK {
@@ -415,7 +459,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 distanceTotaleSession = distanceTotaleSession + laDistance
                 distanceTotale = max(distanceTotale, distanceTotaleSession)
             }
-            if (timeStampDernierePosition > 0.0) && (location.speed >= 0.2) && (distanceTotaleSession > distanceMiniAvantComptageTemps) {  // si on est "vraiment" en route
+            if (timeStampDernierePosition > 0.0) && (location.speed >= vitesseMiniPourActiverCompteur) && (distanceTotaleSession > distanceMiniAvantComptageTemps) {  // si on est "vraiment" en route
                 tempsSession = tempsSession + location.timestamp.timeIntervalSince1970 - timeStampDernierePosition
                 if vitesseOK {
                     if (location.speed > vitesseMax) {vitesseMax = location.speed}
@@ -430,7 +474,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }   // if vitesseOK
         timeStampDernierePosition = location.timestamp.timeIntervalSince1970
         afficherVitesse(vitesse: location.speed * facteurUnites[unite], precisionOK: vitesseOK)  // course (= le cap) est -1 la plupart du temps pendant que le système affine la localisaiton lorsqu'il vient d'avoir le droit d'y accéder
-        let affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %.0f \nN %d", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, location.timestamp.timeIntervalSince1970,nombreLocations)
+        var affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %.0f \nN %d ", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, location.timestamp.timeIntervalSince1970,nombreLocations)
+        affichageSecret.append(nomActiviteEnCours)
         //        switch locationManager.activityType{
         //        case .automotiveNavigation:
         //            affichageSecret.append(" Voiture")
@@ -456,6 +501,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         DispatchQueue.main.async{
             //            self.messageSecret.isHidden = false
             self.messagePublic.text = NSLocalizedString("Erreur de localisation", comment: "Erreur de localisation")
+            self.affichageVitesse.text = ""
             self.imagePasLocalisation.isHidden = false
         }
         print(error)
@@ -470,6 +516,40 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         enregistrerStats()
     }
     
+    func effacerStats() {
+        distanceTotaleSession = 0.0
+        vitesseMaxSession = 0.0
+        tempsSession = 0.0
+        NotificationCenter.default.post(name : Notification.Name(notificationMiseAJourStats),object: nil)  // on prévient le ViewController d'actualiser l'affichage et d'enregistrer
+    }
+    
+    
+//    func startTrackingActivityType() {  // https://wysockikamil.com/coremotion-pedometer-swift/
+//      activityManager.startActivityUpdates(to: OperationQueue.main) {
+//          [weak self] (activity: CMMotionActivity?) in
+//          guard let activity = activity else { return }
+//          DispatchQueue.main.async {
+//              if activity.walking {
+//                  nomActiviteEnCours = "Marche"
+//              } else if activity.running {
+//                nomActiviteEnCours = "Course"
+//              } else if activity.automotive {
+//                nomActiviteEnCours = "Voiture"
+//              } else if activity.cycling {
+//                nomActiviteEnCours = "Vélo"
+//              } else if activity.unknown {
+//                nomActiviteEnCours = "Inconnu"
+//              } else if activity.stationary {
+//                nomActiviteEnCours = "Statique"
+//              } else {
+//                nomActiviteEnCours = "Erreur"
+//              }
+//          }
+//        print(nomActiviteEnCours)
+//      }
+//    }
+
+
 }
 
 extension UIView {

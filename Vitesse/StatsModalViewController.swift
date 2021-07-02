@@ -22,7 +22,12 @@ class StatsModalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         statsEstOuvert = true
-        if luminositeEstForcee { UIScreen.main.brightness = luminositeEcranSysteme }
+        if luminositeEstForcee {
+            UIScreen.main.brightness = luminositeEcranSysteme
+            if debugMode{
+                self.labelVitesseMax.textColor = .red
+            }
+        }
         luminositeEstForcee = false
         switchAffichageTeteHaute.isOn = autoriserAffichageTeteHaute
         boutonEffacerSession.setTitle("", for: .normal)
