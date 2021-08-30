@@ -31,3 +31,7 @@
 "Êtes-vous sûr de vouloir effacer définitivement toutes les statistiques ?" = "Êtes-vous sûr de vouloir effacer définitivement toutes les statistiques ?";
 "Annuler" = "Annuler";
 "Effacer" = "Effacer";
+"Settings" = "Réglages";
+"Autorisez la localisation" = "Autorisez la localisation";
+"Pour afficher la vitesse, autorisez l'app à accéder à la localisation. \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne"="Pour afficher la vitesse, autorisez l'app à accéder à la localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne";
+"Pour afficher la vitesse, activez la localisation sur votre appareil \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne"="Pour afficher la vitesse, activez la localisation sur votre appareil: \nRéglages -> Condidentialité -> Service de localisation. \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne";

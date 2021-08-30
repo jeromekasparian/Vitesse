@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B502B841269CE55E0007F443 /* IconeVitesse1024.png in Resources */ = {isa = PBXBuildFile; fileRef = B502B840269CE55E0007F443 /* IconeVitesse1024.png */; };
 		B52C72A626487F6D00185CBB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B52C72A826487F6D00185CBB /* InfoPlist.strings */; };
 		B53935FE263D9ED200C37623 /* StatsModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53935FD263D9ED200C37623 /* StatsModalViewController.swift */; };
 		B55EFC062635BF4D002DF429 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC052635BF4D002DF429 /* AppDelegate.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B502B840269CE55E0007F443 /* IconeVitesse1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IconeVitesse1024.png; sourceTree = "<group>"; };
 		B52C72462647D7D300185CBB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		B52C72472647D7D300185CBB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		B52C72482647D7D400185CBB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Vitesse/fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 		B55EFC042635BF4D002DF429 /* Vitesse */ = {
 			isa = PBXGroup;
 			children = (
+				B502B840269CE55E0007F443 /* IconeVitesse1024.png */,
 				B55EFC052635BF4D002DF429 /* AppDelegate.swift */,
 				B55EFC072635BF4D002DF429 /* SceneDelegate.swift */,
 				B55EFC092635BF4D002DF429 /* ViewController.swift */,
@@ -257,6 +260,7 @@
 				B55EFC152635BF51002DF429 /* LaunchScreen.storyboard in Resources */,
 				B52C72A626487F6D00185CBB /* InfoPlist.strings in Resources */,
 				B593A48C263F1AF30072A2B3 /* Localizable.strings in Resources */,
+				B502B841269CE55E0007F443 /* IconeVitesse1024.png in Resources */,
 				B55EFC122635BF51002DF429 /* Assets.xcassets in Resources */,
 				B55EFC0D2635BF4D002DF429 /* Main.storyboard in Resources */,
 			);
@@ -499,7 +503,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 80;
+				CURRENT_PROJECT_VERSION = 88;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -507,7 +511,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.6;
 				PRODUCT_BUNDLE_IDENTIFIER = JK.Vitesse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -521,7 +525,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 80;
+				CURRENT_PROJECT_VERSION = 88;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -529,7 +533,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.6;
 				PRODUCT_BUNDLE_IDENTIFIER = JK.Vitesse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

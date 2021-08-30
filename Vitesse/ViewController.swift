@@ -18,6 +18,10 @@
 //- Garder la localisation en arrière plan
 
 
+/// Nouveautés
+// correction sur la remise à zéro
+// écran de démarrage
+
 
 import UIKit
 import CoreLocation
@@ -71,10 +75,10 @@ var nomActiviteEnCours = "Init"
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
     var locationManager: CLLocationManager! = CLLocationManager()
-//    let activityManager = CMMotionActivityManager()
+    //    let activityManager = CMMotionActivityManager()
     let inclinaisonMin = 5.0 // inclinaison min en degres (sur le roulis) pour dire qu'on est en mode tête haute
     let inclinaisonMax = 38.0 // inclinaison max en degres (sur le roulis) pour dire qu'on est en mode tête haute
-    let radiansEnDegres = 180.0 / 3.14
+    let radiansEnDegres = 180.0 / 3.14159
     var positionTeteHaute: Bool = false
     var anciennePositionTeteHaute: Bool = false
     var locationPrecedente: CLLocation! = nil
@@ -105,6 +109,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @objc func ouvreStats() {
         //        print("perform segue")
+        effaceStatsSiTropVieilles() 
         performSegue(withIdentifier:"OuvreStats", sender: self)
     }
     
@@ -124,7 +129,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         //        justLoaded = true
         debugMode = debugMode && autoriseDebug
-//        etatActuel = .indetermine
+        DispatchQueue.main.async{
+            self.messagePublic.text = ""
+            self.messageDebug.isHidden = !debugMode
+            self.affichageVitesse.text = ""
+            self.adapterTailleAffichageVitesse()
+            unite = userDefaults.value(forKey: keyUnite) as? Int ?? 1
+            self.affichageUnite.setTitle(textesUnites[unite], for: .normal)
+            vitesseMax = userDefaults.value(forKey: keyVitesseMax) as? Double ?? 0.0
+            distanceTotale = userDefaults.value(forKey: keyDistanceTotale) as? Double ?? 0.0
+            self.imagePasLocalisation.isHidden = true
+            self.roueAttente.startAnimating()
+        }
+        //        etatActuel = .indetermine
         // mise en place de la détection du swipe up pour ouvrir le tiroir des stats
         let swipeHaut = UISwipeGestureRecognizer(target:self, action: #selector(ouvreStats))
         swipeHaut.direction = UISwipeGestureRecognizer.Direction.up
@@ -146,36 +163,36 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         
         //        locationManager.requestWhenInUseAuthorization()
-        gereDroitsLocalisation(origineViewDidLoad: true, origineViewDidAppear: false)
+//        gereDroitsLocalisation(origineViewDidLoad: true, origineViewDidAppear: false)
         
         motionManager.deviceMotionUpdateInterval = 1
         NotificationCenter.default.addObserver(self, selector: #selector(gereDroitsLocationDepuisNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
         
         // Get attitude orientation
         motionManager.startDeviceMotionUpdates(to: .main, withHandler: gereOrientation) //{ (motion, error) in
-
+        
         // type d'activité pour savoir le mode de transport
         
-//        switch CMMotionActivityManager.authorizationStatus() {
-//        case CMAuthorizationStatus.authorized:
-//            print("activité autorisée")
-//            nomActiviteEnCours = "Mvt autorisé"
-//            if CMMotionActivityManager.isActivityAvailable() {
-//                startTrackingActivityType()
-//        }
-//        case CMAuthorizationStatus.denied:
-//            nomActiviteEnCours = "Mvt interdit"
-//            print("activité interdite")
-//        case CMAuthorizationStatus.restricted:
-//            nomActiviteEnCours = "Mvt restreint"
-//            print("activité restreinte")
-//        case CMAuthorizationStatus.notDetermined:
-//            nomActiviteEnCours = "Mvt indéterminé"
-//            print("activité non déterminée")
-//        default:
-//            nomActiviteEnCours = "Mvt Autre"
-//            print("activité : autre cas")
-//        }
+        //        switch CMMotionActivityManager.authorizationStatus() {
+        //        case CMAuthorizationStatus.authorized:
+        //            print("activité autorisée")
+        //            nomActiviteEnCours = "Mvt autorisé"
+        //            if CMMotionActivityManager.isActivityAvailable() {
+        //                startTrackingActivityType()
+        //        }
+        //        case CMAuthorizationStatus.denied:
+        //            nomActiviteEnCours = "Mvt interdit"
+        //            print("activité interdite")
+        //        case CMAuthorizationStatus.restricted:
+        //            nomActiviteEnCours = "Mvt restreint"
+        //            print("activité restreinte")
+        //        case CMAuthorizationStatus.notDetermined:
+        //            nomActiviteEnCours = "Mvt indéterminé"
+        //            print("activité non déterminée")
+        //        default:
+        //            nomActiviteEnCours = "Mvt Autre"
+        //            print("activité : autre cas")
+        //        }
         
         UIApplication.shared.isIdleTimerDisabled = true
         
@@ -187,26 +204,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         boutonOuvreStats.setTitle("", for: .normal)
         boutonOuvreStats.setImage(UIImage(systemName: "chevron.compact.up", withConfiguration: UIImage.SymbolConfiguration(pointSize: 48)), for: .normal)
         let alert = UIAlertController(title: NSLocalizedString("Pour votre sécurité", comment: "Titre alerte"), message: NSLocalizedString("avant de conduire, assurez-vous que le mode Avion ou \"Ne pas déranger en voiture\" est activé", comment: "Contenu de l'alerte de sécurité"), preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "bouton OK"), style: .default, handler: {_ in print("Alerte NPD validée")}))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "bouton OK"), style: .default, handler: {_ in self.gereDroitsLocalisation(origineViewDidLoad: true, origineViewDidAppear: false)}))
         DispatchQueue.main.async{
-            self.messagePublic.text = ""
-            self.messageDebug.isHidden = !debugMode
-            self.affichageVitesse.text = ""
-            self.adapterTailleAffichageVitesse()
-            unite = userDefaults.value(forKey: keyUnite) as? Int ?? 1
-            vitesseMax = userDefaults.value(forKey: keyVitesseMax) as? Double ?? 0.0
-            distanceTotale = userDefaults.value(forKey: keyDistanceTotale) as? Double ?? 0.0
             if (distanceTotale > 0) || (vitesseMax > 0){  // Transition : si on a déjà utilisé l'app, on garde le comportement précédent...
                 autoriserAffichageTeteHaute = userDefaults.value(forKey: keyAutoriserAffichageTeteHaute) as? Bool ?? true
             }
             else { // ... sinon par défaut on désactive le mode miroir au premier lancement. 
                 autoriserAffichageTeteHaute = userDefaults.value(forKey: keyAutoriserAffichageTeteHaute) as? Bool ?? false
             }
-            self.affichageUnite.setTitle(textesUnites[unite], for: .normal)
             self.present(alert, animated: true)
             
-//            self.gabaritAffichageVitesse.isHidden = false
-//            self.gabaritAffichageVitesse.text = String(format:"\u{2007}%d",5)
+            //            self.gabaritAffichageVitesse.isHidden = false
+            //            self.gabaritAffichageVitesse.text = String(format:"\u{2007}%d",5)
         }
         scheduledTimerWithTimeInterval()
         super.viewDidLoad()
@@ -225,7 +234,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //            print(laTailleDePoliceAvecLaBonneHauteur, self.affichageVitesse.font.pointSize, self.affichageVitesse.bounds.size.height, self.affichageVitesse.font.lineHeight)
         self.affichageVitesse.font = UIFont.monospacedDigitSystemFont(ofSize: laTailleDePoliceAvecLaBonneHauteur, weight: .regular)
         self.gabaritAffichageVitesse.font = UIFont.monospacedDigitSystemFont(ofSize: laTailleDePoliceAvecLaBonneHauteur, weight: .regular)
-//        self.affichageVitesse.font = UIFont.monospacedSystemFont(ofSize: laTailleDePoliceAvecLaBonneHauteur, weight: .regular)
+        //        self.affichageVitesse.font = UIFont.monospacedSystemFont(ofSize: laTailleDePoliceAvecLaBonneHauteur, weight: .regular)
         print(self.affichageVitesse.font.capHeight)
     }
     
@@ -234,14 +243,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.verifieQueLocalisationEstActive), userInfo: nil, repeats: true)
     }
     
-    @objc func verifieQueLocalisationEstActive() {
+    func effaceStatsSiTropVieilles() {
         if (timeStampDernierePosition > 0.0) && ((Date().timeIntervalSince1970 - timeStampDernierePosition) > tempsAvantReinitialisationAuto) {
             effacerStats()
         }
-        if (self.imagePasLocalisation.isHidden && ((Date().timeIntervalSince1970 -  timeStampDernierePosition) > tempsMaxEntrePositions)) {
+    }
+    
+    @objc func verifieQueLocalisationEstActive() {
+        effaceStatsSiTropVieilles()
+        
+        if ((Date().timeIntervalSince1970 -  timeStampDernierePosition)  > tempsMaxEntrePositions) {
             localisationEstPerdue = true
             DispatchQueue.main.async{
                 if demoMode{
+                    self.roueAttente.stopAnimating()
                     self.afficherVitesse(vitesse: 1, precisionOK: true)
                 }
                 else {
@@ -254,10 +269,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     }
                     self.messagePublic.text = leMessage
                     self.affichageVitesse.text = ""
-                    self.imagePasLocalisation.isHidden = false
+                    self.affichePictoPasLocalisation()
                 }
-                self.roueAttente.stopAnimating()
             }
+        }
+    }
+    
+    func affichePictoPasLocalisation() {
+        if ((Date().timeIntervalSince1970 -  timeStampDernierePosition).truncatingRemainder(dividingBy: 15.0)  > tempsMaxEntrePositions) { // on met la roulette 5 secondes toutes les 15 secondes
+            self.imagePasLocalisation.isHidden = false
+            self.roueAttente.stopAnimating()
+        } else{
+            self.imagePasLocalisation.isHidden = true
+            self.roueAttente.startAnimating()
         }
     }
     
@@ -279,7 +303,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     //        justLoaded = false
     //    }
     
-
+    
     func gereOrientation(motion:CMDeviceMotion?,error:Error?) {
         let tangage = motion!.attitude.pitch * radiansEnDegres  // basculement vers l'avant
         let roulis = motion!.attitude.roll * radiansEnDegres    // basculement vers le côté
@@ -338,7 +362,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //        locationManager.requestWhenInUseAuthorization()
         gereDroitsLocalisation(origineViewDidLoad : false, origineViewDidAppear: false)
     }
-    
+
+    @objc func gereDroitsLocationDepuisViewDidLoad() {
+        //        locationManager.requestWhenInUseAuthorization()
+        gereDroitsLocalisation(origineViewDidLoad : true, origineViewDidAppear: false)
+    }
+
     func gereDroitsLocalisation(origineViewDidLoad : Bool, origineViewDidAppear: Bool) {
         print("lancement viewDidLoad : \(origineViewDidLoad)")
         print("lancement viewDidAppear : \(origineViewDidAppear)")
@@ -357,23 +386,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 //            self.imagePasDeVitesse.image = UIImage(systemName: "location.fill")
                 DispatchQueue.main.async{
                     self.messageDebug.text = "Localisation autorisée"
-                    //                    self.messageSecret.isHidden = !debugMode
-                    if self.imagePasLocalisation.isHidden {
+//                    if self.imagePasLocalisation.isHidden {
                         self.affichageVitesse.text = ""
-                        //                    self.imagePasLocalisation.isHidden = true
-                        self.roueAttente.startAnimating()  //isHidden = true
-                    }
+                    self.affichePictoPasLocalisation()
+//                        self.roueAttente.startAnimating()  //isHidden = true
+//                    }
                 }
             case .denied, .restricted:
                 print("acces localisation pas ok pour l'app")
                 DispatchQueue.main.async{
-                    self.messagePublic.text = NSLocalizedString("Pour afficher la vitesse, autorisez l'app à accéder à la localisation : \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'app n'est pas autorisée à accéder à la localisation")
-                    //                    self.messageSecret.isHidden = false
+                    let leMessage = NSLocalizedString("Pour afficher la vitesse, autorisez l'app à accéder à la localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'app n'est pas autorisée à accéder à la localisation")
+                    self.afficherAlerteRenvoiPreferences(message: leMessage, perfsDeLApp: true)
+//                    self.messagePublic.text = NSLocalizedString("Pour afficher la vitesse, autorisez l'app à accéder à la localisation : \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'app n'est pas autorisée à accéder à la localisation")
                     self.affichageVitesse.text = ""
-                    //                    self.imageLocalisation.isHidden = true
-                    self.imagePasLocalisation.isHidden = false
-                    //                    self.imageLocalisationPerdue.isHidden = true
-                    self.roueAttente.stopAnimating()  //isHidden = true
+                    self.affichePictoPasLocalisation()
+//                    self.imagePasLocalisation.isHidden = false
+//                    self.roueAttente.stopAnimating()  //isHidden = true
                 }
             case .notDetermined:
                 print("not determined")
@@ -389,13 +417,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             //            alerte.addAction(UIAlertAction(title: "OK", style: .default, handler: {_ in print("Alerte localisation validée")}))
             DispatchQueue.main.async{
                 //                self.present(alerte, animated: true)
-                self.messagePublic.text = NSLocalizedString("Pour afficher la vitesse, activez la localisation sur votre appareil : \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'appareil n'est pas autorisé à lire la position")
-                //                self.messageSecret.isHidden = false
+                let leMessage = NSLocalizedString("Pour afficher la vitesse, activez la localisation sur votre appareil \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'appareil n'est pas autorisé à lire la position")
+                self.afficherAlerteRenvoiPreferences(message: leMessage, perfsDeLApp: false)
+//                self.messagePublic.text = NSLocalizedString("Pour afficher la vitesse, activez la localisation sur votre appareil : \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'appareil n'est pas autorisé à lire la position")
                 self.affichageVitesse.text = ""
-                //                self.imageLocalisation.isHidden = true
-                self.imagePasLocalisation.isHidden = false
-                //                self.imageLocalisationPerdue.isHidden = true
-                self.roueAttente.stopAnimating()  //isHidden = true
+                self.affichePictoPasLocalisation()
+//                self.imagePasLocalisation.isHidden = false
+//                self.roueAttente.stopAnimating()  //isHidden = true
             }
         }
     }
@@ -409,7 +437,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 self.messagePublic.text = ""
                 self.imagePasLocalisation.isHidden = true
                 self.roueAttente.stopAnimating()  //isHidden = true
-// //                self.affichageVitesse.text = String(format:"%.0f",vitesse)
+                // //                self.affichageVitesse.text = String(format:"%.0f",vitesse)
                 if Int(vitesse) <= 9 {
                     self.affichageVitesse.text = String(format:"\u{2007}%d", Int(vitesse))  // \u{2007} = blanc de même largeur qu'un chiffre
                     //                    let vitesseAAfficher = String(format:"%02d", Int(vitesse))
@@ -418,16 +446,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     //                        self.affichageVitesse.attributedText = vitesseAAfficherMutable
                 }
                 else {
-                        self.affichageVitesse.text = String(format:"%d", Int(vitesse))
+                    self.affichageVitesse.text = String(format:"%d", Int(vitesse))
                 }
                 localisationEstPerdue = false
                 self.nombrePasOK = 0
-            }
+            }  // Vitesse > 0 et precisionOK
             else {
-                if (self.imagePasLocalisation.isHidden) && (self.nombrePasOK >= 2) {
-                self.affichageVitesse.text = ""
-                self.roueAttente.startAnimating()  //isHidden = false
-                print("pas de signal")
+//                if (self.imagePasLocalisation.isHidden) && (self.nombrePasOK >= 2) {
+                if (self.nombrePasOK >= 2) {
+                    self.affichageVitesse.text = ""
+                    self.affichePictoPasLocalisation()
+//                    self.roueAttente.startAnimating()  //isHidden = false
+                    print("pas de signal")
                 }
                 self.nombrePasOK = self.nombrePasOK + 1
             }
@@ -451,8 +481,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //        if (locationManager.activityType == .automotiveNavigation) &&
         var laDistance = -3.33
         if vitesseOK {
-//            if (location.speed > vitesseMax) {vitesseMax = location.speed}
-//            if (location.speed > vitesseMaxSession) {vitesseMaxSession = location.speed}
+            //            if (location.speed > vitesseMax) {vitesseMax = location.speed}
+            //            if (location.speed > vitesseMaxSession) {vitesseMaxSession = location.speed}
             if (locationPrecedente != nil) {
                 laDistance =  location.distance(from: locationPrecedente)
                 distanceTotale = distanceTotale + laDistance
@@ -498,11 +528,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         localisationEstPerdue = true
-        DispatchQueue.main.async{
-            //            self.messageSecret.isHidden = false
-            self.messagePublic.text = NSLocalizedString("Erreur de localisation", comment: "Erreur de localisation")
-            self.affichageVitesse.text = ""
-            self.imagePasLocalisation.isHidden = false
+        if CLLocationManager.locationServicesEnabled() { // la localisation est activée sur l'appareil
+            if CLLocationManager.authorizationStatus() != .denied && CLLocationManager.authorizationStatus() != .restricted {
+                DispatchQueue.main.async{
+                    //            self.messageSecret.isHidden = false
+                    self.messagePublic.text = NSLocalizedString("Erreur de localisation", comment: "Erreur de localisation")
+                    self.affichageVitesse.text = ""
+                    self.affichePictoPasLocalisation()
+                    //            self.imagePasLocalisation.isHidden = false
+                }
+            }
         }
         print(error)
     }
@@ -524,32 +559,59 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     
-//    func startTrackingActivityType() {  // https://wysockikamil.com/coremotion-pedometer-swift/
-//      activityManager.startActivityUpdates(to: OperationQueue.main) {
-//          [weak self] (activity: CMMotionActivity?) in
-//          guard let activity = activity else { return }
-//          DispatchQueue.main.async {
-//              if activity.walking {
-//                  nomActiviteEnCours = "Marche"
-//              } else if activity.running {
-//                nomActiviteEnCours = "Course"
-//              } else if activity.automotive {
-//                nomActiviteEnCours = "Voiture"
-//              } else if activity.cycling {
-//                nomActiviteEnCours = "Vélo"
-//              } else if activity.unknown {
-//                nomActiviteEnCours = "Inconnu"
-//              } else if activity.stationary {
-//                nomActiviteEnCours = "Statique"
-//              } else {
-//                nomActiviteEnCours = "Erreur"
-//              }
-//          }
-//        print(nomActiviteEnCours)
-//      }
-//    }
-
-
+    //    func startTrackingActivityType() {  // https://wysockikamil.com/coremotion-pedometer-swift/
+    //      activityManager.startActivityUpdates(to: OperationQueue.main) {
+    //          [weak self] (activity: CMMotionActivity?) in
+    //          guard let activity = activity else { return }
+    //          DispatchQueue.main.async {
+    //              if activity.walking {
+    //                  nomActiviteEnCours = "Marche"
+    //              } else if activity.running {
+    //                nomActiviteEnCours = "Course"
+    //              } else if activity.automotive {
+    //                nomActiviteEnCours = "Voiture"
+    //              } else if activity.cycling {
+    //                nomActiviteEnCours = "Vélo"
+    //              } else if activity.unknown {
+    //                nomActiviteEnCours = "Inconnu"
+    //              } else if activity.stationary {
+    //                nomActiviteEnCours = "Statique"
+    //              } else {
+    //                nomActiviteEnCours = "Erreur"
+    //              }
+    //          }
+    //        print(nomActiviteEnCours)
+    //      }
+    //    }
+    
+    
+    func afficherAlerteRenvoiPreferences(message: String, perfsDeLApp: Bool) {
+        DispatchQueue.main.async {
+            //        let changePrivacySetting = "AVCam doesn't have permission to use the camera, please change privacy settings"
+            //        let message = NSLocalizedString(changePrivacySetting, comment: "Alert message when the user has denied access to the camera")
+            let titre = NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte")
+            let alertController = UIAlertController(title: titre, message: message, preferredStyle: .alert)
+            
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Annuler", comment: "Alert Cancel button"),
+                                                    style: .cancel,
+                                                    handler: nil))
+            var urlAOuvrir:URL
+            if perfsDeLApp {
+                urlAOuvrir = URL(string: UIApplication.openSettingsURLString)!  // url pour ouvrir les préférences de l'app appelante
+            } else {
+                
+                urlAOuvrir = URL(string:"App-Prefs::root=Settings&path=General")!  // url pour ouvrir les l'app Préférences : à la racine sauf si elle est déjà ouverte sur une sous-page. A noter que c'est manifestement une url pas 100% publique de la part d'Apple, donc susceptible de dysfonctionner à l'avenir.
+            }
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "Alert button to open Settings"),
+                                                    style: .`default`,
+                                                    handler: { _ in
+                                                        UIApplication.shared.open(urlAOuvrir,
+                                                                                  options: [:],
+                                                                                  completionHandler: nil)
+                                                    }))
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
 }
 
 extension UIView {
