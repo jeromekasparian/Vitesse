@@ -11,11 +11,13 @@
 // mettre un faux bouton refresh?
 // Chrono basé sur les modes de transport https://stackoverflow.com/questions/56903624/swift-detect-motion-activity-in-background  https://developer.apple.com/documentation/coremotion/cmmotionactivity
 // luminosité forcée // gestion avec le SceneDelegate ?
-// les boutons effacer sont gris (page stats)
 
 //- afficher dès qu’on a une vitesse nulle / Afficher sans mettre à jour les stats
 //- Mise à jour de la durée
 //- Garder la localisation en arrière plan
+
+// support anciens os
+// afficher la vitesse moyenne
 
 
 /// Nouveautés
@@ -67,7 +69,7 @@ let nbPositionsMiniAuDemarrage = 5 // nombre de positions qu'on lit avant de les
 var statsEstOuvert = false
 let tempsAvantReinitialisationAuto = Double(3600 * 12) // temps en secondes au-delà duquel on réinitialise les stats de trajet
 var localisationEstPerdue = false
-let distanceMiniAvantComptageTemps = 30.0  // on considère qu'on est en marche si on a parcouru au moins 30 m
+//let distanceMiniAvantComptageTemps = 15.0  // on considère qu'on est en marche si on a parcouru au moins 30 m
 let userDefaults = UserDefaults.standard
 let vitesseMiniPourActiverCompteur = 0.2 // m/s : vitesse en-dessous de laquelle on considère qu'on est immobile
 var nomActiviteEnCours = "Init"
@@ -129,6 +131,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         //        justLoaded = true
         debugMode = debugMode && autoriseDebug
+        if #available(iOS 13.0, *) {
+            roueAttente.style = .large
+        } else {
+            imagePasLocalisation.image = UIImage(named: "location.slash.fill")
+        }
         DispatchQueue.main.async{
             self.messagePublic.text = ""
             self.messageDebug.isHidden = !debugMode
@@ -202,7 +209,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //        if connectedToNetwork(){}
         
         boutonOuvreStats.setTitle("", for: .normal)
-        boutonOuvreStats.setImage(UIImage(systemName: "chevron.compact.up", withConfiguration: UIImage.SymbolConfiguration(pointSize: 48)), for: .normal)
+        if #available(iOS 13.0, *) {
+            boutonOuvreStats.setImage(UIImage(systemName: "chevron.compact.up", withConfiguration: UIImage.SymbolConfiguration(pointSize: 48)), for: .normal)
+        } else {
+            // Fallback on earlier versions
+            boutonOuvreStats.setImage(UIImage(named: "chevron.compact.up"), for: .normal)
+        }
         let alert = UIAlertController(title: NSLocalizedString("Pour votre sécurité", comment: "Titre alerte"), message: NSLocalizedString("avant de conduire, assurez-vous que le mode Avion ou \"Ne pas déranger en voiture\" est activé", comment: "Contenu de l'alerte de sécurité"), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "bouton OK"), style: .default, handler: {_ in self.gereDroitsLocalisation(origineViewDidLoad: true, origineViewDidAppear: false)}))
         DispatchQueue.main.async{
@@ -312,7 +324,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //            nouveauDresse = (abs(roulis) > inclinaisonMax)
         //        nouveauDresse = (!(UIDevice.current.orientation.isLandscape) || (abs(roulis) > inclinaisonMax))
         //        nouveauDresse = ((abs(roulis) < abs(tangage) + inclinaisonMin) || (abs(roulis) > inclinaisonMax) || (abs(roulis) < inclinaisonMin))
-        positionTeteHaute = (abs(roulis) < inclinaisonMax) && (abs(roulis) > inclinaisonMin) && (abs(roulis) > abs(tangage) + inclinaisonMin) && (UIApplication.shared.windows.first?.windowScene?.interfaceOrientation.isLandscape ?? false) && autoriserAffichageTeteHaute // UIDevice.current.orientation.isLandscape est l'orientation physique de l'appareil, quand on est plus ou moins à plat il dit "à plat"
+        positionTeteHaute = (abs(roulis) < inclinaisonMax) && (abs(roulis) > inclinaisonMin) && (abs(roulis) > abs(tangage) + inclinaisonMin) && (UIWindow.isLandscape) && autoriserAffichageTeteHaute // UIDevice.current.orientation.isLandscape est l'orientation physique de l'appareil, quand on est plus ou moins à plat il dit "à plat"
         DispatchQueue.main.async{
             if (self.positionTeteHaute != self.anciennePositionTeteHaute) {
                 self.affichageVitesse.flipX()
@@ -469,32 +481,34 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let nombreLocations = locations.count
         let location:CLLocation = locations.last!
+        var laVitesseLue = location.speed
         //        let modeDeTransport = locationManager.activityType
         nombrePositionsLues = nombrePositionsLues + 1
         // au-delà de 12 heures en arrière-plan, on réinitialise le trajet
         if (location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) > tempsAvantReinitialisationAuto {
             effacerStats()
         }
-        let vitesseOK = (((location.speed >= 0) && (location.speed < 1)) || (location.course >= 0))
+        let vitesseOK = (((laVitesseLue >= 0) && (laVitesseLue < 1)) || (location.course >= 0))
             && ((location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < 2)
             && ((nombrePositionsLues >= nbPositionsMiniAuDemarrage) || (location.horizontalAccuracy <= 10))
-        //        if (locationManager.activityType == .automotiveNavigation) &&
+        if #available(iOS 10.0, *) {
+            laVitesseLue = (laVitesseLue >= 0 && location.speedAccuracy > 0 && laVitesseLue > location.speedAccuracy) ? laVitesseLue : 0.0
+        }  // si la vitesse est plus petite que l'incertitude on la met à zéro
         var laDistance = -3.33
         if vitesseOK {
-            //            if (location.speed > vitesseMax) {vitesseMax = location.speed}
-            //            if (location.speed > vitesseMaxSession) {vitesseMaxSession = location.speed}
-            if (locationPrecedente != nil) {
+            if locationPrecedente != nil  && laVitesseLue > vitesseMiniPourActiverCompteur && timeStampDernierePosition > 0.0 { //&& distanceTotaleSession > distanceMiniAvantComptageTemps {
+//            if (locationPrecedente != nil) && laVitesseLue > vitesseMiniPourActiverCompteur {
                 laDistance =  location.distance(from: locationPrecedente)
                 distanceTotale = distanceTotale + laDistance
                 distanceTotaleSession = distanceTotaleSession + laDistance
                 distanceTotale = max(distanceTotale, distanceTotaleSession)
-            }
-            if (timeStampDernierePosition > 0.0) && (location.speed >= vitesseMiniPourActiverCompteur) && (distanceTotaleSession > distanceMiniAvantComptageTemps) {  // si on est "vraiment" en route
+//            }
+//            if timeStampDernierePosition > 0.0 && laVitesseLue >= vitesseMiniPourActiverCompteur { //} && (distanceTotaleSession > distanceMiniAvantComptageTemps) {  // si on est "vraiment" en route
                 tempsSession = tempsSession + location.timestamp.timeIntervalSince1970 - timeStampDernierePosition
-                if vitesseOK {
-                    if (location.speed > vitesseMax) {vitesseMax = location.speed}
-                    if (location.speed > vitesseMaxSession) {vitesseMaxSession = location.speed}
-                }
+//                if vitesseOK {
+                    if (laVitesseLue > vitesseMax) {vitesseMax = laVitesseLue}
+                    if (laVitesseLue > vitesseMaxSession) {vitesseMaxSession = laVitesseLue}
+//                }
             }
             locationPrecedente = location
             NotificationCenter.default.post(name : Notification.Name(notificationMiseAJourStats),object: nil)  // on prévient le ViewController d'actualiser l'affichage et d'enregistrer
@@ -503,8 +517,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             //            }
         }   // if vitesseOK
         timeStampDernierePosition = location.timestamp.timeIntervalSince1970
-        afficherVitesse(vitesse: location.speed * facteurUnites[unite], precisionOK: vitesseOK)  // course (= le cap) est -1 la plupart du temps pendant que le système affine la localisaiton lorsqu'il vient d'avoir le droit d'y accéder
-        var affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %.0f \nN %d ", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, location.timestamp.timeIntervalSince1970,nombreLocations)
+        afficherVitesse(vitesse: laVitesseLue * facteurUnites[unite], precisionOK: vitesseOK)  // course (= le cap) est -1 la plupart du temps pendant que le système affine la localisaiton lorsqu'il vient d'avoir le droit d'y accéder
+        var affichageSecret = ""
+        if #available(iOS 10.0, *) {
+            affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %.0f \nN %d ", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, location.timestamp.timeIntervalSince1970,nombreLocations)
+        } else {
+            // Fallback on earlier versions
+            affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %.0f \nN %d ", location.speed, location.course, location.horizontalAccuracy, laDistance, location.timestamp.timeIntervalSince1970,nombreLocations)
+        }
         affichageSecret.append(nomActiviteEnCours)
         //        switch locationManager.activityType{
         //        case .automotiveNavigation:
@@ -592,6 +612,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             let titre = NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte")
             let alertController = UIAlertController(title: titre, message: message, preferredStyle: .alert)
             
+            if #available(iOS 10.0, *) {
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Annuler", comment: "Alert Cancel button"),
                                                     style: .cancel,
                                                     handler: nil))
@@ -605,10 +626,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "Alert button to open Settings"),
                                                     style: .`default`,
                                                     handler: { _ in
-                                                        UIApplication.shared.open(urlAOuvrir,
-                                                                                  options: [:],
-                                                                                  completionHandler: nil)
-                                                    }))
+                UIApplication.shared.open(urlAOuvrir,
+                                          options: [:],
+                                          completionHandler: nil)
+            }))
+            } else {
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK"),
+                                                        style: .cancel,
+                                                        handler: nil))
+            }
             self.present(alertController, animated: true, completion: nil)
         }
     }
@@ -715,3 +741,18 @@ extension String {
 //
 //        return (isReachable && !needsConnection)
 //    }
+
+
+extension UIWindow {
+    static var isLandscape: Bool {
+        if #available(iOS 13.0, *) {
+            return UIApplication.shared.windows
+                .first?
+                .windowScene?
+                .interfaceOrientation
+                .isLandscape ?? false
+        } else {
+            return UIApplication.shared.statusBarOrientation.isLandscape
+        }
+    }
+}

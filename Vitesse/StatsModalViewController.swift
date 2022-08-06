@@ -18,6 +18,9 @@ class StatsModalViewController: UIViewController {
     @IBOutlet var affichageTempsSession: UILabel!
     @IBOutlet var switchAffichageTeteHaute: UISwitch!
     @IBOutlet var labelAffichageTeteHaute: UILabel!
+    @IBOutlet var boutonOK: UIButton!
+    @IBOutlet var imageChevron: UIImageView!
+    @IBOutlet var labelVitesseMoyenne: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,9 +34,21 @@ class StatsModalViewController: UIViewController {
         luminositeEstForcee = false
         switchAffichageTeteHaute.isOn = autoriserAffichageTeteHaute
         boutonEffacerSession.setTitle("", for: .normal)
-        boutonEffacerSession.setImage(UIImage(systemName: "delete.left", withConfiguration: UIImage.SymbolConfiguration(pointSize: 23)), for: .normal)
+        if #available(iOS 13.0, *) {
+            boutonEffacerSession.setImage(UIImage(systemName: "delete.left", withConfiguration: UIImage.SymbolConfiguration(pointSize: 23)), for: .normal)
+//            boutonEffacerSession.tintColor = .label
+            boutonEffacerTotal.setImage(UIImage(systemName: "delete.left", withConfiguration: UIImage.SymbolConfiguration(pointSize: 23)), for: .normal)
+//            boutonEffacerTotal.tintColor = .label
+        } else {
+            // Fallback on earlier versions
+            boutonEffacerSession.setImage(UIImage(named: "delete.left"), for: .normal)
+//            boutonEffacerSession.tintColor = .black
+            boutonEffacerTotal.setImage(UIImage(named: "delete.left"), for: .normal)
+//            boutonEffacerTotal.tintColor = .black
+            boutonOK.isHidden = false
+            imageChevron.isHidden = true
+        }
         boutonEffacerTotal.setTitle("", for: .normal)
-        boutonEffacerTotal.setImage(UIImage(systemName: "delete.left", withConfiguration: UIImage.SymbolConfiguration(pointSize: 23)), for: .normal)
         //        boutonEffacerSession.setImage(UIImage(systemName: "xmark"), for: .normal)
         afficherStats()
         NotificationCenter.default.addObserver(self, selector: #selector(afficherStats), name: NSNotification.Name(rawValue: notificationMiseAJourStats), object: nil)
@@ -88,6 +103,7 @@ class StatsModalViewController: UIViewController {
             labelVitesseMaxSession.text = "83 km/h"
             labelDistanceTotale.text = "1848.5 km"
             labelDistanceTotaleSession.text = "24.0 km"
+            labelVitesseMoyenne.text = NSLocalizedString("Moyenne : ", comment: "") + "37 km/h"
         }
         else {
             labelVitesseMax.text = String(format: "%.0f ", vitesseMax * facteurUnites[unite])
@@ -101,25 +117,35 @@ class StatsModalViewController: UIViewController {
             if (unite == 0) { labelDistanceTotaleSession.text = String(format: "%.0f ", distanceTotaleSession * facteurUnitesDistance[unite]) }
             else { labelDistanceTotaleSession.text = String(format: "%.1f ", distanceTotaleSession * facteurUnitesDistance[unite]) }
             labelDistanceTotaleSession.text?.append(textesUnitesDistance[unite])
-//            if (premierTempsValide == 0.0) || !debugMode {
-//                affichageTempsSession.isHidden = true
-//            }
-//            else {
-//                let tempsSession = abs(Int(Date(timeIntervalSince1970: premierTempsValide).timeIntervalSinceNow))
-                let secondes = Int(tempsSession) % 60
-                let minutesTot = Int(tempsSession) / 60
-                let minutes = minutesTot % 60
-                let heures = minutesTot / 60
-                var message = String(format:"%02d:%02d",heures,minutes)
-                if debugMode {
-                    message = message.appending(String(format:":%02d",secondes))
-//                    if tempsSession < 0 {
-//                        affichageTempsSession.textColor = .red
-//                    }
+            //            if (premierTempsValide == 0.0) || !debugMode {
+            //                affichageTempsSession.isHidden = true
+            //            }
+            //            else {
+            //                let tempsSession = abs(Int(Date(timeIntervalSince1970: premierTempsValide).timeIntervalSinceNow))
+            let secondes = Int(tempsSession) % 60
+            let minutesTot = Int(tempsSession) / 60
+            let minutes = minutesTot % 60
+            let heures = minutesTot / 60
+            var message = String(format:"%02d:%02d",heures,minutes)
+            if debugMode {
+                message = message.appending(String(format:":%02d",secondes))
+                //                    if tempsSession < 0 {
+                //                        affichageTempsSession.textColor = .red
+                //                    }
+            }
+            affichageTempsSession.text = message
+            //                affichageTempsSession.isHidden = false
+            let vitesseMoyenne = distanceTotaleSession / tempsSession
+            if vitesseMoyenne.isFinite && tempsSession >= 10.0 && vitesseMoyenne < vitesseMaxSession {
+                if vitesseMoyenne < 100.0  {
+                    labelVitesseMoyenne.text = NSLocalizedString("Moyenne : ", comment: "") + String(format: "%.1f ", vitesseMoyenne * facteurUnites[unite]) + textesUnites[unite]
+                } else {
+                    labelVitesseMoyenne.text = NSLocalizedString("Moyenne : ", comment: "") + String(format: "%.0f ", vitesseMoyenne * facteurUnites[unite]) + textesUnites[unite]
                 }
-                affichageTempsSession.text = message
-//                affichageTempsSession.isHidden = false
-//            }
+            } else {
+                labelVitesseMoyenne.text = ""
+            }
+            //            }
         }
     }
     

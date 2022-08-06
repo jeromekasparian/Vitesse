@@ -1,0 +1,20 @@
+/* 
+  InfoPlist.strings
+  Vitesse
+
+  Created by Jérôme Kasparian on 09/05/2021.
+  
+*/
+
+/* Bundle name */
+CFBundleName = "Vitesse"; // A user-visible short name for the bundle. This name can contain up to 15 characters. The system may display it to users if CFBundleDisplayName isn't set.
+CFBundleDisplayName = "Vitesse"; // The user-visible name for the bundle, used by Siri and visible on the iOS Home screen. Use this key if you want a product name that's longer than CFBundleName.
+
+/* Privacy - Location When In Use Usage Description */
+NSLocationWhenInUseUsageDescription = "La localisation est indispensable pour afficher la vitesse. L'app n'enregistre pas votre localisation ; elle ne la transmet à personne";
+
+//FR "Location is required to display the speed. The app does not store your location, nor forwards it to anyone";
+
+//NSLocationWhenInUseUsageDescription = "La localisation est indispensable pour afficher la vitesse. L'app n'enregistre pas votre localisation ; elle ne la transmet à personne";
+
+//NSMotionUsageDescription = "Pour déterminer le mode de déplacement";
