@@ -33,7 +33,7 @@ import CoreMotion
 
 let autoriseDebug = true
 var debugMode: Bool = false
-let demoMode = false // pour faire les captures d'écran pour l'app store
+var demoMode = false // pour faire les captures d'écran pour l'app store
 
 //enum Etat {
 //    case indetermine, pasDeLocalisation, initialisation, precisionInsuffisante, vitesseOK
@@ -122,6 +122,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    @objc func changeDemoMode() {
+        demoMode = !demoMode
+    }
+
     @objc func changeCouleurTeteHaute() {
         if autoriseAffichageTeteHauteBlanc{
             affichageTeteHauteBlanc = !affichageTeteHauteBlanc
@@ -159,6 +163,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         swipeDebug.direction = UISwipeGestureRecognizer.Direction.left
         swipeDebug.numberOfTouchesRequired = 3
         self.view.addGestureRecognizer(swipeDebug)
+
+        // mise en place de la détection du swipe left à 3 doigts pour activer le mode debug
+        let swipeDemo = UISwipeGestureRecognizer(target:self, action: #selector(changeDemoMode))
+        swipeDemo.direction = UISwipeGestureRecognizer.Direction.right
+        swipeDemo.numberOfTouchesRequired = 3
+        self.view.addGestureRecognizer(swipeDemo)
         
         if autoriseAffichageTeteHauteBlanc{
             // mise en place de la détection du swipe right à 3 doigts pour activer le mode tête haute blanc
