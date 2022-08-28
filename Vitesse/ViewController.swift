@@ -357,9 +357,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 if self.affichageTeteHauteBlanc {
                     self.affichageVitesse.textColor = .black
                     self.affichageVitesse.backgroundColor = .white
+                    self.affichageUnite.setTitleColor(self.affichageVitesse.textColor, for: .normal)
+                    self.affichageUnite.backgroundColor = self.affichageVitesse.backgroundColor
                 }
                 else {
                     self.affichageVitesse.textColor = .white
+                    self.affichageUnite.setTitleColor(self.affichageVitesse.textColor, for: .normal)
+
                 }
                 // on force l'écran à rester en mode portrait
                 if !luminositeEstForcee && !statsEstOuvert { //isUserInteractionEnabled { // && self.view.isFirstResponder)
@@ -379,7 +383,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 self.affichageVitesse.textColor = .lightGray
                 if self.affichageTeteHauteBlanc {
                     self.affichageVitesse.backgroundColor = .black
+                    self.affichageUnite.backgroundColor = self.affichageVitesse.backgroundColor
                 }
+                self.affichageUnite.setTitleColor(self.affichageVitesse.textColor, for: .normal)
+
                 if luminositeEstForcee { // on revient au contraste par défaut du système
                     UIScreen.main.brightness = luminositeEcranSysteme
                     self.messageDebug.textColor = .red
