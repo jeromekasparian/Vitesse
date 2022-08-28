@@ -74,6 +74,7 @@ class StatsModalViewController: UIViewController {
         distanceTotaleSession = 0.0
 //        premierTempsValide = 0.0 // Date(timeIntervalSinceNow: 0.0).timeIntervalSince1970
         tempsSession = 0.0
+//        timeStampDernierePosition = 0.0
         afficherStats()
     }
     

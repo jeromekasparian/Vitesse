@@ -67,18 +67,18 @@ var autoriserAffichageTeteHaute = true
 let tempsMaxEntrePositions = 5.0 // temps en secondes au-delà duquel on considère qu'on a perdu la position
 let nbPositionsMiniAuDemarrage = 5 // nombre de positions qu'on lit avant de les prendre en compte.
 var statsEstOuvert = false
-let tempsAvantReinitialisationAuto = Double(3600 * 12) // temps en secondes au-delà duquel on réinitialise les stats de trajet
+let tempsAvantReinitialisationAuto: Double = 3600 * 12 // temps en secondes au-delà duquel on réinitialise les stats de trajet
 var localisationEstPerdue = false
 //let distanceMiniAvantComptageTemps = 15.0  // on considère qu'on est en marche si on a parcouru au moins 30 m
 let userDefaults = UserDefaults.standard
 let vitesseMiniPourActiverCompteur = 0.2 // m/s : vitesse en-dessous de laquelle on considère qu'on est immobile
-var nomActiviteEnCours = "Init"
+//var nomActiviteEnCours = "Init"
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
     var locationManager: CLLocationManager! = CLLocationManager()
     //    let activityManager = CMMotionActivityManager()
-    let inclinaisonMin = 5.0 // inclinaison min en degres (sur le roulis) pour dire qu'on est en mode tête haute
+//    let inclinaisonMin = 5.0 // inclinaison min en degres (sur le roulis) pour dire qu'on est en mode tête haute
     let inclinaisonMax = 38.0 // inclinaison max en degres (sur le roulis) pour dire qu'on est en mode tête haute
     let radiansEnDegres = 180.0 / 3.14159
     var positionTeteHaute: Bool = false
@@ -268,6 +268,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     func effaceStatsSiTropVieilles() {
         if (timeStampDernierePosition > 0.0) && ((Date().timeIntervalSince1970 - timeStampDernierePosition) > tempsAvantReinitialisationAuto) {
             effacerStats()
+            locationPrecedente = nil
+            timeStampDernierePosition = 0.0
         }
     }
     
@@ -286,7 +288,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     var leMessage =  NSLocalizedString("Localisation perdue", comment:"Localisation perdue")
                     if #available(iOS 14.0, *) {
                         if self.locationManager.accuracyAuthorization == .reducedAccuracy{
-                            leMessage = NSLocalizedString("Précision réduite", comment:"Basse précision autorisée")
+                            leMessage = NSLocalizedString("Précision réduite", comment: "Basse précision autorisée")
                         }
                     }
                     self.messagePublic.text = leMessage
@@ -334,11 +336,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //            nouveauDresse = (abs(roulis) > inclinaisonMax)
         //        nouveauDresse = (!(UIDevice.current.orientation.isLandscape) || (abs(roulis) > inclinaisonMax))
         //        nouveauDresse = ((abs(roulis) < abs(tangage) + inclinaisonMin) || (abs(roulis) > inclinaisonMax) || (abs(roulis) < inclinaisonMin))
-        positionTeteHaute = (abs(roulis) < inclinaisonMax) && (abs(roulis) > inclinaisonMin) && (abs(roulis) > abs(tangage) + inclinaisonMin) && (UIWindow.isLandscape) && autoriserAffichageTeteHaute // UIDevice.current.orientation.isLandscape est l'orientation physique de l'appareil, quand on est plus ou moins à plat il dit "à plat"
+        let commencerPositionTeteHaute = (abs(roulis) < inclinaisonMax) && (abs(roulis) > abs(tangage)) && (UIWindow.isLandscape) && autoriserAffichageTeteHaute // UIDevice.current.orientation.isLandscape est l'orientation physique de l'appareil, quand on est plus ou moins à plat il dit "à plat"
+        let arreterPositionTeteHaute = (abs(roulis) > inclinaisonMax + 5.0) || (abs(roulis + 5.0) < abs(tangage))
+        if commencerPositionTeteHaute {positionTeteHaute = true} else if arreterPositionTeteHaute {positionTeteHaute = false}
+//        positionTeteHaute = (abs(roulis) < inclinaisonMax) && (abs(roulis) > inclinaisonMin) && (abs(roulis) > abs(tangage) + inclinaisonMin) && (UIWindow.isLandscape) && autoriserAffichageTeteHaute // UIDevice.current.orientation.isLandscape est l'orientation physique de l'appareil, quand on est plus ou moins à plat il dit "à plat"
         DispatchQueue.main.async{
             if (self.positionTeteHaute != self.anciennePositionTeteHaute) {
                 self.affichageVitesse.flipX()
                 self.affichageUnite.flipX()
+                switch self.affichageUnite.contentHorizontalAlignment {
+                    case .left: self.affichageUnite.contentHorizontalAlignment = .right
+                    case .right: self.affichageUnite.contentHorizontalAlignment = .left
+//                    case .leading: self.affichageUnite.contentHorizontalAlignment = .trailing
+//                    case .trailing: self.affichageUnite.contentHorizontalAlignment = .leading
+                default: print("cas par défaut")
+                }
                 self.anciennePositionTeteHaute = self.positionTeteHaute
             } // position a changé
             if self.positionTeteHaute {  // le téléphone est à plat -> on affiche le texte en blanc pour réflexion sur le pare-brise
@@ -502,7 +514,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             && ((location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < 2)
             && ((nombrePositionsLues >= nbPositionsMiniAuDemarrage) || (location.horizontalAccuracy <= 10))
         if #available(iOS 10.0, *) {
-            laVitesseLue = (laVitesseLue >= 0 && location.speedAccuracy > 0 && laVitesseLue > location.speedAccuracy) ? laVitesseLue : 0.0
+            laVitesseLue = (laVitesseLue >= 0 && location.speedAccuracy > 0 && laVitesseLue > 0.5 * location.speedAccuracy) ? laVitesseLue : 0.0
         }  // si la vitesse est plus petite que l'incertitude on la met à zéro
         var laDistance = -3.33
         if vitesseOK {
@@ -526,16 +538,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             //                premierTempsValide = location.timestamp.timeIntervalSince1970
             //            }
         }   // if vitesseOK
-        timeStampDernierePosition = location.timestamp.timeIntervalSince1970
         afficherVitesse(vitesse: laVitesseLue * facteurUnites[unite], precisionOK: vitesseOK)  // course (= le cap) est -1 la plupart du temps pendant que le système affine la localisaiton lorsqu'il vient d'avoir le droit d'y accéder
         var affichageSecret = ""
         if #available(iOS 10.0, *) {
-            affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %.0f \nN %d ", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, location.timestamp.timeIntervalSince1970,nombreLocations)
+            affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %d ∆t %.0f N %d ", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, Int(location.timestamp.timeIntervalSince1970) % 1000, location.timestamp.timeIntervalSince1970 - timeStampDernierePosition, nombreLocations)
         } else {
             // Fallback on earlier versions
-            affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %.0f \nN %d ", location.speed, location.course, location.horizontalAccuracy, laDistance, location.timestamp.timeIntervalSince1970,nombreLocations)
+            affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %d ∆t %.0f N %d ", location.speed, location.course, location.horizontalAccuracy, laDistance, Int(location.timestamp.timeIntervalSince1970) % 1000, location.timestamp.timeIntervalSince1970 - timeStampDernierePosition, nombreLocations)
         }
-        affichageSecret.append(nomActiviteEnCours)
+        timeStampDernierePosition = location.timestamp.timeIntervalSince1970
+//        affichageSecret.append(nomActiviteEnCours)
         //        switch locationManager.activityType{
         //        case .automotiveNavigation:
         //            affichageSecret.append(" Voiture")
@@ -552,7 +564,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //        }
         DispatchQueue.main.async{
             self.messageDebug.text = affichageSecret
-            //            self.messageSecret.isHidden = !debugMode
         }
     }
     

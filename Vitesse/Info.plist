@@ -55,8 +55,8 @@
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
-		<string>gps</string>
 		<string>armv7</string>
+		<string>gps</string>
 	</array>
 	<key>UIRequiresFullScreen</key>
 	<false/>
