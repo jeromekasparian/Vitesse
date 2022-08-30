@@ -511,64 +511,39 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let nombreLocations = locations.count
         let location:CLLocation = locations.last!
         var laVitesseLue = location.speed
-        //        let modeDeTransport = locationManager.activityType
         nombrePositionsLues = nombrePositionsLues + 1
         // au-delà de 12 heures en arrière-plan, on réinitialise le trajet
         if (location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) > tempsAvantReinitialisationAuto {
             effacerStats()
         }
         let vitesseOK = (((laVitesseLue >= 0) && (laVitesseLue < 1)) || (location.course >= 0))
-            && ((location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < 2)
-            && ((nombrePositionsLues >= nbPositionsMiniAuDemarrage) || (location.horizontalAccuracy <= 10))
+        && ((location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < 2)
+        && ((nombrePositionsLues >= nbPositionsMiniAuDemarrage) || (location.horizontalAccuracy <= 10))
         if #available(iOS 10.0, *) {
             laVitesseLue = (laVitesseLue >= 0 && location.speedAccuracy > 0 && laVitesseLue > 0.5 * location.speedAccuracy) ? laVitesseLue : 0.0
         }  // si la vitesse est plus petite que l'incertitude on la met à zéro
         var laDistance = -3.33
         if vitesseOK {
             if locationPrecedente != nil  && laVitesseLue > vitesseMiniPourActiverCompteur && timeStampDernierePosition > 0.0 { //&& distanceTotaleSession > distanceMiniAvantComptageTemps {
-//            if (locationPrecedente != nil) && laVitesseLue > vitesseMiniPourActiverCompteur {
                 laDistance =  location.distance(from: locationPrecedente)
                 distanceTotale = distanceTotale + laDistance
                 distanceTotaleSession = distanceTotaleSession + laDistance
                 distanceTotale = max(distanceTotale, distanceTotaleSession)
-//            }
-//            if timeStampDernierePosition > 0.0 && laVitesseLue >= vitesseMiniPourActiverCompteur { //} && (distanceTotaleSession > distanceMiniAvantComptageTemps) {  // si on est "vraiment" en route
                 tempsSession = tempsSession + location.timestamp.timeIntervalSince1970 - timeStampDernierePosition
-//                if vitesseOK {
-                    if (laVitesseLue > vitesseMax) {vitesseMax = laVitesseLue}
-                    if (laVitesseLue > vitesseMaxSession) {vitesseMaxSession = laVitesseLue}
-//                }
+                if (laVitesseLue > vitesseMax) {vitesseMax = laVitesseLue}
+                if (laVitesseLue > vitesseMaxSession) {vitesseMaxSession = laVitesseLue}
             }
-            locationPrecedente = location
             NotificationCenter.default.post(name : Notification.Name(notificationMiseAJourStats),object: nil)  // on prévient le ViewController d'actualiser l'affichage et d'enregistrer
-            //            if ((distanceTotaleSession > distanceMiniAvantComptageTemps) && (premierTempsValide == 0)){
-            //                premierTempsValide = location.timestamp.timeIntervalSince1970
-            //            }
         }   // if vitesseOK
         afficherVitesse(vitesse: laVitesseLue * facteurUnites[unite], precisionOK: vitesseOK)  // course (= le cap) est -1 la plupart du temps pendant que le système affine la localisaiton lorsqu'il vient d'avoir le droit d'y accéder
         var affichageSecret = ""
         if #available(iOS 10.0, *) {
             affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %d ∆t %.0f N %d ", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, Int(location.timestamp.timeIntervalSince1970) % 1000, location.timestamp.timeIntervalSince1970 - timeStampDernierePosition, nombreLocations)
-        } else {
-            // Fallback on earlier versions
+        } else { // Fallback on earlier versions
             affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %d ∆t %.0f N %d ", location.speed, location.course, location.horizontalAccuracy, laDistance, Int(location.timestamp.timeIntervalSince1970) % 1000, location.timestamp.timeIntervalSince1970 - timeStampDernierePosition, nombreLocations)
         }
+        locationPrecedente = location
         timeStampDernierePosition = location.timestamp.timeIntervalSince1970
-//        affichageSecret.append(nomActiviteEnCours)
-        //        switch locationManager.activityType{
-        //        case .automotiveNavigation:
-        //            affichageSecret.append(" Voiture")
-        //        case .otherNavigation:
-        //            affichageSecret.append(" Autre navigation")
-        //        case .fitness:
-        //            affichageSecret.append(" Fitness")
-        //        case .airborne:
-        //            affichageSecret.append(" Airborne")
-        //        case .other:
-        //            affichageSecret.append(" Autre")
-        //        default:
-        //            affichageSecret.append(" Inconnu")
-        //        }
         DispatchQueue.main.async{
             self.messageDebug.text = affichageSecret
         }

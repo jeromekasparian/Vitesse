@@ -26,8 +26,8 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6OV-Y5-NzA">
-                                <rect key="frame" x="210" y="419" width="90" height="41"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <rect key="frame" x="210" y="418" width="90" height="42"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <state key="normal" title="km/h">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -70,9 +70,9 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Info publique" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vqO-TX-K1R">
-                                <rect key="frame" x="16" y="20" width="288" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Info publique" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vqO-TX-K1R">
+                                <rect key="frame" x="16" y="20" width="288" height="17"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -138,52 +138,52 @@
             <objects>
                 <viewController id="vBm-dL-NJP" customClass="StatsModalViewController" customModule="Vitesse" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="THX-CK-wcX">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="XXX km/h " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Szv-Tc-GeT">
-                                <rect key="frame" x="20" y="142" width="80" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="XXX km/h " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Szv-Tc-GeT">
+                                <rect key="frame" x="16" y="142" width="67.5" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="XXX km/h" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QJS-Fs-B8p">
-                                <rect key="frame" x="20" y="234" width="75.5" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="XXX km/h" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QJS-Fs-B8p">
+                                <rect key="frame" x="16" y="234" width="64" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="XXX km" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pHB-vp-FP8">
-                                <rect key="frame" x="243" y="142" width="61" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="XXX km" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pHB-vp-FP8">
+                                <rect key="frame" x="252.5" y="142" width="51.5" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max speed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n8s-fh-bMJ">
-                                <rect key="frame" x="16" y="50" width="88" height="21"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Max speed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n8s-fh-bMJ">
+                                <rect key="frame" x="16" y="50" width="73" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Mt-SE-ISl">
-                                <rect key="frame" x="232" y="50" width="72" height="21"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Distance" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Mt-SE-ISl">
+                                <rect key="frame" x="244.5" y="50" width="59.5" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current trip" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bkh-FM-OWL">
-                                <rect key="frame" x="112" y="193" width="96" height="21"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Current trip" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bkh-FM-OWL">
+                                <rect key="frame" x="120.5" y="193" width="79" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="XXX km" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wwI-Iu-Hlb">
-                                <rect key="frame" x="243" y="234" width="61" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="XXX km" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wwI-Iu-Hlb">
+                                <rect key="frame" x="252.5" y="234" width="51.5" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Odv-QU-GcL">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Odv-QU-GcL">
                                 <rect key="frame" x="259" y="183" width="45" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="2tV-yl-SAn"/>
@@ -196,9 +196,9 @@
                                     <action selector="effacerSession" destination="vBm-dL-NJP" eventType="touchUpInside" id="sdX-gY-cqp"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Grand total" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NN3-8y-epC">
-                                <rect key="frame" x="114" y="101" width="92" height="21"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Grand total" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NN3-8y-epC">
+                                <rect key="frame" x="122.5" y="101" width="75.5" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -209,33 +209,35 @@
                                     <constraint firstAttribute="width" constant="100" id="jOL-22-EBx"/>
                                 </constraints>
                             </imageView>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3fT-3p-lGj">
-                                <rect key="frame" x="20" y="414" width="51" height="31"/>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3fT-3p-lGj">
+                                <rect key="frame" x="16" y="416" width="51" height="31"/>
                                 <connections>
                                     <action selector="changeAutorisationTeteHaute" destination="vBm-dL-NJP" eventType="valueChanged" id="2pq-aP-BFF"/>
                                 </connections>
                             </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Allow mirror mode" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NXB-Ci-gdW">
-                                <rect key="frame" x="85" y="419" width="219" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Allow mirror mode" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NXB-Ci-gdW">
+                                <rect key="frame" x="73" y="423" width="231" height="17"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="olm-xb-dHk">
                                 <rect key="frame" x="218" y="0.0" width="86" height="31"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="OK"/>
+                                <buttonConfiguration key="configuration" style="plain" title="OK">
+                                    <fontDescription key="titleFontDescription" style="UICTFontTextStyleBody"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="fermerStats" destination="vBm-dL-NJP" eventType="touchUpInside" id="g5I-Er-gMq"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Moyenne : XXX km/h" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O43-G4-QKF">
-                                <rect key="frame" x="145" y="315" width="159" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Moyenne : XXX km/h" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O43-G4-QKF">
+                                <rect key="frame" x="16" y="315" width="288" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LMC-sH-TbR">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LMC-sH-TbR">
                                 <rect key="frame" x="259" y="91" width="45" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="4qU-oS-j2I"/>
@@ -248,9 +250,9 @@
                                     <action selector="effacerTout" destination="vBm-dL-NJP" eventType="touchUpInside" id="8RE-FC-6dy"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uVL-SG-3Qe">
-                                <rect key="frame" x="233" y="275" width="71" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="00:00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uVL-SG-3Qe">
+                                <rect key="frame" x="16" y="275" width="288" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -262,7 +264,9 @@
                             <constraint firstItem="NXB-Ci-gdW" firstAttribute="centerY" secondItem="3fT-3p-lGj" secondAttribute="centerY" id="09o-4x-Np7"/>
                             <constraint firstItem="Szv-Tc-GeT" firstAttribute="top" relation="lessThanOrEqual" secondItem="NN3-8y-epC" secondAttribute="bottom" constant="20" id="10m-Tc-nev"/>
                             <constraint firstItem="pHB-vp-FP8" firstAttribute="trailing" secondItem="olm-xb-dHk" secondAttribute="trailing" id="1gt-8A-Y7r"/>
+                            <constraint firstItem="3Mt-SE-ISl" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="n8s-fh-bMJ" secondAttribute="trailing" constant="8" symbolic="YES" id="2Cg-gd-otz"/>
                             <constraint firstItem="QJS-Fs-B8p" firstAttribute="leading" secondItem="n8s-fh-bMJ" secondAttribute="leading" id="38E-Qe-Z9U"/>
+                            <constraint firstItem="wwI-Iu-Hlb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="QJS-Fs-B8p" secondAttribute="trailing" constant="8" symbolic="YES" id="677-tQ-TT3"/>
                             <constraint firstItem="NXB-Ci-gdW" firstAttribute="leading" secondItem="3fT-3p-lGj" secondAttribute="trailing" constant="8" symbolic="YES" id="6NM-S5-kn7"/>
                             <constraint firstItem="Odv-QU-GcL" firstAttribute="centerY" secondItem="Bkh-FM-OWL" secondAttribute="centerY" id="8Fv-4d-g0C"/>
                             <constraint firstItem="Odv-QU-GcL" firstAttribute="trailing" secondItem="olm-xb-dHk" secondAttribute="trailing" id="9yE-N6-CFd"/>
@@ -275,6 +279,7 @@
                             <constraint firstItem="3fT-3p-lGj" firstAttribute="leading" secondItem="n8s-fh-bMJ" secondAttribute="leading" id="G7k-O9-UDy"/>
                             <constraint firstItem="NXB-Ci-gdW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="O43-G4-QKF" secondAttribute="bottom" constant="10" id="GM2-mK-o47"/>
                             <constraint firstItem="Szv-Tc-GeT" firstAttribute="leading" secondItem="n8s-fh-bMJ" secondAttribute="leading" id="Ir8-0P-OTm"/>
+                            <constraint firstItem="pHB-vp-FP8" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Szv-Tc-GeT" secondAttribute="trailing" constant="8" symbolic="YES" id="Joq-Ba-kWN"/>
                             <constraint firstItem="uVL-SG-3Qe" firstAttribute="trailing" secondItem="olm-xb-dHk" secondAttribute="trailing" id="MsG-wu-d0K"/>
                             <constraint firstItem="O43-G4-QKF" firstAttribute="top" relation="greaterThanOrEqual" secondItem="uVL-SG-3Qe" secondAttribute="bottom" constant="8" id="OjX-t6-RP4"/>
                             <constraint firstItem="n8s-fh-bMJ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JIz-qG-Bg6" secondAttribute="bottom" constant="8" id="Om6-dn-MUn"/>
@@ -290,6 +295,8 @@
                             <constraint firstItem="LMC-sH-TbR" firstAttribute="trailing" secondItem="olm-xb-dHk" secondAttribute="trailing" id="hrf-AZ-gxh"/>
                             <constraint firstItem="JIz-qG-Bg6" firstAttribute="top" secondItem="THX-CK-wcX" secondAttribute="topMargin" id="iiW-uO-iXW"/>
                             <constraint firstItem="7nT-2R-PQm" firstAttribute="trailing" secondItem="olm-xb-dHk" secondAttribute="trailing" constant="16" id="kAh-r0-fZ0"/>
+                            <constraint firstItem="uVL-SG-3Qe" firstAttribute="leading" secondItem="QJS-Fs-B8p" secondAttribute="leading" id="lmN-d1-4L5"/>
+                            <constraint firstItem="O43-G4-QKF" firstAttribute="leading" secondItem="QJS-Fs-B8p" secondAttribute="leading" id="lpT-fm-n0g"/>
                             <constraint firstItem="pHB-vp-FP8" firstAttribute="centerY" secondItem="Szv-Tc-GeT" secondAttribute="centerY" id="oCp-NS-DOc"/>
                             <constraint firstItem="uVL-SG-3Qe" firstAttribute="top" relation="greaterThanOrEqual" secondItem="wwI-Iu-Hlb" secondAttribute="bottom" constant="8" id="q1C-lT-au0"/>
                             <constraint firstItem="NN3-8y-epC" firstAttribute="top" relation="lessThanOrEqual" secondItem="3Mt-SE-ISl" secondAttribute="bottom" constant="30" id="qKf-oa-T1W"/>
@@ -337,8 +344,8 @@
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
     <resources>
-        <image name="chevron.compact.down" catalog="system" width="32" height="32"/>
-        <image name="location.slash.fill" catalog="system" width="32" height="32"/>
+        <image name="chevron.compact.down" catalog="system" width="128" height="43"/>
+        <image name="location.slash.fill" catalog="system" width="128" height="121"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
