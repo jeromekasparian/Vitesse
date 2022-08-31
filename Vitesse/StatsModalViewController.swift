@@ -107,11 +107,8 @@ class StatsModalViewController: UIViewController {
             labelVitesseMoyenne.text = NSLocalizedString("Moyenne : ", comment: "") + "37 km/h"
         }
         else {
-            labelVitesseMax.text = String(format: "%.0f ", vitesseMax * facteurUnites[unite])
-            labelVitesseMax.text?.append(textesUnites[unite])
-            labelVitesseMaxSession.text = String(format: "%.0f ", vitesseMaxSession * facteurUnites[unite])
-            labelVitesseMaxSession.text?.append(textesUnites[unite])
-            
+            labelVitesseMax.text = vitesseMax >= 100.0 ? String(format: "%.0f ", vitesseMax * facteurUnites[unite]) + textesUnites[unite] : String(format: "%.1f ", vitesseMax * facteurUnites[unite]) + textesUnites[unite]
+            labelVitesseMaxSession.text = vitesseMaxSession >= 100.0 ? String(format: "%.0f ", vitesseMaxSession * facteurUnites[unite]) + textesUnites[unite] : String(format: "%.1f ", vitesseMaxSession * facteurUnites[unite]) + textesUnites[unite]
             if (unite == 0) { labelDistanceTotale.text = String(format: "%.0f ", distanceTotale * facteurUnitesDistance[unite]) }
             else { labelDistanceTotale.text = String(format: "%.1f ", distanceTotale * facteurUnitesDistance[unite]) }
             labelDistanceTotale.text?.append(textesUnitesDistance[unite])
@@ -138,11 +135,8 @@ class StatsModalViewController: UIViewController {
             //                affichageTempsSession.isHidden = false
             let vitesseMoyenne = distanceTotaleSession / tempsSession
             if vitesseMoyenne.isFinite && tempsSession >= 10.0 && vitesseMoyenne < vitesseMaxSession {
-                if vitesseMoyenne < 100.0  {
-                    labelVitesseMoyenne.text = NSLocalizedString("Moyenne : ", comment: "") + String(format: "%.1f ", vitesseMoyenne * facteurUnites[unite]) + textesUnites[unite]
-                } else {
-                    labelVitesseMoyenne.text = NSLocalizedString("Moyenne : ", comment: "") + String(format: "%.0f ", vitesseMoyenne * facteurUnites[unite]) + textesUnites[unite]
-                }
+                    labelVitesseMoyenne.text = vitesseMoyenne < 100.0 ? NSLocalizedString("Moyenne : ", comment: "") + String(format: "%.1f ", vitesseMoyenne * facteurUnites[unite]) + textesUnites[unite] :
+                     NSLocalizedString("Moyenne : ", comment: "") + String(format: "%.0f ", vitesseMoyenne * facteurUnites[unite]) + textesUnites[unite]
             } else {
                 labelVitesseMoyenne.text = ""
             }
