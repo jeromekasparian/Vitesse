@@ -21,6 +21,7 @@ class StatsModalViewController: UIViewController {
     @IBOutlet var boutonOK: UIButton!
     @IBOutlet var imageChevron: UIImageView!
     @IBOutlet var labelVitesseMoyenne: UILabel!
+    @IBOutlet var labelDeniveleSession: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +73,8 @@ class StatsModalViewController: UIViewController {
     @IBAction func effacerSession() {
         vitesseMaxSession = 0.0
         distanceTotaleSession = 0.0
+        denivelePositifSession = 0.0
+        deniveleNegatifSession = 0.0
 //        premierTempsValide = 0.0 // Date(timeIntervalSinceNow: 0.0).timeIntervalSince1970
         tempsSession = 0.0
 //        timeStampDernierePosition = 0.0
@@ -91,6 +94,8 @@ class StatsModalViewController: UIViewController {
     @objc func effacerToutVraiment() {
         vitesseMaxSession = 0.0
         distanceTotaleSession = 0.0
+        denivelePositifSession = 0.0
+        deniveleNegatifSession = 0.0
         vitesseMax = 0.0
         distanceTotale = 0.0
 //        premierTempsValide = 0.0 // Date(timeIntervalSinceNow: 0.0).timeIntervalSince1970
@@ -104,17 +109,19 @@ class StatsModalViewController: UIViewController {
             labelVitesseMaxSession.text = "83 km/h"
             labelDistanceTotale.text = "1848.5 km"
             labelDistanceTotaleSession.text = "24.0 km"
+            labelDeniveleSession.text = "➚ 425 m, ➘ 193 m"
             labelVitesseMoyenne.text = NSLocalizedString("Moyenne : ", comment: "") + "37 km/h"
         }
         else {
-            labelVitesseMax.text = vitesseMax >= 100.0 ? String(format: "%.0f ", vitesseMax * facteurUnites[unite]) + textesUnites[unite] : String(format: "%.1f ", vitesseMax * facteurUnites[unite]) + textesUnites[unite]
-            labelVitesseMaxSession.text = vitesseMaxSession >= 100.0 ? String(format: "%.0f ", vitesseMaxSession * facteurUnites[unite]) + textesUnites[unite] : String(format: "%.1f ", vitesseMaxSession * facteurUnites[unite]) + textesUnites[unite]
+            labelVitesseMax.text = vitesseMax >= 100.0 ? String(format: "Max %.0f ", vitesseMax * facteurUnites[unite]) + textesUnites[unite] : String(format: "Max %.1f ", vitesseMax * facteurUnites[unite]) + textesUnites[unite]
+            labelVitesseMaxSession.text = vitesseMaxSession >= 100.0 ? String(format: "Max %.0f ", vitesseMaxSession * facteurUnites[unite]) + textesUnites[unite] : String(format: "Max %.1f ", vitesseMaxSession * facteurUnites[unite]) + textesUnites[unite]
             if (unite == 0) { labelDistanceTotale.text = String(format: "%.0f ", distanceTotale * facteurUnitesDistance[unite]) }
             else { labelDistanceTotale.text = String(format: "%.1f ", distanceTotale * facteurUnitesDistance[unite]) }
             labelDistanceTotale.text?.append(textesUnitesDistance[unite])
             if (unite == 0) { labelDistanceTotaleSession.text = String(format: "%.0f ", distanceTotaleSession * facteurUnitesDistance[unite]) }
             else { labelDistanceTotaleSession.text = String(format: "%.1f ", distanceTotaleSession * facteurUnitesDistance[unite]) }
             labelDistanceTotaleSession.text?.append(textesUnitesDistance[unite])
+            labelDeniveleSession.text = String(format: "➚ %.0f m, ➘ %.0f m", denivelePositifSession, deniveleNegatifSession)
             //            if (premierTempsValide == 0.0) || !debugMode {
             //                affichageTempsSession.isHidden = true
             //            }
@@ -138,7 +145,7 @@ class StatsModalViewController: UIViewController {
                     labelVitesseMoyenne.text = vitesseMoyenne < 100.0 ? NSLocalizedString("Moyenne : ", comment: "") + String(format: "%.1f ", vitesseMoyenne * facteurUnites[unite]) + textesUnites[unite] :
                      NSLocalizedString("Moyenne : ", comment: "") + String(format: "%.0f ", vitesseMoyenne * facteurUnites[unite]) + textesUnites[unite]
             } else {
-                labelVitesseMoyenne.text = ""
+                labelVitesseMoyenne.text = NSLocalizedString("Moyenne : ", comment: "") + "--- " + textesUnites[unite]
             }
             //            }
         }
