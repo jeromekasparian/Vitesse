@@ -49,10 +49,13 @@ var tempsSession = 0.0  // le temps total de trajet, en secondes
 //var premierTempsValide = 0.0
 let precisionVerticaleMinimale: Double = 10.0 // précision minimale sur l'altitude pour qu'on la prenne en compte
 var unite: Int = 1 // par défaut, km/h
-let textesUnites: [String] = [NSLocalizedString("m/s", comment: "vistesse : m/s"),NSLocalizedString("km/h", comment: "vitesse : km/h"),NSLocalizedString("mph", comment: "vitesse : mph")]
+let textesUnites: [String] = [NSLocalizedString("m/s", comment: "vistesse : m/s"), NSLocalizedString("km/h", comment: "vitesse : km/h"), NSLocalizedString("mph", comment: "vitesse : mph")]
 let facteurUnites: [Double] = [1.0, 3.6, 2.2369362920544]
-let textesUnitesDistance: [String] = [NSLocalizedString("m", comment: "distance : m"),NSLocalizedString("km", comment: "distance : km"),NSLocalizedString("mi", comment: "distance : mi")]
+let textesUnitesDistance: [String] = [NSLocalizedString("m", comment: "distance : m"), NSLocalizedString("km", comment: "distance : km"), NSLocalizedString("mi", comment: "distance : mi")]
+let textesUnitesAltitude: [String] = [NSLocalizedString("m", comment: "m"), NSLocalizedString("m", comment: "m"),NSLocalizedString("'", comment: "pied")]
+
 let facteurUnitesDistance: [Double] = [1.0, 0.001, 0.00062137]
+let facteurUnitesAltitude: [Double] = [1.0, 1.0, 3.2808]
 var nombrePositionsLues = 0
 var timeStampDernierePosition = 0.0
 var luminositeEcranSysteme = CGFloat(0.0)

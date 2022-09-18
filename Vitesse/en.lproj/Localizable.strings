@@ -35,3 +35,4 @@
 "Pour afficher la vitesse, autorisez l'app à accéder à la localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne"="To display the speed, please allow the location services for your app. \nNote that the app does not store your location, nor forwards it to anyone";
 "Pour afficher la vitesse, activez la localisation sur votre appareil \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne"="To display the speed, please allow location services on your device: \nSetup -> Privacy -> Location services. \nNote that the app does not store your location, nor forwards it to anyone";
 "Moyenne : " = "Mean: ";
+"'" = "'";
