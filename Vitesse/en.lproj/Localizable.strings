@@ -34,5 +34,9 @@
 "Autorisez la localisation" = "Please allow localization";
 "Pour afficher la vitesse, autorisez l'app à accéder à la localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne"="To display the speed, please allow the location services for your app. \nNote that the app does not store your location, nor forwards it to anyone";
 "Pour afficher la vitesse, activez la localisation sur votre appareil \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne"="To display the speed, please allow location services on your device: \nSetup -> Privacy -> Location services. \nNote that the app does not store your location, nor forwards it to anyone";
-"Moyenne : " = "Mean: ";
+"Moyenne " = "Mean ";
 "'" = "'";
+"Trajet (%d h %02d min" = "Trip (%d h %02d min";
+"Trajet (%02d min" = "Trip (%d min";
+"La localisation n'est pas autorisée lorsque l'app est en arrière-plan. Les statistiques risquent d'être fausses. Vous pouvez autoriser la localisation en arrière plan dans les préférences de l'app." = "To display reliable statistics, activate background location in the app preferences. \nNote that the app does not store your location, nor forwards it to anyone.";
+"Autorisez la localisation en arrière-plan" = "Allow background localization";

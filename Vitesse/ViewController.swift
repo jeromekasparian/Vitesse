@@ -13,9 +13,9 @@
 
 // - lisser davantage l'altitude ?
 
-//- afficher dès qu’on a une vitesse nulle / Afficher sans mettre à jour les stats
-//- Garder la localisation en arrière plan
-//
+// - afficher dès qu’on a une vitesse nulle / Afficher sans mettre à jour les stats
+// - Garder la localisation en arrière plan
+
 
 import UIKit
 import CoreLocation
@@ -71,6 +71,8 @@ var localisationEstPerdue = false
 let userDefaults = UserDefaults.standard
 let vitesseMiniPourActiverCompteur = 0.2 // m/s : vitesse en-dessous de laquelle on considère qu'on est immobile
 //var nomActiviteEnCours = "Init"
+var locationToujoursAutorisee: Bool = false
+let dureeMaxiTunnel: Double = 3600 // secondes : temps maxi pendant lequel on peut perdre la localisation et, à l'arriver, incrémenter la distance, la durée et le dénivelé.
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -179,45 +181,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             self.view.addGestureRecognizer(swipeBlanc)
         }
         
-        
-        //        locationManager.requestWhenInUseAuthorization()
-//        gereDroitsLocalisation(origineViewDidLoad: true, origineViewDidAppear: false)
-        
         motionManager.deviceMotionUpdateInterval = 1
         NotificationCenter.default.addObserver(self, selector: #selector(gereDroitsLocationDepuisNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
         
         // Get attitude orientation
         motionManager.startDeviceMotionUpdates(to: .main, withHandler: gereOrientation) //{ (motion, error) in
         
-        // type d'activité pour savoir le mode de transport
-        
-        //        switch CMMotionActivityManager.authorizationStatus() {
-        //        case CMAuthorizationStatus.authorized:
-        //            print("activité autorisée")
-        //            nomActiviteEnCours = "Mvt autorisé"
-        //            if CMMotionActivityManager.isActivityAvailable() {
-        //                startTrackingActivityType()
-        //        }
-        //        case CMAuthorizationStatus.denied:
-        //            nomActiviteEnCours = "Mvt interdit"
-        //            print("activité interdite")
-        //        case CMAuthorizationStatus.restricted:
-        //            nomActiviteEnCours = "Mvt restreint"
-        //            print("activité restreinte")
-        //        case CMAuthorizationStatus.notDetermined:
-        //            nomActiviteEnCours = "Mvt indéterminé"
-        //            print("activité non déterminée")
-        //        default:
-        //            nomActiviteEnCours = "Mvt Autre"
-        //            print("activité : autre cas")
-        //        }
-        
         UIApplication.shared.isIdleTimerDisabled = true
-        
-        // tester si on a une connexion
-        
-        //        let envoyerAlerteSecurite = !nePasDerangerActif() || connectedToNetwork()
-        //        if connectedToNetwork(){}
         
         boutonOuvreStats.setTitle("", for: .normal)
         if #available(iOS 13.0, *) {
@@ -324,26 +294,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         timer.invalidate()
         super.viewWillDisappear(true)
     }
-    //    override func viewDidAppear(_ animated: Bool) {
-    //        if !justLoaded {
-    //            gereDroitsLocalisation(origineViewDidLoad: false, origineViewDidAppear: true)
-    //        }
-    //        justLoaded = false
-    //    }
     
     
     func gereOrientation(motion:CMDeviceMotion?,error:Error?) {
         let tangage = motion!.attitude.pitch * radiansEnDegres  // basculement vers l'avant
         let roulis = motion!.attitude.roll * radiansEnDegres    // basculement vers le côté
-        //        let azimutInverse = motion!.attitude.yaw * radiansEnDegres    // Azimut, haut du téléphone vers le sud = 0
-        //        print(String(format:"orientation : %.2f, %.2f, %.2f", tangage, roulis, azimutInverse))
-        //            nouveauDresse = (abs(roulis) > inclinaisonMax)
-        //        nouveauDresse = (!(UIDevice.current.orientation.isLandscape) || (abs(roulis) > inclinaisonMax))
-        //        nouveauDresse = ((abs(roulis) < abs(tangage) + inclinaisonMin) || (abs(roulis) > inclinaisonMax) || (abs(roulis) < inclinaisonMin))
         let commencerPositionTeteHaute = (abs(roulis) < inclinaisonMax) && (abs(roulis) > abs(tangage)) && (UIWindow.isLandscape) && autoriserAffichageTeteHaute // UIDevice.current.orientation.isLandscape est l'orientation physique de l'appareil, quand on est plus ou moins à plat il dit "à plat"
         let arreterPositionTeteHaute = (abs(roulis) > inclinaisonMax + 5.0) || (abs(roulis + 5.0) < abs(tangage))
         if commencerPositionTeteHaute {positionTeteHaute = true} else if arreterPositionTeteHaute {positionTeteHaute = false}
-//        positionTeteHaute = (abs(roulis) < inclinaisonMax) && (abs(roulis) > inclinaisonMin) && (abs(roulis) > abs(tangage) + inclinaisonMin) && (UIWindow.isLandscape) && autoriserAffichageTeteHaute // UIDevice.current.orientation.isLandscape est l'orientation physique de l'appareil, quand on est plus ou moins à plat il dit "à plat"
         DispatchQueue.main.async{
             if (self.positionTeteHaute != self.anciennePositionTeteHaute) {
                 self.affichageVitesse.flipX()
@@ -376,12 +334,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     self.messageDebug.textColor = .yellow
                     luminositeEstForcee = true
                 }
-                //                AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
-                //                if roulis > 0 { UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation") }
-                //                else { UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation") }
-                //                UIViewController.attemptRotationToDeviceOrientation()
-                
-                //                print("à plat")
             }  // téléphone à plat -> position tête haute
             else { // le téléphone est penché -> on affiche le texte en gris pour lecture directe
                 self.affichageVitesse.textColor = .lightGray
@@ -396,20 +348,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     self.messageDebug.textColor = .red
                     luminositeEstForcee = false
                 }
-                //                AppDelegate.orientationLock = UIInterfaceOrientationMask.all  // on déverrouille l'orientation de l'écran
-                //                print("dressé")
             }  // téléphone dressé
-            //            self.affichageUnite.setTitle(textesUnites[unite], for: .normal) // = textesUnites[unite]
         } // DispatchQueue.main.async
     }
     
     @objc func gereDroitsLocationDepuisNotification() {
-        //        locationManager.requestWhenInUseAuthorization()
         gereDroitsLocalisation(origineViewDidLoad : false, origineViewDidAppear: false)
     }
 
     @objc func gereDroitsLocationDepuisViewDidLoad() {
-        //        locationManager.requestWhenInUseAuthorization()
         gereDroitsLocalisation(origineViewDidLoad : true, origineViewDidAppear: false)
     }
 
@@ -421,16 +368,32 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         if (CLLocationManager.locationServicesEnabled()) { // la localisation est activée sur l'appareil
             print("droits de localisation : ", CLLocationManager.authorizationStatus().rawValue)
-            locationManager.requestWhenInUseAuthorization()
-            
-            switch CLLocationManager.authorizationStatus() {
+//            locationManager.requestWhenInUseAuthorization()
+            locationManager.requestAlwaysAuthorization()
+            let statut = CLLocationManager.authorizationStatus()
+            switch statut {
             case .authorizedAlways, .authorizedWhenInUse:  // l'app a l'autorisation d'accéder à la localisation
+                locationToujoursAutorisee = statut == .authorizedAlways
                 locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-                locationManager.startUpdatingLocation();
-                print("acces localisation ok")
+                if statut == .authorizedAlways {
+                    locationManager.allowsBackgroundLocationUpdates = true
+                    locationManager.pausesLocationUpdatesAutomatically = false
+                    locationManager.activityType = .otherNavigation
+                    if #available(iOS 11.0, *) {
+                        locationManager.showsBackgroundLocationIndicator = true
+                    }
+                }
+                locationManager.startUpdatingLocation()
                 //            self.imagePasDeVitesse.image = UIImage(systemName: "location.fill")
                 DispatchQueue.main.async{
-                    self.messageDebug.text = "Localisation autorisée"
+                    if statut == .authorizedAlways {
+                        self.messageDebug.text = "Localisation autorisée toujours"
+                        print("acces localisation toujours ok")
+                    } else {
+                        self.messageDebug.text = "Localisation autorisée app active"
+                        print("acces localisation app active ok")
+
+                    }
 //                    if self.imagePasLocalisation.isHidden {
                         self.affichageVitesse.text = ""
                     self.affichePictoPasLocalisation()
@@ -439,36 +402,30 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 }
             case .denied, .restricted:
                 print("acces localisation pas ok pour l'app")
+                locationToujoursAutorisee = false
                 DispatchQueue.main.async{
                     let leMessage = NSLocalizedString("Pour afficher la vitesse, autorisez l'app à accéder à la localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'app n'est pas autorisée à accéder à la localisation")
-                    self.afficherAlerteRenvoiPreferences(message: leMessage, perfsDeLApp: true)
-//                    self.messagePublic.text = NSLocalizedString("Pour afficher la vitesse, autorisez l'app à accéder à la localisation : \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'app n'est pas autorisée à accéder à la localisation")
+                    self.afficherAlerteRenvoiPreferences(titre: NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte"), message: leMessage, perfsDeLApp: true)
                     self.affichageVitesse.text = ""
                     self.affichePictoPasLocalisation()
-//                    self.imagePasLocalisation.isHidden = false
-//                    self.roueAttente.stopAnimating()  //isHidden = true
                 }
             case .notDetermined:
                 print("not determined")
+                locationToujoursAutorisee = false
             default:
                 print("défaut")
-            //                locationManager.requestWhenInUseAuthorization()  // inopérant
+                locationToujoursAutorisee = false
             } // switch
         }  //  if (CLLocationManager.locationServicesEnabled())
         else {
             print("acces localisation pas ok pour le téléphone")
-            //            print("􀘭")//accès localisation  pas ok")
-            //            let alerte = UIAlertController(title: "Activez la localisation", message: "Pour afficher la vitesse, activez la localisation sur votre appareil : Réglages -> Condidentialité -> Service de localisation", preferredStyle: .alert)
-            //            alerte.addAction(UIAlertAction(title: "OK", style: .default, handler: {_ in print("Alerte localisation validée")}))
+            locationToujoursAutorisee = false
             DispatchQueue.main.async{
                 //                self.present(alerte, animated: true)
                 let leMessage = NSLocalizedString("Pour afficher la vitesse, activez la localisation sur votre appareil \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'appareil n'est pas autorisé à lire la position")
-                self.afficherAlerteRenvoiPreferences(message: leMessage, perfsDeLApp: false)
-//                self.messagePublic.text = NSLocalizedString("Pour afficher la vitesse, activez la localisation sur votre appareil : \nRéglages -> Condidentialité -> Service de localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'appareil n'est pas autorisé à lire la position")
+                self.afficherAlerteRenvoiPreferences(titre: NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte"), message: leMessage, perfsDeLApp: false)
                 self.affichageVitesse.text = ""
                 self.affichePictoPasLocalisation()
-//                self.imagePasLocalisation.isHidden = false
-//                self.roueAttente.stopAnimating()  //isHidden = true
             }
         }
     }
@@ -521,7 +478,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             effacerStats()
         }
         let vitesseOK = (((laVitesseLue >= 0) && (laVitesseLue < 1)) || (location.course >= 0))
-        && ((location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < 2)
+        && ((location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < dureeMaxiTunnel)
         && ((nombrePositionsLues >= nbPositionsMiniAuDemarrage) || (location.horizontalAccuracy <= 10))
         if #available(iOS 10.0, *) {
             laVitesseLue = (laVitesseLue >= 0 && location.speedAccuracy > 0 && laVitesseLue > 0.5 * location.speedAccuracy) ? laVitesseLue : 0.0
@@ -591,7 +548,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        //        locationManager.requestWhenInUseAuthorization()
         gereDroitsLocalisation(origineViewDidLoad: false, origineViewDidAppear: false)
     }
     
@@ -602,6 +558,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     func effacerStats() {
         distanceTotaleSession = 0.0
         vitesseMaxSession = 0.0
+        denivelePositifSession = 0.0
+        deniveleNegatifSession = 0.0
         tempsSession = 0.0
         NotificationCenter.default.post(name : Notification.Name(notificationMiseAJourStats),object: nil)  // on prévient le ViewController d'actualiser l'affichage et d'enregistrer
     }
@@ -633,11 +591,28 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     //    }
     
     
-    func afficherAlerteRenvoiPreferences(message: String, perfsDeLApp: Bool) {
+}
+
+extension UIView {
+    
+    /// Flip view horizontally.
+    func flipX() {
+        transform = CGAffineTransform(scaleX: -transform.a, y: transform.d)
+    }
+    
+    /// Flip view vertically.
+    func flipY() {
+        transform = CGAffineTransform(scaleX: transform.a, y: -transform.d)
+    }
+    
+}
+
+extension UIViewController {
+    func afficherAlerteRenvoiPreferences(titre: String, message: String, perfsDeLApp: Bool) {
         DispatchQueue.main.async {
             //        let changePrivacySetting = "AVCam doesn't have permission to use the camera, please change privacy settings"
             //        let message = NSLocalizedString(changePrivacySetting, comment: "Alert message when the user has denied access to the camera")
-            let titre = NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte")
+//            let titre = NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte")
             let alertController = UIAlertController(title: titre, message: message, preferredStyle: .alert)
             
             if #available(iOS 10.0, *) {
@@ -666,109 +641,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             self.present(alertController, animated: true, completion: nil)
         }
     }
-}
 
-extension UIView {
-    
-    /// Flip view horizontally.
-    func flipX() {
-        transform = CGAffineTransform(scaleX: -transform.a, y: transform.d)
-    }
-    
-    /// Flip view vertically.
-    func flipY() {
-        transform = CGAffineTransform(scaleX: transform.a, y: -transform.d)
-    }
 }
-
 
 extension String {
     var floatValue: Float {
         return (self as NSString).floatValue
     }
 }
-
-
-//------------- Fonctions en réserve : gestion de l'orientation
-//    @IBAction func basculeEnPaysage(){
-//        AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
-//        UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
-//        UIViewController.attemptRotationToDeviceOrientation()
-//    }
-//
-//    @IBAction func libereOrientation(){
-//        AppDelegate.orientationLock = UIInterfaceOrientationMask.all
-////        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-//        UIViewController.attemptRotationToDeviceOrientation()
-//    }
-
-
-
-// ------------ Fonctions en réserve : test de la disponibilité du réseau GSM et/ou du réseau
-//    // https://stackoverflow.com/questions/55737315/reportnewincomingcall-completion-not-called
-//    // https://websitebeaver.com/callkit-swift-tutorial-super-easy
-//    func nePasDerangerActif() -> Bool {  // original name : reportIncomingCall   // completion  // NE MARCHE PAS
-//        let provider = CXProvider(configuration: CXProviderConfiguration(localizedName: "My App"))
-//        var nePasDerangerEstActif = false
-//        // 1.
-//        let update = CXCallUpdate()
-//        update.remoteHandle = CXHandle(type: .phoneNumber, value: "toto")
-////        update.hasVideo = hasVideo
-//
-//        // 2.
-//        provider.reportNewIncomingCall(with: UUID(), update: update) { error in
-//                if error == nil {
-//                    print("pas d'erreur")
-//                    self.messageSecret.text = "pas d'erreur NPD"
-////                // 3.
-////                let call = Call(uuid: uuid, handle: handle)
-////                self.callManager.add(call: call)
-//            }
-//                else{
-//                    print("erreur")
-//                    self.messageSecret.text = "Erreur"
-//                    let erreur = error! as NSError
-//                    if erreur.code == CXErrorCodeIncomingCallError.filteredByDoNotDisturb.rawValue {
-//                        print("dnd")
-//                        self.messageSecret.text = "Erreur NPD"
-//                        nePasDerangerEstActif = true
-//                    }
-//                }
-//
-//            // 4.
-////            completion?(error as NSError?)
-//        }
-//        return nePasDerangerEstActif
-//    }
-//
-//
-//
-//
-//    //    https://stackoverflow.com/questions/25623272/how-to-use-scnetworkreachability-in-swift
-//    func connectedToNetwork() -> Bool {
-//
-//        var zeroAddress = sockaddr_in()
-//        zeroAddress.sin_len = UInt8(MemoryLayout<sockaddr_in>.size)
-//        zeroAddress.sin_family = sa_family_t(AF_INET)
-//
-//        guard let defaultRouteReachability = withUnsafePointer(to: &zeroAddress, {
-//            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
-//                SCNetworkReachabilityCreateWithAddress(nil, $0)
-//            }
-//        }) else {
-//            return false
-//        }
-//
-//        var flags: SCNetworkReachabilityFlags = []
-//        if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) {
-//            return false
-//        }
-//
-//        let isReachable = flags.contains(.reachable)
-//        let needsConnection = flags.contains(.connectionRequired)
-//
-//        return (isReachable && !needsConnection)
-//    }
 
 
 extension UIWindow {

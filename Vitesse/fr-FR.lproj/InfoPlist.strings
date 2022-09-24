@@ -10,6 +10,8 @@
 CFBundleName = "Vitesse";
 CFBundleDisplayName = "Vitesse";
 /* Privacy - Location When In Use Usage Description */
+NSLocationAlwaysAndWhenInUseUsageDescription = "La localisation est indispensable pour afficher la vitesse. L'accès lorsque l'app est en arrière-plan permet d'afficher des statistiques plus fiables. L'app n'enregistre pas votre localisation ; elle ne la transmet à personne";
+NSLocationAlwaysUsageDescription = "La localisation est indispensable pour afficher la vitesse. L'accès lorsque l'app est en arrière-plan permet d'afficher des statistiques plus fiables. L'app n'enregistre pas votre localisation ; elle ne la transmet à personne";
 NSLocationWhenInUseUsageDescription = "La localisation est indispensable pour afficher la vitesse. L'app n'enregistre pas votre localisation ; elle ne la transmet à personne";
 
 //FR "Location is required to display the speed. The app does not store your location, nor forwards it to anyone";

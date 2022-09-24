@@ -9,7 +9,7 @@
 "6OV-Y5-NzA.normalTitle" = "km/h";
 
 /* Class = "UILabel"; text = "Current trip"; ObjectID = "Bkh-FM-OWL"; */
-"Bkh-FM-OWL.text" = "Current trip";
+"Bkh-FM-OWL.text" = "Trip";
 
 /* Class = "UIButton"; normalTitle = "X"; ObjectID = "Odv-QU-GcL"; */
 "Odv-QU-GcL.normalTitle" = "X";

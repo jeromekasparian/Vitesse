@@ -9,7 +9,7 @@
 "6OV-Y5-NzA.normalTitle" = "km/h";
 
 /* Class = "UILabel"; text = "Trajet en cours"; ObjectID = "Bkh-FM-OWL"; */
-"Bkh-FM-OWL.text" = "Trajet en cours";
+"Bkh-FM-OWL.text" = "Trajet";
 
 /* Class = "UIButton"; normalTitle = "X"; ObjectID = "Odv-QU-GcL"; */
 "Odv-QU-GcL.normalTitle" = "X";
@@ -32,6 +32,6 @@
 /* Class = "UILabel"; text = "XXX km"; ObjectID = "wwI-Iu-Hlb"; */
 "wwI-Iu-Hlb.text" = "XXX km";
 
-"NN3-8y-epC.text" = "Cummul complet";
+"NN3-8y-epC.text" = "Total";
 
 "NXB-Ci-gdW.text" = "Autoriser le mode miroir pour projection sur le pare-brise";
