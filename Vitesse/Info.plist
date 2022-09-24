@@ -24,6 +24,10 @@
 	<string>public.app-category.travel</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Location is required to display the speed. Background location is required to display accurate statistics. The app does not store your location, nor forwards it to anyone</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Location is required to display the speed. Background location is required to display accurate statistics. The app does not store your location, nor forwards it to anyone</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location is required to display the speed. The app does not store your location, nor forwards it to anyone</string>
 	<key>UIApplicationSceneManifest</key>
