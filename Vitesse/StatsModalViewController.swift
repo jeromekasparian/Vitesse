@@ -128,13 +128,13 @@ class StatsModalViewController: UIViewController {
             labelVitesseMoyenne.text = NSLocalizedString("Moyenne ", comment: "") + "37 km/h"
         }
         else {
-            labelVitesseMax.text = (vitesseMax >= 100.0 ? String(format: "Max %3.0f ", vitesseMax * facteurUnites[unite]) + textesUnites[unite] : String(format: "Max %2.1f ", vitesseMax * facteurUnites[unite]) + textesUnites[unite]).replacingOccurrences(of: " ", with: "\u{2007}")
-            labelVitesseMaxSession.text = (vitesseMaxSession >= 100.0 ? String(format: "Max %3.0f ", vitesseMaxSession * facteurUnites[unite]) + textesUnites[unite] : String(format: "Max %2.1f ", vitesseMaxSession * facteurUnites[unite]) + textesUnites[unite]).replacingOccurrences(of: " ", with: "\u{2007}")
+            labelVitesseMax.text = (vitesseMax >= 100.0 ? String(format: "Max %3.0f ", vitesseMax * facteurUnites[unite]) + textesUnites[unite] : String(format: "Max %4.1f ", vitesseMax * facteurUnites[unite]) + textesUnites[unite]).replacingOccurrences(of: " ", with: "\u{2007}")
+            labelVitesseMaxSession.text = (vitesseMaxSession >= 100.0 ? String(format: "Max %3.0f ", vitesseMaxSession * facteurUnites[unite]) + textesUnites[unite] : String(format: "Max %4.1f ", vitesseMaxSession * facteurUnites[unite]) + textesUnites[unite]).replacingOccurrences(of: " ", with: "\u{2007}")
             if (unite == 0) { labelDistanceTotale.text = String(format: "%4.0f ", distanceTotale * facteurUnitesDistance[unite]).replacingOccurrences(of: " ", with: "\u{2007}") }
-            else { labelDistanceTotale.text = String(format: "%3.1f ", distanceTotale * facteurUnitesDistance[unite]).replacingOccurrences(of: " ", with: "\u{2007}") }
+            else { labelDistanceTotale.text = String(format: "%.1f ", distanceTotale * facteurUnitesDistance[unite]).replacingOccurrences(of: " ", with: "\u{2007}") }
             labelDistanceTotale.text?.append(textesUnitesDistance[unite])
-            if (unite == 0) { labelDistanceTotaleSession.text = String(format: "%4.0f ", distanceTotaleSession * facteurUnitesDistance[unite]).replacingOccurrences(of: " ", with: "\u{2007}").replacingOccurrences(of: " ", with: "\u{2007}") }
-            else { labelDistanceTotaleSession.text = String(format: "%3.1f ", distanceTotaleSession * facteurUnitesDistance[unite]).replacingOccurrences(of: " ", with: "\u{2007}") }
+            if (unite == 0) { labelDistanceTotaleSession.text = String(format: "%.0f ", distanceTotaleSession * facteurUnitesDistance[unite]).replacingOccurrences(of: " ", with: "\u{2007}").replacingOccurrences(of: " ", with: "\u{2007}") }
+            else { labelDistanceTotaleSession.text = String(format: "%.1f ", distanceTotaleSession * facteurUnitesDistance[unite]).replacingOccurrences(of: " ", with: "\u{2007}") }
             labelDistanceTotaleSession.text?.append(textesUnitesDistance[unite])
             labelDeniveleSession.text = (String(format: "➚ %3.0f ", denivelePositifSession  * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite] + String(format: "\n➘ %3.0f ", deniveleNegatifSession * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite]).replacingOccurrences(of: " ", with: "\u{2007}")
             //            if (premierTempsValide == 0.0) || !debugMode {
@@ -159,7 +159,7 @@ class StatsModalViewController: UIViewController {
             //                affichageTempsSession.isHidden = false
             let vitesseMoyenne = distanceTotaleSession / tempsSession
             if vitesseMoyenne.isFinite && tempsSession >= 10.0 && vitesseMoyenne < vitesseMaxSession {
-                    labelVitesseMoyenne.text = (vitesseMoyenne < 100.0 ? NSLocalizedString("Moyenne ", comment: "") + String(format: "%2.1f ", vitesseMoyenne * facteurUnites[unite]) + textesUnites[unite] :
+                    labelVitesseMoyenne.text = (vitesseMoyenne < 100.0 ? NSLocalizedString("Moyenne ", comment: "") + String(format: "%4.1f ", vitesseMoyenne * facteurUnites[unite]) + textesUnites[unite] :
                      NSLocalizedString("Moyenne ", comment: "") + String(format: "%3.0f ", vitesseMoyenne * facteurUnites[unite]) + textesUnites[unite]).replacingOccurrences(of: " ", with: "\u{2007}")
             } else {
                 labelVitesseMoyenne.text = NSLocalizedString("Moyenne ", comment: "") + " ---  " + textesUnites[unite]
