@@ -14,7 +14,7 @@
 // - lisser davantage l'altitude ?
 
 // - afficher dès qu’on a une vitesse nulle / Afficher sans mettre à jour les stats
-// - Garder la localisation en arrière plan
+// - Garder la localisation en arrière plan -> Déconnecter après un certain temps ? https://stackoverflow.com/questions/38971994/detect-if-the-application-in-background-or-foreground-in-swift
 
 
 import UIKit
@@ -73,6 +73,8 @@ let vitesseMiniPourActiverCompteur = 0.2 // m/s : vitesse en-dessous de laquelle
 //var nomActiviteEnCours = "Init"
 var locationToujoursAutorisee: Bool = false
 let dureeMaxiTunnel: Double = 3600 // secondes : temps maxi pendant lequel on peut perdre la localisation et, à l'arriver, incrémenter la distance, la durée et le dénivelé.
+//let distanceMaxiPourStopperBackground = 100 // m : si on a bougé de moins de 100 m en 1 heure et qu'on est resté en fond, on arrête d'actualiser la position.
+
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -90,6 +92,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var affichageTeteHauteBlanc = false
     var timer = Timer()
     var nombrePasOK = 0 // nombre de vitesses pas ok reçues à la suite
+//    var timeStampEntreeBackground: Double = .nan
+//    var positionEntreeBackground: CLLocation! = nil
     
     let motionManager = CMMotionManager()
     
@@ -183,9 +187,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         motionManager.deviceMotionUpdateInterval = 1
         NotificationCenter.default.addObserver(self, selector: #selector(gereDroitsLocationDepuisNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
-        
         // Get attitude orientation
         motionManager.startDeviceMotionUpdates(to: .main, withHandler: gereOrientation) //{ (motion, error) in
+
+//        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         
         UIApplication.shared.isIdleTimerDisabled = true
         
@@ -221,6 +227,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             self.adapterTailleAffichageVitesse()
         }
     }
+    
+//    @objc func appMovedToBackground() {  // pas complet
+//        timeStampEntreeBackground = Date().timeIntervalSince1970
+//        positionEntreeBackground = locationPrecedente
+//    }
+//
+//    @objc func appMovedToForeground() {  // pas complet
+//        timeStampEntreeBackground = .nan
+//        positionEntreeBackground = nil
+//    }
     
     func adapterTailleAffichageVitesse(){
         let laTailleDePoliceAvecLaBonneHauteur = self.gabaritAffichageVitesse.font.pointSize * self.gabaritAffichageVitesse.bounds.size.height / self.gabaritAffichageVitesse.font.capHeight * 0.95
@@ -377,7 +393,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
                 if statut == .authorizedAlways {
                     locationManager.allowsBackgroundLocationUpdates = true
-                    locationManager.pausesLocationUpdatesAutomatically = false
+                    locationManager.pausesLocationUpdatesAutomatically = true // après un certain temps sans bouger, il arrête les mises à jour de la localisation en tâche de fond.
                     locationManager.activityType = .otherNavigation
                     if #available(iOS 11.0, *) {
                         locationManager.showsBackgroundLocationIndicator = true
