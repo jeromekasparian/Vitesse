@@ -136,7 +136,7 @@ class StatsModalViewController: UIViewController {
             if (unite == 0) { labelDistanceTotaleSession.text = String(format: "%.0f ", distanceTotaleSession * facteurUnitesDistance[unite]).replacingOccurrences(of: " ", with: "\u{2007}").replacingOccurrences(of: " ", with: "\u{2007}") }
             else { labelDistanceTotaleSession.text = String(format: "%.1f ", distanceTotaleSession * facteurUnitesDistance[unite]).replacingOccurrences(of: " ", with: "\u{2007}") }
             labelDistanceTotaleSession.text?.append(textesUnitesDistance[unite])
-            labelDeniveleSession.text = (String(format: "➚ %3.0f ", denivelePositifSession  * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite] + String(format: "\n➘ %3.0f ", deniveleNegatifSession * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite]).replacingOccurrences(of: " ", with: "\u{2007}")
+            labelDeniveleSession.text = (String(format: "➚ %3.0f", denivelePositifSession  * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite] + String(format: "\n➘ %3.0f", deniveleNegatifSession * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite]).replacingOccurrences(of: " ", with: "\u{2007}")
             //            if (premierTempsValide == 0.0) || !debugMode {
             //                affichageTempsSession.isHidden = true
             //            }

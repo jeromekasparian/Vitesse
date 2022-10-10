@@ -52,7 +52,7 @@ var unite: Int = 1 // par défaut, km/h
 let textesUnites: [String] = [NSLocalizedString("m/s", comment: "vistesse : m/s"), NSLocalizedString("km/h", comment: "vitesse : km/h"), NSLocalizedString("mph", comment: "vitesse : mph")]
 let facteurUnites: [Double] = [1.0, 3.6, 2.2369362920544]
 let textesUnitesDistance: [String] = [NSLocalizedString("m", comment: "distance : m"), NSLocalizedString("km", comment: "distance : km"), NSLocalizedString("mi", comment: "distance : mi")]
-let textesUnitesAltitude: [String] = [NSLocalizedString("m", comment: "m"), NSLocalizedString("m", comment: "m"),NSLocalizedString("'", comment: "pied")]
+let textesUnitesAltitude: [String] = [" " + NSLocalizedString("m", comment: "m"), " " + NSLocalizedString("m", comment: "m"),NSLocalizedString("'", comment: "pied") + " "]
 
 let facteurUnitesDistance: [Double] = [1.0, 0.001, 0.00062137]
 let facteurUnitesAltitude: [Double] = [1.0, 1.0, 3.2808]
@@ -80,7 +80,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     var locationManager: CLLocationManager! = CLLocationManager()
     //    let activityManager = CMMotionActivityManager()
-//    let inclinaisonMin = 5.0 // inclinaison min en degres (sur le roulis) pour dire qu'on est en mode tête haute
+    //    let inclinaisonMin = 5.0 // inclinaison min en degres (sur le roulis) pour dire qu'on est en mode tête haute
     let inclinaisonMax = 38.0 // inclinaison max en degres (sur le roulis) pour dire qu'on est en mode tête haute
     let radiansEnDegres = 180.0 / 3.14159
     var positionTeteHaute: Bool = false
@@ -92,8 +92,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var affichageTeteHauteBlanc = false
     var timer = Timer()
     var nombrePasOK = 0 // nombre de vitesses pas ok reçues à la suite
-//    var timeStampEntreeBackground: Double = .nan
-//    var positionEntreeBackground: CLLocation! = nil
+    //    var timeStampEntreeBackground: Double = .nan
+    //    var positionEntreeBackground: CLLocation! = nil
     
     let motionManager = CMMotionManager()
     
@@ -102,7 +102,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var affichageUnite: UIButton!
     @IBOutlet var imagePasLocalisation: UIImageView!
     @IBOutlet var roueAttente: UIActivityIndicatorView!
-    @IBOutlet var messagePublic: UILabel!  
+    @IBOutlet var messagePublic: UILabel!
     @IBOutlet var messageDebug: UILabel!  // caché dans l'interface - utile pour les tests de début
     @IBOutlet var boutonOuvreStats: UIButton!
     
@@ -118,7 +118,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @objc func ouvreStats() {
         //        print("perform segue")
-        effaceStatsSiTropVieilles() 
+        effaceStatsSiTropVieilles()
         performSegue(withIdentifier:"OuvreStats", sender: self)
     }
     
@@ -132,7 +132,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @objc func changeDemoMode() {
         demoMode = !demoMode
     }
-
+    
     @objc func changeCouleurTeteHaute() {
         if autoriseAffichageTeteHauteBlanc{
             affichageTeteHauteBlanc = !affichageTeteHauteBlanc
@@ -170,7 +170,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         swipeDebug.direction = UISwipeGestureRecognizer.Direction.left
         swipeDebug.numberOfTouchesRequired = 3
         self.view.addGestureRecognizer(swipeDebug)
-
+        
         // mise en place de la détection du swipe left à 3 doigts pour activer le mode debug
         let swipeDemo = UISwipeGestureRecognizer(target:self, action: #selector(changeDemoMode))
         swipeDemo.direction = UISwipeGestureRecognizer.Direction.right
@@ -189,9 +189,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(gereDroitsLocationDepuisNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
         // Get attitude orientation
         motionManager.startDeviceMotionUpdates(to: .main, withHandler: gereOrientation) //{ (motion, error) in
-
-//        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        
+        //        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        //        NotificationCenter.default.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         
         UIApplication.shared.isIdleTimerDisabled = true
         
@@ -208,7 +208,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             if (distanceTotale > 0) || (vitesseMax > 0){  // Transition : si on a déjà utilisé l'app, on garde le comportement précédent...
                 autoriserAffichageTeteHaute = userDefaults.value(forKey: keyAutoriserAffichageTeteHaute) as? Bool ?? true
             }
-            else { // ... sinon par défaut on désactive le mode miroir au premier lancement. 
+            else { // ... sinon par défaut on désactive le mode miroir au premier lancement.
                 autoriserAffichageTeteHaute = userDefaults.value(forKey: keyAutoriserAffichageTeteHaute) as? Bool ?? false
             }
             self.present(alert, animated: true)
@@ -228,15 +228,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-//    @objc func appMovedToBackground() {  // pas complet
-//        timeStampEntreeBackground = Date().timeIntervalSince1970
-//        positionEntreeBackground = locationPrecedente
-//    }
-//
-//    @objc func appMovedToForeground() {  // pas complet
-//        timeStampEntreeBackground = .nan
-//        positionEntreeBackground = nil
-//    }
+    //    @objc func appMovedToBackground() {  // pas complet
+    //        timeStampEntreeBackground = Date().timeIntervalSince1970
+    //        positionEntreeBackground = locationPrecedente
+    //    }
+    //
+    //    @objc func appMovedToForeground() {  // pas complet
+    //        timeStampEntreeBackground = .nan
+    //        positionEntreeBackground = nil
+    //    }
     
     func adapterTailleAffichageVitesse(){
         let laTailleDePoliceAvecLaBonneHauteur = self.gabaritAffichageVitesse.font.pointSize * self.gabaritAffichageVitesse.bounds.size.height / self.gabaritAffichageVitesse.font.capHeight * 0.95
@@ -323,10 +323,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 self.affichageVitesse.flipX()
                 self.affichageUnite.flipX()
                 switch self.affichageUnite.contentHorizontalAlignment {
-                    case .left: self.affichageUnite.contentHorizontalAlignment = .right
-                    case .right: self.affichageUnite.contentHorizontalAlignment = .left
-//                    case .leading: self.affichageUnite.contentHorizontalAlignment = .trailing
-//                    case .trailing: self.affichageUnite.contentHorizontalAlignment = .leading
+                case .left: self.affichageUnite.contentHorizontalAlignment = .right
+                case .right: self.affichageUnite.contentHorizontalAlignment = .left
+                    //                    case .leading: self.affichageUnite.contentHorizontalAlignment = .trailing
+                    //                    case .trailing: self.affichageUnite.contentHorizontalAlignment = .leading
                 default: print("cas par défaut")
                 }
                 self.anciennePositionTeteHaute = self.positionTeteHaute
@@ -341,7 +341,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 else {
                     self.affichageVitesse.textColor = .white
                     self.affichageUnite.setTitleColor(self.affichageVitesse.textColor, for: .normal)
-
+                    
                 }
                 // on force l'écran à rester en mode portrait
                 if !luminositeEstForcee && !statsEstOuvert { //isUserInteractionEnabled { // && self.view.isFirstResponder)
@@ -358,7 +358,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     self.affichageUnite.backgroundColor = self.affichageVitesse.backgroundColor
                 }
                 self.affichageUnite.setTitleColor(self.affichageVitesse.textColor, for: .normal)
-
+                
                 if luminositeEstForcee { // on revient au contraste par défaut du système
                     UIScreen.main.brightness = luminositeEcranSysteme
                     self.messageDebug.textColor = .red
@@ -371,11 +371,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @objc func gereDroitsLocationDepuisNotification() {
         gereDroitsLocalisation(origineViewDidLoad : false, origineViewDidAppear: false)
     }
-
+    
     @objc func gereDroitsLocationDepuisViewDidLoad() {
         gereDroitsLocalisation(origineViewDidLoad : true, origineViewDidAppear: false)
     }
-
+    
     func gereDroitsLocalisation(origineViewDidLoad : Bool, origineViewDidAppear: Bool) {
         print("lancement viewDidLoad : \(origineViewDidLoad)")
         print("lancement viewDidAppear : \(origineViewDidAppear)")
@@ -384,7 +384,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         if (CLLocationManager.locationServicesEnabled()) { // la localisation est activée sur l'appareil
             print("droits de localisation : ", CLLocationManager.authorizationStatus().rawValue)
-//            locationManager.requestWhenInUseAuthorization()
+            //            locationManager.requestWhenInUseAuthorization()
             locationManager.requestAlwaysAuthorization()
             let statut = CLLocationManager.authorizationStatus()
             switch statut {
@@ -408,13 +408,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     } else {
                         self.messageDebug.text = "Localisation autorisée app active"
                         print("acces localisation app active ok")
-
+                        
                     }
-//                    if self.imagePasLocalisation.isHidden {
-                        self.affichageVitesse.text = ""
+                    //                    if self.imagePasLocalisation.isHidden {
+                    self.affichageVitesse.text = ""
                     self.affichePictoPasLocalisation()
-//                        self.roueAttente.startAnimating()  //isHidden = true
-//                    }
+                    //                        self.roueAttente.startAnimating()  //isHidden = true
+                    //                    }
                 }
             case .denied, .restricted:
                 print("acces localisation pas ok pour l'app")
@@ -470,11 +470,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 self.nombrePasOK = 0
             }  // Vitesse > 0 et precisionOK
             else {
-//                if (self.imagePasLocalisation.isHidden) && (self.nombrePasOK >= 2) {
+                //                if (self.imagePasLocalisation.isHidden) && (self.nombrePasOK >= 2) {
                 if (self.nombrePasOK >= 2) {
                     self.affichageVitesse.text = ""
                     self.affichePictoPasLocalisation()
-//                    self.roueAttente.startAnimating()  //isHidden = false
+                    //                    self.roueAttente.startAnimating()  //isHidden = false
                     print("pas de signal")
                 }
                 self.nombrePasOK = self.nombrePasOK + 1
@@ -500,16 +500,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             laVitesseLue = (laVitesseLue >= 0 && location.speedAccuracy > 0 && laVitesseLue > 0.5 * location.speedAccuracy) ? laVitesseLue : 0.0
         }  // si la vitesse est plus petite que l'incertitude on la met à zéro
         if location.verticalAccuracy <= precisionVerticaleMinimale {
-        if altitudeActuelle.isNaN {
-            altitudeActuelle = location.altitude
-            nombreAltitudesMoyennees = 1
-        } else if nombreAltitudesMoyennees <= 10 {
-            altitudeActuelle = (location.altitude + (altitudeActuelle * Double(nombreAltitudesMoyennees))) / Double(nombreAltitudesMoyennees + 1)
-            nombreAltitudesMoyennees = nombreAltitudesMoyennees + 1
-        } else {
-            altitudeActuelle = 0.1 * location.altitude + 0.9 * altitudeActuelle // moyenne glissante avec amortissement, pour "lisser" les fluctuations de l'altitude
-            nombreAltitudesMoyennees = nombreAltitudesMoyennees + 1
-        }
+            if altitudeActuelle.isNaN {
+                altitudeActuelle = location.altitude
+                nombreAltitudesMoyennees = 1
+            } else if nombreAltitudesMoyennees <= 10 {
+                altitudeActuelle = (location.altitude + (altitudeActuelle * Double(nombreAltitudesMoyennees))) / Double(nombreAltitudesMoyennees + 1)
+                nombreAltitudesMoyennees = nombreAltitudesMoyennees + 1
+            } else {
+                altitudeActuelle = 0.1 * location.altitude + 0.9 * altitudeActuelle // moyenne glissante avec amortissement, pour "lisser" les fluctuations de l'altitude
+                nombreAltitudesMoyennees = nombreAltitudesMoyennees + 1
+            }
         }
         var laDistance = -3.33
         if vitesseOK {
@@ -519,11 +519,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 distanceTotaleSession = distanceTotaleSession + laDistance
                 let denivele = altitudeActuelle - altitudePrecedente
                 if abs(denivele) <= laDistance * 0.3 && nombreAltitudesMoyennees >= 10 {
-                if denivele > 0 {
-                    denivelePositifSession = denivelePositifSession + denivele
-                } else {
-                    deniveleNegatifSession = deniveleNegatifSession - denivele
-                }
+                    if denivele > 0 {
+                        denivelePositifSession = denivelePositifSession + denivele
+                    } else {
+                        deniveleNegatifSession = deniveleNegatifSession - denivele
+                    }
                 }
                 distanceTotale = max(distanceTotale, distanceTotaleSession)
                 tempsSession = tempsSession + location.timestamp.timeIntervalSince1970 - timeStampDernierePosition
@@ -628,36 +628,26 @@ extension UIViewController {
         DispatchQueue.main.async {
             //        let changePrivacySetting = "AVCam doesn't have permission to use the camera, please change privacy settings"
             //        let message = NSLocalizedString(changePrivacySetting, comment: "Alert message when the user has denied access to the camera")
-//            let titre = NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte")
+            //            let titre = NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte")
             let alertController = UIAlertController(title: titre, message: message, preferredStyle: .alert)
-            
             if #available(iOS 10.0, *) {
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Annuler", comment: "Alert Cancel button"),
-                                                    style: .cancel,
-                                                    handler: nil))
-            var urlAOuvrir:URL
-            if perfsDeLApp {
-                urlAOuvrir = URL(string: UIApplication.openSettingsURLString)!  // url pour ouvrir les préférences de l'app appelante
-            } else {
-                
-                urlAOuvrir = URL(string:"App-Prefs::root=Settings&path=General")!  // url pour ouvrir les l'app Préférences : à la racine sauf si elle est déjà ouverte sur une sous-page. A noter que c'est manifestement une url pas 100% publique de la part d'Apple, donc susceptible de dysfonctionner à l'avenir.
-            }
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "Alert button to open Settings"),
-                                                    style: .`default`,
-                                                    handler: { _ in
-                UIApplication.shared.open(urlAOuvrir,
-                                          options: [:],
-                                          completionHandler: nil)
-            }))
-            } else {
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK"),
-                                                        style: .cancel,
-                                                        handler: nil))
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Annuler", comment: "Alert Cancel button"), style: .cancel, handler: nil))
+                var urlAOuvrir: URL
+                if perfsDeLApp {
+                    urlAOuvrir = URL(string: UIApplication.openSettingsURLString)!  // url pour ouvrir les préférences de l'app appelante
+                } else {
+                    urlAOuvrir = URL(string:"App-Prefs::root=Settings&path=General")!  // url pour ouvrir les l'app Préférences : à la racine sauf si elle est déjà ouverte sur une sous-page. A noter que c'est manifestement une url pas 100% publique de la part d'Apple, donc susceptible de dysfonctionner à l'avenir.
+                }
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "Alert button to open Settings"), style: .`default`, handler: { _ in
+                                    UIApplication.shared.open(urlAOuvrir, options: [:], completionHandler: nil)
+                                }))
+            } else {  // iOS 9
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: .cancel, handler: nil))
             }
             self.present(alertController, animated: true, completion: nil)
         }
     }
-
+    
 }
 
 extension String {
