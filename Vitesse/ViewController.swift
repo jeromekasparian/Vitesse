@@ -154,6 +154,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             self.messageDebug.isHidden = !debugMode
             self.labelPente.isHidden = !debugMode
             self.labelPente.text = ""
+            self.labelPente.font = UIFont.monospacedDigitSystemFont(ofSize: self.labelPente.font.pointSize, weight: .regular)
             self.affichageVitesse.text = ""
             self.adapterTailleAffichageVitesse()
             unite = userDefaults.value(forKey: keyUnite) as? Int ?? 1
@@ -466,11 +467,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 else {
                     self.affichageVitesse.text = String(format:"%d", Int(vitesse))
                 }
-                if pente.isNaN { // || abs(pente) < 0.03
+                if pente.isNaN || abs(pente) < 0.01 || abs(pente) > 0.3 {
                     self.labelPente.text = ""
                 } else {
                     let flechePente = pente > 0 ? "➚" : "➘"
-                    self.labelPente.text = String(format: flechePente + " %.0f%%", pente * 100.0)
+                    self.labelPente.text = String(format: flechePente + " %2.0f%%", pente * 100.0).replacingOccurrences(of: " ", with: "\u{2007}")
                 }
                 localisationEstPerdue = false
                 self.nombrePasOK = 0
