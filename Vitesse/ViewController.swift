@@ -105,6 +105,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var messagePublic: UILabel!
     @IBOutlet var messageDebug: UILabel!  // caché dans l'interface - utile pour les tests de début
     @IBOutlet var boutonOuvreStats: UIButton!
+    @IBOutlet var labelPente: UILabel!
     
     @IBAction func changeUnite () {
         unite = (unite + 1) % 3
@@ -112,7 +113,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         affichageUnite.setTitle(textesUnites[unite], for: .normal) // = textesUnites[unite]
         if (affichageVitesse.text != "") {
             let laVitesse = Double(affichageVitesse.text?.floatValue ?? -1.0)
-            afficherVitesse(vitesse: laVitesse, precisionOK: true)
+            afficherVitesse(vitesse: laVitesse, precisionOK: true, pente: .nan)
         }
     }
     
@@ -126,6 +127,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         debugMode = !debugMode
         DispatchQueue.main.async{
             self.messageDebug.isHidden = !debugMode
+            self.labelPente.isHidden = !debugMode
         }
     }
     
@@ -150,6 +152,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         DispatchQueue.main.async{
             self.messagePublic.text = ""
             self.messageDebug.isHidden = !debugMode
+            self.labelPente.isHidden = !debugMode
+            self.labelPente.text = ""
             self.affichageVitesse.text = ""
             self.adapterTailleAffichageVitesse()
             unite = userDefaults.value(forKey: keyUnite) as? Int ?? 1
@@ -271,7 +275,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             DispatchQueue.main.async{
                 if demoMode{
                     self.roueAttente.stopAnimating()
-                    self.afficherVitesse(vitesse: 1, precisionOK: true)
+                    self.afficherVitesse(vitesse: 1, precisionOK: true, pente: .nan)
                 }
                 else {
                     //                    self.messageSecret.isHidden = false
@@ -447,7 +451,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     
-    func afficherVitesse(vitesse: Double, precisionOK: Bool) {
+    func afficherVitesse(vitesse: Double, precisionOK: Bool, pente: Double) {
         print("vitesse : \(vitesse) \(textesUnites[unite])")
         DispatchQueue.main.async{
             //            self.imageLocalisation.isHidden = true
@@ -458,13 +462,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 // //                self.affichageVitesse.text = String(format:"%.0f",vitesse)
                 if Int(vitesse) <= 9 {
                     self.affichageVitesse.text = String(format:"\u{2007}%d", Int(vitesse))  // \u{2007} = blanc de même largeur qu'un chiffre
-                    //                    let vitesseAAfficher = String(format:"%02d", Int(vitesse))
-                    //                    let vitesseAAfficherMutable = NSMutableAttributedString(string: vitesseAAfficher)
-                    //                    vitesseAAfficherMutable.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSMakeRange(0 , 1))
-                    //                        self.affichageVitesse.attributedText = vitesseAAfficherMutable
                 }
                 else {
                     self.affichageVitesse.text = String(format:"%d", Int(vitesse))
+                }
+                if pente.isNaN { // || abs(pente) < 0.03
+                    self.labelPente.text = ""
+                } else {
+                    let flechePente = pente > 0 ? "➚" : "➘"
+                    self.labelPente.text = String(format: flechePente + " %.0f%%", pente * 100.0)
                 }
                 localisationEstPerdue = false
                 self.nombrePasOK = 0
@@ -474,6 +480,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 if (self.nombrePasOK >= 2) {
                     self.affichageVitesse.text = ""
                     self.affichePictoPasLocalisation()
+                    self.labelPente.text = ""
                     //                    self.roueAttente.startAnimating()  //isHidden = false
                     print("pas de signal")
                 }
@@ -512,6 +519,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }
         }
         var laDistance = -3.33
+        var pente: Double = .nan
         if vitesseOK {
             if locationPrecedente != nil && !altitudePrecedente.isNaN && laVitesseLue > vitesseMiniPourActiverCompteur && timeStampDernierePosition > 0.0 { //&& distanceTotaleSession > distanceMiniAvantComptageTemps {
                 laDistance =  location.distance(from: locationPrecedente)
@@ -524,6 +532,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     } else {
                         deniveleNegatifSession = deniveleNegatifSession - denivele
                     }
+                    pente = denivele / laDistance
                 }
                 distanceTotale = max(distanceTotale, distanceTotaleSession)
                 tempsSession = tempsSession + location.timestamp.timeIntervalSince1970 - timeStampDernierePosition
@@ -532,7 +541,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }
             NotificationCenter.default.post(name : Notification.Name(notificationMiseAJourStats),object: nil)  // on prévient le ViewController d'actualiser l'affichage et d'enregistrer
         }   // if vitesseOK
-        afficherVitesse(vitesse: laVitesseLue * facteurUnites[unite], precisionOK: vitesseOK)  // course (= le cap) est -1 la plupart du temps pendant que le système affine la localisaiton lorsqu'il vient d'avoir le droit d'y accéder
+        afficherVitesse(vitesse: laVitesseLue * facteurUnites[unite], precisionOK: vitesseOK, pente: pente)  // course (= le cap) est -1 la plupart du temps pendant que le système affine la localisaiton lorsqu'il vient d'avoir le droit d'y accéder
         var affichageSecret = ""
         if #available(iOS 10.0, *) {
             affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %d ∆t %.0f N %d\nh %.2f ∆h %.2f ➚ %.2f <h> %.2f", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, Int(location.timestamp.timeIntervalSince1970) % 1000, location.timestamp.timeIntervalSince1970 - timeStampDernierePosition, nombreLocations, location.altitude, location.verticalAccuracy, altitudeActuelle - altitudePrecedente, altitudeActuelle)
