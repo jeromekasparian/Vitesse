@@ -663,7 +663,9 @@ extension UIViewController {
             } else {  // iOS 9
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: .cancel, handler: nil))
             }
-            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                self.present(alertController, animated: true, completion: nil)
+            }
         }
     }
     
