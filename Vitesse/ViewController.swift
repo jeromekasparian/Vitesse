@@ -482,7 +482,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }  // Vitesse > 0 et precisionOK
             else {
                 //                if (self.imagePasLocalisation.isHidden) && (self.nombrePasOK >= 2) {
-                if (self.nombrePasOK >= 2) {
+                if (self.nombrePasOK >= 1) {
                     self.affichageVitesse.text = ""
                     self.affichePictoPasLocalisation()
                     self.labelPente.text = ""
