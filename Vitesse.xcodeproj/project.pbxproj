@@ -41,6 +41,8 @@
 
 /* Begin PBXFileReference section */
 		B502B840269CE55E0007F443 /* IconeVitesse1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IconeVitesse1024.png; sourceTree = "<group>"; };
+		B51A55142A02FAA900536393 /* LICENCE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENCE.md; sourceTree = "<group>"; };
+		B51A55152A02FC2C00536393 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B52C72462647D7D300185CBB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		B52C72472647D7D300185CBB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		B52C72482647D7D400185CBB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Vitesse/fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -98,6 +100,8 @@
 		B55EFBF92635BF4D002DF429 = {
 			isa = PBXGroup;
 			children = (
+				B51A55142A02FAA900536393 /* LICENCE.md */,
+				B51A55152A02FC2C00536393 /* README.md */,
 				B593A48A263F1AF30072A2B3 /* Localizable.strings */,
 				B55EFC042635BF4D002DF429 /* Vitesse */,
 				B55EFC1E2635BF52002DF429 /* VitesseTests */,

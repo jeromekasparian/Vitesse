@@ -599,33 +599,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         NotificationCenter.default.post(name : Notification.Name(notificationMiseAJourStats),object: nil)  // on prévient le ViewController d'actualiser l'affichage et d'enregistrer
     }
     
-    
-    //    func startTrackingActivityType() {  // https://wysockikamil.com/coremotion-pedometer-swift/
-    //      activityManager.startActivityUpdates(to: OperationQueue.main) {
-    //          [weak self] (activity: CMMotionActivity?) in
-    //          guard let activity = activity else { return }
-    //          DispatchQueue.main.async {
-    //              if activity.walking {
-    //                  nomActiviteEnCours = "Marche"
-    //              } else if activity.running {
-    //                nomActiviteEnCours = "Course"
-    //              } else if activity.automotive {
-    //                nomActiviteEnCours = "Voiture"
-    //              } else if activity.cycling {
-    //                nomActiviteEnCours = "Vélo"
-    //              } else if activity.unknown {
-    //                nomActiviteEnCours = "Inconnu"
-    //              } else if activity.stationary {
-    //                nomActiviteEnCours = "Statique"
-    //              } else {
-    //                nomActiviteEnCours = "Erreur"
-    //              }
-    //          }
-    //        print(nomActiviteEnCours)
-    //      }
-    //    }
-    
-    
 }
 
 extension UIView {
