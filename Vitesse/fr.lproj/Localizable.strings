@@ -40,5 +40,7 @@
 "'" = "'";
 "Trajet (%d h %02d min" = "Trajet (%d h %02d min";
 "Trajet (%02d min" = "Trajet (%d min";
-"La localisation n'est pas autorisée lorsque l'app est en arrière-plan. Les statistiques risquent d'être fausses. Vous pouvez autoriser la localisation en arrière plan dans les préférences de l'app." = "Pour des statistiques fiables, veuillez autoriser la localisation en arrière-plan. \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne.";
+"La localisation n'est pas autorisée lorsque l'app est en arrière-plan. Les statistiques risquent d'être fausses. Vous pouvez autoriser la localisation en arrière plan dans les préférences de l'app." = "Pour fournir des statistiques fiables, l'app a besoin de les actualiser même lorsqu'elle est inactive en arrière-plan. Pour cela, vous devez l'autoriser à toujours accéder à la localisation. \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne.";
 "Autorisez la localisation en arrière-plan" = "Autorisez la localisation en arrière-plan";
+
+"L'app n'a pas accès à la localisation lorsqu'elle est en arrière-plan, les statistiques seront peu précises" = "L'app n'a pas accès à la localisation quand elle est en arrière-plan, les statistiques seront peu précises";

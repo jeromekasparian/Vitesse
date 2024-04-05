@@ -20,6 +20,7 @@
 		B55EFC2B2635BF52002DF429 /* VitesseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC2A2635BF52002DF429 /* VitesseUITests.swift */; };
 		B593A48C263F1AF30072A2B3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B593A48A263F1AF30072A2B3 /* Localizable.strings */; };
 		B5CF5FAA263B42C400DA78A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC092635BF4D002DF429 /* ViewController.swift */; };
+		B5D801A52BBF5EBF0015D433 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B5D801A42BBF5EBF0015D433 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		B593A488263F1A820072A2B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B593A489263F1A820072A2B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B593A48B263F1AF30072A2B3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Vitesse/en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B5D801A42BBF5EBF0015D433 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		B5E2579A264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/Main.strings"; sourceTree = "<group>"; };
 		B5E2579B264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		B5E2579C264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "Vitesse/fr-FR.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 		B55EFBF92635BF4D002DF429 = {
 			isa = PBXGroup;
 			children = (
+				B5D801A42BBF5EBF0015D433 /* PrivacyInfo.xcprivacy */,
 				B51A55142A02FAA900536393 /* LICENCE.md */,
 				B51A55152A02FC2C00536393 /* README.md */,
 				B593A48A263F1AF30072A2B3 /* Localizable.strings */,
@@ -262,6 +265,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B55EFC152635BF51002DF429 /* LaunchScreen.storyboard in Resources */,
+				B5D801A52BBF5EBF0015D433 /* PrivacyInfo.xcprivacy in Resources */,
 				B52C72A626487F6D00185CBB /* InfoPlist.strings in Resources */,
 				B593A48C263F1AF30072A2B3 /* Localizable.strings in Resources */,
 				B502B841269CE55E0007F443 /* IconeVitesse1024.png in Resources */,
@@ -507,7 +511,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 106;
+				CURRENT_PROJECT_VERSION = 107;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -515,7 +519,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.14;
+				MARKETING_VERSION = 1.15;
 				PRODUCT_BUNDLE_IDENTIFIER = JK.Vitesse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -529,7 +533,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 106;
+				CURRENT_PROJECT_VERSION = 107;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -537,7 +541,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.14;
+				MARKETING_VERSION = 1.15;
 				PRODUCT_BUNDLE_IDENTIFIER = JK.Vitesse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

@@ -23,9 +23,14 @@ class StatsModalViewController: UIViewController {
     @IBOutlet var labelVitesseMoyenne: UILabel!
     @IBOutlet var labelDeniveleSession: UILabel!
     @IBOutlet var labelTitreTrajetEnCours: UILabel!
+    @IBOutlet var labelPasLocalisationToujours: UILabel!
+    
+    var alerteLocationToujoursDejaAffichee: Bool = false
+    let keyAlerteLocationToujoursDejaAffichee = "keyAlerteLocationToujoursDejaAffichee"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        alerteLocationToujoursDejaAffichee = userDefaults.value(forKey: keyAlerteLocationToujoursDejaAffichee) as? Bool ?? false
         statsEstOuvert = true
         if luminositeEstForcee {
             UIScreen.main.brightness = luminositeEcranSysteme
@@ -72,8 +77,14 @@ class StatsModalViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if !locationToujoursAutorisee {
+        if !locationToujoursAutorisee && !alerteLocationToujoursDejaAffichee {
             afficherAlerteRenvoiPreferences(titre: NSLocalizedString("Autorisez la localisation en arrière-plan", comment: "Titre de l'alerte"), message: NSLocalizedString("La localisation n'est pas autorisée lorsque l'app est en arrière-plan. Les statistiques risquent d'être fausses. Vous pouvez autoriser la localisation en arrière plan dans les préférences de l'app.", comment: ""), perfsDeLApp: true)
+            alerteLocationToujoursDejaAffichee = true
+            userDefaults.set(true, forKey: keyAlerteLocationToujoursDejaAffichee)
+        }
+        DispatchQueue.main.async {
+            self.labelPasLocalisationToujours.text = locationToujoursAutorisee ? "" : NSLocalizedString("L'app n'a pas accès à la localisation lorsqu'elle est en arrière-plan, les statistiques seront peu précises", comment: "")
+
         }
     }
     @IBAction func changeAutorisationTeteHaute(){
@@ -137,7 +148,11 @@ class StatsModalViewController: UIViewController {
                 if (unite == 0) { self.labelDistanceTotaleSession.text = String(format: "%.0f ", distanceTotaleSession * facteurUnitesDistance[unite]).replacingOccurrences(of: " ", with: "\u{2007}").replacingOccurrences(of: " ", with: "\u{2007}") }
                 else { self.labelDistanceTotaleSession.text = String(format: "%.1f ", distanceTotaleSession * facteurUnitesDistance[unite]).replacingOccurrences(of: " ", with: "\u{2007}") }
                 self.labelDistanceTotaleSession.text?.append(textesUnitesDistance[unite])
-                self.labelDeniveleSession.text = (String(format: "➚ %4.0f", denivelePositifSession  * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite] + String(format: "\n➘ %4.0f", deniveleNegatifSession * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite]).replacingOccurrences(of: " ", with: "\u{2007}")
+                if self.view.frame.width > self.view.frame.height {
+                    self.labelDeniveleSession.text = (String(format: "➚ %4.0f", denivelePositifSession  * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite] + String(format: ", ➘ %4.0f", deniveleNegatifSession * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite]).replacingOccurrences(of: " ", with: "\u{2007}").replacingOccurrences(of: ",", with: ", ") //.replacingOccurrences(of: "➚", with: "➚ ").replacingOccurrences(of: "➘", with: "➘ ")
+                } else {
+                    self.labelDeniveleSession.text = (String(format: "➚ %4.0f", denivelePositifSession  * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite] + "\n➘ " + String(format: "%4.0f", deniveleNegatifSession * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite]).replacingOccurrences(of: " ", with: "\u{2007}")
+                }
                 //            if (premierTempsValide == 0.0) || !debugMode {
                 //                affichageTempsSession.isHidden = true
                 //            }
@@ -184,5 +199,9 @@ class StatsModalViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         statsEstOuvert = false
         super.viewWillDisappear(true)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        afficherStats()
     }
 }
