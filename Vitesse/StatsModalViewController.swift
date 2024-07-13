@@ -32,13 +32,7 @@ class StatsModalViewController: UIViewController {
         super.viewDidLoad()
         alerteLocationToujoursDejaAffichee = userDefaults.value(forKey: keyAlerteLocationToujoursDejaAffichee) as? Bool ?? false
         statsEstOuvert = true
-        if luminositeEstForcee {
-            UIScreen.main.brightness = luminositeEcranSysteme
-            if debugMode{
-                self.labelVitesseMax.textColor = .red
-            }
-        }
-        luminositeEstForcee = false
+        stoppeLuminositeMax()
         switchAffichageTeteHaute.isOn = autoriserAffichageTeteHaute
         boutonEffacerSession.setTitle("", for: .normal)
         if #available(iOS 13.0, *) {
@@ -73,6 +67,7 @@ class StatsModalViewController: UIViewController {
         labelDeniveleSession.font = UIFont.monospacedDigitSystemFont(ofSize: labelDeniveleSession.font.pointSize, weight: .regular)
 //        affichageTempsSession.font = UIFont.monospacedDigitSystemFont(ofSize: affichageTempsSession.font.pointSize, weight: .regular)
 //        affichageTempsSession.text = ""
+        labelPasLocalisationToujours.text = locationToujoursAutorisee ? "" : NSLocalizedString("L'app n'a pas accès à la localisation lorsqu'elle est en arrière-plan, les statistiques seront peu précises", comment: "")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -83,8 +78,7 @@ class StatsModalViewController: UIViewController {
             userDefaults.set(true, forKey: keyAlerteLocationToujoursDejaAffichee)
         }
         DispatchQueue.main.async {
-            self.labelPasLocalisationToujours.text = locationToujoursAutorisee ? "" : NSLocalizedString("L'app n'a pas accès à la localisation lorsqu'elle est en arrière-plan, les statistiques seront peu précises", comment: "")
-
+            self.labelPasLocalisationToujours.isHidden = locationToujoursAutorisee
         }
     }
     @IBAction func changeAutorisationTeteHaute(){

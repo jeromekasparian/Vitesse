@@ -86,24 +86,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillEnterForeground(_ application: UIApplication) {
          UIApplication.shared.isIdleTimerDisabled = true
-        if luminositeEstForcee {
-            UIScreen.main.brightness = luminositeEcranSysteme
-            if debugMode{
-                UIScreen.main.brightness = 0.0
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    UIScreen.main.brightness = luminositeEcranSysteme
-                }
-            }
-        }
-        luminositeEstForcee = false
-//        enregistrerStats()
+        stoppeLuminositeMax()
+        //        enregistrerStats()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
+        stoppeLuminositeMax()
 //        enregistrerStats()
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
+        stoppeLuminositeMax()
         enregistrerStats()
     }
     
@@ -119,7 +112,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-//        enregistrerStats()
+        stoppeLuminositeMax()
+        //        enregistrerStats()
     }
     
 }
@@ -127,4 +121,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 func enregistrerStats(){
     userDefaults.set(distanceTotale, forKey: keyDistanceTotale)
     userDefaults.set(vitesseMax, forKey: keyVitesseMax)
+}
+
+func stoppeLuminositeMax() {
+    if luminositeEstForcee {
+        UIScreen.main.brightness = luminositeEcranSysteme
+//        if debugMode{
+//            UIScreen.main.brightness = 0.0
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+//                UIScreen.main.brightness = luminositeEcranSysteme
+//            }
+//        }
+        luminositeEstForcee = false
+    }
+
 }

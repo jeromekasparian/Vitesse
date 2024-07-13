@@ -59,7 +59,7 @@ let facteurUnitesDistance: [Double] = [1.0, 0.001, 0.00062137]
 let facteurUnitesAltitude: [Double] = [1.0, 1.0, 3.2808]
 var nombrePositionsLues = 0
 var timeStampDernierePosition = 0.0
-var luminositeEcranSysteme = CGFloat(0.0)
+var luminositeEcranSysteme = UIScreen.main.brightness //CGFloat(0.0)
 var luminositeEstForcee = false
 let autoriseAffichageTeteHauteBlanc = false
 var autoriserAffichageTeteHaute = true
@@ -98,6 +98,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     //    var positionEntreeBackground: CLLocation! = nil
     
     let motionManager = CMMotionManager()
+    var dateDernierBoutonReactiveChevron = Date()
+    let tempsMiniAffichageChevron: Double = 10.0  // secondes
+    let vitesseMiniPourCacherChevron: Double = 3.0 // m/s
+    let luminositeMinimalePourForcerAffichageBlanc: Double = 0.8
     
     @IBOutlet weak var affichageVitesse: UILabel!
     @IBOutlet weak var gabaritAffichageVitesse: UILabel!
@@ -108,6 +112,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var messageDebug: UILabel!  // caché dans l'interface - utile pour les tests de début
     @IBOutlet var boutonOuvreStats: UIButton!
     @IBOutlet var labelPente: UILabel!
+    @IBOutlet var boutonReactiveChevron: UIButton!
+    
+    override var prefersHomeIndicatorAutoHidden: Bool {
+        return true
+    }
     
     @IBAction func changeUnite () {
         unite = (unite + 1) % 3
@@ -116,6 +125,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         if (affichageVitesse.text != "") {
             let laVitesse = Double(affichageVitesse.text?.floatValue ?? -1.0)
             afficherVitesse(vitesse: laVitesse, precisionOK: true, pente: .nan)
+        }
+    }
+    
+    @IBAction func boutonReactiveChevronAppuye(){
+        dateDernierBoutonReactiveChevron = Date()
+        if boutonOuvreStats.isHidden {
+            DispatchQueue.main.async {
+                self.boutonOuvreStats.isHidden = false
+            }
         }
     }
     
@@ -152,6 +170,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             imagePasLocalisation.image = UIImage(named: "location.slash.fill")
         }
         DispatchQueue.main.async{
+            self.boutonReactiveChevron.setTitle("", for: .normal)
             self.messagePublic.text = ""
             self.messageDebug.isHidden = !debugMode
             self.labelPente.isHidden = !debugMode
@@ -311,11 +330,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         enregistrerStats()
-        if luminositeEstForcee {
-            UIScreen.main.brightness = luminositeEcranSysteme
-            self.messageDebug.textColor = .green
-        }
-        luminositeEstForcee = false
+        stoppeLuminositeMax()
+//        if luminositeEstForcee {
+//            UIScreen.main.brightness = luminositeEcranSysteme
+//            self.messageDebug.textColor = .green
+//        }
+//        luminositeEstForcee = false
         timer.invalidate()
         super.viewWillDisappear(true)
     }
@@ -353,7 +373,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     
                 }
                 // on force l'écran à rester en mode portrait
-                if !luminositeEstForcee && !statsEstOuvert { //isUserInteractionEnabled { // && self.view.isFirstResponder)
+                if !luminositeEstForcee && !statsEstOuvert && UIApplication.shared.applicationState == .active { //isUserInteractionEnabled { // && self.view.isFirstResponder)
                     luminositeEcranSysteme = UIScreen.main.brightness   // on note la luminosité de l'écran, pour pouvoir y revenir plus tard
                     UIScreen.main.brightness = CGFloat(1.0)  // on met le contraste au max
                     self.messageDebug.textColor = .yellow
@@ -361,18 +381,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 }
             }  // téléphone à plat -> position tête haute
             else { // le téléphone est penché -> on affiche le texte en gris pour lecture directe
-                self.affichageVitesse.textColor = .lightGray
+                if luminositeEstForcee && UIApplication.shared.applicationState == .active { // on revient au contraste par défaut du système
+                    stoppeLuminositeMax()
+//                    self.messageDebug.textColor = .red
+                }
+                self.affichageVitesse.textColor = UIScreen.main.brightness >= self.luminositeMinimalePourForcerAffichageBlanc ? .white : .lightGray
                 if self.affichageTeteHauteBlanc {
                     self.affichageVitesse.backgroundColor = .black
                     self.affichageUnite.backgroundColor = self.affichageVitesse.backgroundColor
                 }
                 self.affichageUnite.setTitleColor(self.affichageVitesse.textColor, for: .normal)
-                
-                if luminositeEstForcee { // on revient au contraste par défaut du système
-                    UIScreen.main.brightness = luminositeEcranSysteme
-                    self.messageDebug.textColor = .red
-                    luminositeEstForcee = false
-                }
             }  // téléphone dressé
         } // DispatchQueue.main.async
     }
@@ -514,6 +532,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         var laDistance = -3.33
         var pente: Double = .nan
         if vitesseOK {
+            
             if locationPrecedente != nil && !altitudePrecedente.isNaN && laVitesseLue > vitesseMiniPourActiverCompteur && timeStampDernierePosition > 0.0 { //&& distanceTotaleSession > distanceMiniAvantComptageTemps {
                 laDistance =  location.distance(from: locationPrecedente)
                 distanceTotale = distanceTotale + laDistance
@@ -552,12 +571,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             } // if vitesseOK
         }
         afficherVitesse(vitesse: laVitesseLue * facteurUnites[unite], precisionOK: vitesseOK, pente: pente)  // course (= le cap) est -1 la plupart du temps pendant que le système affine la localisaiton lorsqu'il vient d'avoir le droit d'y accéder
+        print("temps", Date().timeIntervalSince(dateDernierBoutonReactiveChevron))
+        if laVitesseLue > vitesseMiniPourCacherChevron && Date().timeIntervalSince(dateDernierBoutonReactiveChevron) > tempsMiniAffichageChevron && !boutonOuvreStats.isHidden {
+            DispatchQueue.main.async {
+                self.boutonOuvreStats.isHidden = true
+            }
+        } else if laVitesseLue < 0.2 && vitesseOK && boutonOuvreStats.isHidden {
+            DispatchQueue.main.async {
+                self.boutonOuvreStats.isHidden = false
+            }
+        }
         var affichageSecret = ""
         if #available(iOS 10.0, *) {
             affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %d ∆t %.0f N %d\nh %.2f ∆h %.0f ➚ %.2f <h> %.2f", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, Int(location.timestamp.timeIntervalSince1970) % 1000, location.timestamp.timeIntervalSince1970 - timeStampDernierePosition, nombreLocations, location.altitude, location.verticalAccuracy, altitudeActuelle - altitudePrecedente, altitudeActuelle)
         } else { // Fallback on earlier versions
             affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %d ∆t %.0f N %d\nh %.2f ∆h %.0f ➚ %.2f <h> %.2f", location.speed, location.course, location.horizontalAccuracy, laDistance, Int(location.timestamp.timeIntervalSince1970) % 1000, location.timestamp.timeIntervalSince1970 - timeStampDernierePosition, nombreLocations, location.altitude, location.verticalAccuracy, altitudeActuelle - altitudePrecedente, altitudeActuelle)
         }
+        affichageSecret = affichageSecret + String(format: "\nv %.1f m/s t %.1f s", laVitesseLue, Date().timeIntervalSince(dateDernierBoutonReactiveChevron))
         locationPrecedente = location
         altitudePrecedente = altitudeActuelle
         timeStampDernierePosition = location.timestamp.timeIntervalSince1970
