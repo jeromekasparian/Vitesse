@@ -86,6 +86,7 @@
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
+                                    <action selector="boutonReactiveChevronAppuye" destination="BYZ-38-t0r" eventType="touchUpInside" id="d6J-Ib-c90"/>
                                     <action selector="changeUnite" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vzx-Qn-sFL"/>
                                 </connections>
                             </button>
