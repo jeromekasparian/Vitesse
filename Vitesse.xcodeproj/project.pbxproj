@@ -16,29 +16,10 @@
 		B55EFC102635BF4D002DF429 /* Vitesse.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC0E2635BF4D002DF429 /* Vitesse.xcdatamodeld */; };
 		B55EFC122635BF51002DF429 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B55EFC112635BF51002DF429 /* Assets.xcassets */; };
 		B55EFC152635BF51002DF429 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B55EFC132635BF51002DF429 /* LaunchScreen.storyboard */; };
-		B55EFC202635BF52002DF429 /* VitesseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC1F2635BF52002DF429 /* VitesseTests.swift */; };
-		B55EFC2B2635BF52002DF429 /* VitesseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC2A2635BF52002DF429 /* VitesseUITests.swift */; };
 		B593A48C263F1AF30072A2B3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B593A48A263F1AF30072A2B3 /* Localizable.strings */; };
 		B5CF5FAA263B42C400DA78A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC092635BF4D002DF429 /* ViewController.swift */; };
 		B5D801A52BBF5EBF0015D433 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B5D801A42BBF5EBF0015D433 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		B55EFC1C2635BF52002DF429 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B55EFBFA2635BF4D002DF429 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B55EFC012635BF4D002DF429;
-			remoteInfo = Vitesse;
-		};
-		B55EFC272635BF52002DF429 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B55EFBFA2635BF4D002DF429 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B55EFC012635BF4D002DF429;
-			remoteInfo = Vitesse;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		B502B840269CE55E0007F443 /* IconeVitesse1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IconeVitesse1024.png; sourceTree = "<group>"; };
@@ -58,10 +39,8 @@
 		B55EFC092635BF4D002DF429 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B55EFC0F2635BF4D002DF429 /* Vitesse.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Vitesse.xcdatamodel; sourceTree = "<group>"; };
 		B55EFC112635BF51002DF429 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B55EFC1B2635BF52002DF429 /* VitesseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VitesseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B55EFC1F2635BF52002DF429 /* VitesseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitesseTests.swift; sourceTree = "<group>"; };
 		B55EFC212635BF52002DF429 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B55EFC262635BF52002DF429 /* VitesseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VitesseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B55EFC2A2635BF52002DF429 /* VitesseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitesseUITests.swift; sourceTree = "<group>"; };
 		B55EFC2C2635BF52002DF429 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B593A488263F1A820072A2B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -76,20 +55,6 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		B55EFBFF2635BF4D002DF429 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B55EFC182635BF52002DF429 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B55EFC232635BF52002DF429 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -117,8 +82,6 @@
 			isa = PBXGroup;
 			children = (
 				B55EFC022635BF4D002DF429 /* Vitesse.app */,
-				B55EFC1B2635BF52002DF429 /* VitesseTests.xctest */,
-				B55EFC262635BF52002DF429 /* VitesseUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -179,42 +142,6 @@
 			productReference = B55EFC022635BF4D002DF429 /* Vitesse.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B55EFC1A2635BF52002DF429 /* VitesseTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B55EFC322635BF52002DF429 /* Build configuration list for PBXNativeTarget "VitesseTests" */;
-			buildPhases = (
-				B55EFC172635BF52002DF429 /* Sources */,
-				B55EFC182635BF52002DF429 /* Frameworks */,
-				B55EFC192635BF52002DF429 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B55EFC1D2635BF52002DF429 /* PBXTargetDependency */,
-			);
-			name = VitesseTests;
-			productName = VitesseTests;
-			productReference = B55EFC1B2635BF52002DF429 /* VitesseTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		B55EFC252635BF52002DF429 /* VitesseUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B55EFC352635BF52002DF429 /* Build configuration list for PBXNativeTarget "VitesseUITests" */;
-			buildPhases = (
-				B55EFC222635BF52002DF429 /* Sources */,
-				B55EFC232635BF52002DF429 /* Frameworks */,
-				B55EFC242635BF52002DF429 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B55EFC282635BF52002DF429 /* PBXTargetDependency */,
-			);
-			name = VitesseUITests;
-			productName = VitesseUITests;
-			productReference = B55EFC262635BF52002DF429 /* VitesseUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -226,14 +153,6 @@
 				TargetAttributes = {
 					B55EFC012635BF4D002DF429 = {
 						CreatedOnToolsVersion = 12.4;
-					};
-					B55EFC1A2635BF52002DF429 = {
-						CreatedOnToolsVersion = 12.4;
-						TestTargetID = B55EFC012635BF4D002DF429;
-					};
-					B55EFC252635BF52002DF429 = {
-						CreatedOnToolsVersion = 12.4;
-						TestTargetID = B55EFC012635BF4D002DF429;
 					};
 				};
 			};
@@ -253,8 +172,6 @@
 			projectRoot = "";
 			targets = (
 				B55EFC012635BF4D002DF429 /* Vitesse */,
-				B55EFC1A2635BF52002DF429 /* VitesseTests */,
-				B55EFC252635BF52002DF429 /* VitesseUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -274,20 +191,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B55EFC192635BF52002DF429 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B55EFC242635BF52002DF429 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -303,36 +206,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B55EFC172635BF52002DF429 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B55EFC202635BF52002DF429 /* VitesseTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B55EFC222635BF52002DF429 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B55EFC2B2635BF52002DF429 /* VitesseUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		B55EFC1D2635BF52002DF429 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B55EFC012635BF4D002DF429 /* Vitesse */;
-			targetProxy = B55EFC1C2635BF52002DF429 /* PBXContainerItemProxy */;
-		};
-		B55EFC282635BF52002DF429 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B55EFC012635BF4D002DF429 /* Vitesse */;
-			targetProxy = B55EFC272635BF52002DF429 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B52C729526487CA700185CBB /* Info.plist */ = {
@@ -439,7 +313,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -495,7 +370,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -511,10 +387,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 111;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -533,10 +410,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 110;
+				CURRENT_PROJECT_VERSION = 111;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -546,90 +424,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		B55EFC332635BF52002DF429 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = L3A73K7T3G;
-				INFOPLIST_FILE = VitesseTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = JK.VitesseTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Vitesse.app/Vitesse";
-			};
-			name = Debug;
-		};
-		B55EFC342635BF52002DF429 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = L3A73K7T3G;
-				INFOPLIST_FILE = VitesseTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = JK.VitesseTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Vitesse.app/Vitesse";
-			};
-			name = Release;
-		};
-		B55EFC362635BF52002DF429 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = L3A73K7T3G;
-				INFOPLIST_FILE = VitesseUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = JK.VitesseUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Vitesse;
-			};
-			name = Debug;
-		};
-		B55EFC372635BF52002DF429 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = L3A73K7T3G;
-				INFOPLIST_FILE = VitesseUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = JK.VitesseUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Vitesse;
 			};
 			name = Release;
 		};
@@ -650,24 +444,6 @@
 			buildConfigurations = (
 				B55EFC302635BF52002DF429 /* Debug */,
 				B55EFC312635BF52002DF429 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B55EFC322635BF52002DF429 /* Build configuration list for PBXNativeTarget "VitesseTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B55EFC332635BF52002DF429 /* Debug */,
-				B55EFC342635BF52002DF429 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B55EFC352635BF52002DF429 /* Build configuration list for PBXNativeTarget "VitesseUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B55EFC362635BF52002DF429 /* Debug */,
-				B55EFC372635BF52002DF429 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
