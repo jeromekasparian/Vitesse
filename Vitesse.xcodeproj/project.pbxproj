@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B502B841269CE55E0007F443 /* IconeVitesse1024.png in Resources */ = {isa = PBXBuildFile; fileRef = B502B840269CE55E0007F443 /* IconeVitesse1024.png */; };
 		B52C72A626487F6D00185CBB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B52C72A826487F6D00185CBB /* InfoPlist.strings */; };
 		B53935FE263D9ED200C37623 /* StatsModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53935FD263D9ED200C37623 /* StatsModalViewController.swift */; };
 		B55EFC062635BF4D002DF429 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC052635BF4D002DF429 /* AppDelegate.swift */; };
@@ -22,7 +21,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B502B840269CE55E0007F443 /* IconeVitesse1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IconeVitesse1024.png; sourceTree = "<group>"; };
 		B51A55142A02FAA900536393 /* LICENCE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENCE.md; sourceTree = "<group>"; };
 		B51A55152A02FC2C00536393 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B52C72462647D7D300185CBB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
@@ -89,7 +87,6 @@
 		B55EFC042635BF4D002DF429 /* Vitesse */ = {
 			isa = PBXGroup;
 			children = (
-				B502B840269CE55E0007F443 /* IconeVitesse1024.png */,
 				B55EFC052635BF4D002DF429 /* AppDelegate.swift */,
 				B55EFC072635BF4D002DF429 /* SceneDelegate.swift */,
 				B53935FD263D9ED200C37623 /* StatsModalViewController.swift */,
@@ -148,8 +145,9 @@
 		B55EFBFA2635BF4D002DF429 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					B55EFC012635BF4D002DF429 = {
 						CreatedOnToolsVersion = 12.4;
@@ -185,7 +183,6 @@
 				B5D801A52BBF5EBF0015D433 /* PrivacyInfo.xcprivacy in Resources */,
 				B52C72A626487F6D00185CBB /* InfoPlist.strings in Resources */,
 				B593A48C263F1AF30072A2B3 /* Localizable.strings in Resources */,
-				B502B841269CE55E0007F443 /* IconeVitesse1024.png in Resources */,
 				B55EFC122635BF51002DF429 /* Assets.xcassets in Resources */,
 				B55EFC0D2635BF4D002DF429 /* Main.storyboard in Resources */,
 			);
@@ -299,6 +296,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -321,6 +319,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
 			};
 			name = Debug;
 		};
@@ -362,6 +361,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -377,6 +377,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = complete;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -387,7 +388,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 111;
+				CURRENT_PROJECT_VERSION = 113;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
@@ -396,7 +397,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.16;
+				MARKETING_VERSION = 1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = JK.Vitesse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -410,7 +411,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 111;
+				CURRENT_PROJECT_VERSION = 113;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
@@ -419,7 +420,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.16;
+				MARKETING_VERSION = 1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = JK.Vitesse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

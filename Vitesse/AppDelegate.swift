@@ -118,12 +118,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 }
 
-func enregistrerStats(){
+@MainActor func enregistrerStats(){
     userDefaults.set(distanceTotale, forKey: keyDistanceTotale)
     userDefaults.set(vitesseMax, forKey: keyVitesseMax)
 }
 
-func stoppeLuminositeMax() {
+@MainActor func stoppeLuminositeMax() {
     if luminositeEstForcee {
         UIScreen.main.brightness = luminositeEcranSysteme
 //        if debugMode{

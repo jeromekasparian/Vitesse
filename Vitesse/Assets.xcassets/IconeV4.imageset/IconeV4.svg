@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1024 1024">
+  <defs>
+    <style>
+      .cls-1 {
+        font-family: MyriadPro-Regular, 'Myriad Pro';
+        font-size: 240px;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        isolation: isolate;
+      }
+
+      .cls-1, .cls-3 {
+        fill: #cecece;
+      }
+
+      .cls-3 {
+        font-family: MyriadPro-Semibold, 'Myriad Pro';
+        font-size: 810px;
+        font-weight: 600;
+      }
+
+      .cls-4 {
+        stroke: #000;
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <!-- Generator: Adobe Illustrator 28.6.0, SVG Export Plug-In . SVG Version: 1.2.0 Build 709)  -->
+  <g>
+    <g id="Calque_1">
+      <rect class="cls-4" width="1024" height="1024"/>
+      <g class="cls-2">
+        <text class="cls-3" transform="translate(77.8 661.8)"><tspan x="0" y="0">74</tspan></text>
+      </g>
+      <g class="cls-2">
+        <text class="cls-1" transform="translate(245.8 940.6)"><tspan x="0" y="0">km/h</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>

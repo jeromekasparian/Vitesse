@@ -24,8 +24,8 @@ import CoreMotion
 //import CallKit
 
 let autoriseDebug = true
-var debugMode: Bool = false
-var demoMode = false // pour faire les captures d'écran pour l'app store
+@MainActor var debugMode: Bool = false
+@MainActor var demoMode = false // pour faire les captures d'écran pour l'app store
 
 //enum Etat {
 //    case indetermine, pasDeLocalisation, initialisation, precisionInsuffisante, vitesseOK
@@ -38,18 +38,18 @@ let keyVitesseMax = "vitesseMax"
 let keyDistanceTotale = "distanceTotale"
 let keyAutoriserAffichageTeteHaute = "autoriserAffichageTeteHaute"
 let notificationMiseAJourStats = "miseAJourStats"
-var vitesseMax = 0.0
-var vitesseMaxSession = 0.0
-var distanceTotale = 0.0
-var distanceTotaleSession = 0.0
-var denivelePositifSession = 0.0
-var deniveleNegatifSession = 0.0
-var tempsSession = 0.0  // le temps total de trajet, en secondes
+@MainActor var vitesseMax = 0.0
+@MainActor var vitesseMaxSession = 0.0
+@MainActor var distanceTotale = 0.0
+@MainActor var distanceTotaleSession = 0.0
+@MainActor var denivelePositifSession = 0.0
+@MainActor var deniveleNegatifSession = 0.0
+@MainActor var tempsSession = 0.0  // le temps total de trajet, en secondes
 let penteMaximaleCredible: Double = 0.3
 
 //var premierTempsValide = 0.0
 let precisionVerticaleMinimale: Double = 10.0 // précision minimale sur l'altitude pour qu'on la prenne en compte
-var unite: Int = 1 // par défaut, km/h
+@MainActor var unite: Int = 1 // par défaut, km/h
 let textesUnites: [String] = [NSLocalizedString("m/s", comment: "vistesse : m/s"), NSLocalizedString("km/h", comment: "vitesse : km/h"), NSLocalizedString("mph", comment: "vitesse : mph")]
 let facteurUnites: [Double] = [1.0, 3.6, 2.2369362920544]
 let textesUnitesDistance: [String] = [NSLocalizedString("m", comment: "distance : m"), NSLocalizedString("km", comment: "distance : km"), NSLocalizedString("mi", comment: "distance : mi")]
@@ -57,27 +57,27 @@ let textesUnitesAltitude: [String] = [" " + NSLocalizedString("m", comment: "m")
 
 let facteurUnitesDistance: [Double] = [1.0, 0.001, 0.00062137]
 let facteurUnitesAltitude: [Double] = [1.0, 1.0, 3.2808]
-var nombrePositionsLues = 0
-var timeStampDernierePosition = 0.0
-var luminositeEcranSysteme = UIScreen.main.brightness //CGFloat(0.0)
-var luminositeEstForcee = false
+@MainActor var nombrePositionsLues = 0
+@MainActor var timeStampDernierePosition = 0.0
+@MainActor var luminositeEcranSysteme = UIScreen.main.brightness //CGFloat(0.0)
+@MainActor var luminositeEstForcee = false
 let autoriseAffichageTeteHauteBlanc = false
-var autoriserAffichageTeteHaute = true
+@MainActor var autoriserAffichageTeteHaute = true
 let tempsMaxEntrePositions = 5.0 // temps en secondes au-delà duquel on considère qu'on a perdu la position
 let nbPositionsMiniAuDemarrage = 5 // nombre de positions qu'on lit avant de les prendre en compte.
-var statsEstOuvert = false
+@MainActor var statsEstOuvert = false
 let tempsAvantReinitialisationAuto: Double = 3600 * 12 // temps en secondes au-delà duquel on réinitialise les stats de trajet
-var localisationEstPerdue = false
+@MainActor var localisationEstPerdue = false
 //let distanceMiniAvantComptageTemps = 15.0  // on considère qu'on est en marche si on a parcouru au moins 30 m
-let userDefaults = UserDefaults.standard
+@MainActor let userDefaults = UserDefaults.standard
 let vitesseMiniPourActiverCompteur = 0.2 // m/s : vitesse en-dessous de laquelle on considère qu'on est immobile
 //var nomActiviteEnCours = "Init"
-var locationToujoursAutorisee: Bool = false
+@MainActor var locationToujoursAutorisee: Bool = false
 let dureeMaxiTunnel: Double = 3600 // secondes : temps maxi pendant lequel on peut perdre la localisation et, à l'arriver, incrémenter la distance, la durée et le dénivelé.
 //let distanceMaxiPourStopperBackground = 100 // m : si on a bougé de moins de 100 m en 1 heure et qu'on est resté en fond, on arrête d'actualiser la position.
 
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, @preconcurrency CLLocationManagerDelegate {
     
     var locationManager: CLLocationManager! = CLLocationManager()
     //    let activityManager = CMMotionActivityManager()
