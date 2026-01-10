@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		B52C72A626487F6D00185CBB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B52C72A826487F6D00185CBB /* InfoPlist.strings */; };
 		B53935FE263D9ED200C37623 /* StatsModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53935FD263D9ED200C37623 /* StatsModalViewController.swift */; };
+		B53B67002F118F9800975359 /* Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53B66FF2F118F9800975359 /* Stats.swift */; };
+		B53B67022F11A43A00975359 /* ExtensionUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53B67012F11A43A00975359 /* ExtensionUIView.swift */; };
+		B53B67042F11A46100975359 /* ExtensionUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53B67032F11A46100975359 /* ExtensionUIViewController.swift */; };
+		B53B67062F11A48E00975359 /* ExtensionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53B67052F11A48E00975359 /* ExtensionString.swift */; };
+		B53B67082F11A4B200975359 /* ExtensionUIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53B67072F11A4B200975359 /* ExtensionUIWindow.swift */; };
 		B55EFC062635BF4D002DF429 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC052635BF4D002DF429 /* AppDelegate.swift */; };
 		B55EFC082635BF4D002DF429 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC072635BF4D002DF429 /* SceneDelegate.swift */; };
 		B55EFC0D2635BF4D002DF429 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B55EFC0B2635BF4D002DF429 /* Main.storyboard */; };
@@ -31,16 +36,17 @@
 		B52C72A726487F6D00185CBB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B52C72AC26487F7200185CBB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B53935FD263D9ED200C37623 /* StatsModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsModalViewController.swift; sourceTree = "<group>"; };
+		B53B66FF2F118F9800975359 /* Stats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stats.swift; sourceTree = "<group>"; };
+		B53B67012F11A43A00975359 /* ExtensionUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIView.swift; sourceTree = "<group>"; };
+		B53B67032F11A46100975359 /* ExtensionUIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIViewController.swift; sourceTree = "<group>"; };
+		B53B67052F11A48E00975359 /* ExtensionString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionString.swift; sourceTree = "<group>"; };
+		B53B67072F11A4B200975359 /* ExtensionUIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIWindow.swift; sourceTree = "<group>"; };
 		B55EFC022635BF4D002DF429 /* Vitesse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vitesse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B55EFC052635BF4D002DF429 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B55EFC072635BF4D002DF429 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B55EFC092635BF4D002DF429 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B55EFC0F2635BF4D002DF429 /* Vitesse.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Vitesse.xcdatamodel; sourceTree = "<group>"; };
 		B55EFC112635BF51002DF429 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B55EFC1F2635BF52002DF429 /* VitesseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitesseTests.swift; sourceTree = "<group>"; };
-		B55EFC212635BF52002DF429 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B55EFC2A2635BF52002DF429 /* VitesseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VitesseUITests.swift; sourceTree = "<group>"; };
-		B55EFC2C2635BF52002DF429 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B593A488263F1A820072A2B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B593A489263F1A820072A2B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B593A48B263F1AF30072A2B3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Vitesse/en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -70,8 +76,6 @@
 				B51A55152A02FC2C00536393 /* README.md */,
 				B593A48A263F1AF30072A2B3 /* Localizable.strings */,
 				B55EFC042635BF4D002DF429 /* Vitesse */,
-				B55EFC1E2635BF52002DF429 /* VitesseTests */,
-				B55EFC292635BF52002DF429 /* VitesseUITests */,
 				B55EFC032635BF4D002DF429 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -89,6 +93,11 @@
 			children = (
 				B55EFC052635BF4D002DF429 /* AppDelegate.swift */,
 				B55EFC072635BF4D002DF429 /* SceneDelegate.swift */,
+				B53B67012F11A43A00975359 /* ExtensionUIView.swift */,
+				B53B67032F11A46100975359 /* ExtensionUIViewController.swift */,
+				B53B67072F11A4B200975359 /* ExtensionUIWindow.swift */,
+				B53B67052F11A48E00975359 /* ExtensionString.swift */,
+				B53B66FF2F118F9800975359 /* Stats.swift */,
 				B53935FD263D9ED200C37623 /* StatsModalViewController.swift */,
 				B55EFC092635BF4D002DF429 /* ViewController.swift */,
 				B55EFC0B2635BF4D002DF429 /* Main.storyboard */,
@@ -99,24 +108,6 @@
 				B55EFC0E2635BF4D002DF429 /* Vitesse.xcdatamodeld */,
 			);
 			path = Vitesse;
-			sourceTree = "<group>";
-		};
-		B55EFC1E2635BF52002DF429 /* VitesseTests */ = {
-			isa = PBXGroup;
-			children = (
-				B55EFC1F2635BF52002DF429 /* VitesseTests.swift */,
-				B55EFC212635BF52002DF429 /* Info.plist */,
-			);
-			path = VitesseTests;
-			sourceTree = "<group>";
-		};
-		B55EFC292635BF52002DF429 /* VitesseUITests */ = {
-			isa = PBXGroup;
-			children = (
-				B55EFC2A2635BF52002DF429 /* VitesseUITests.swift */,
-				B55EFC2C2635BF52002DF429 /* Info.plist */,
-			);
-			path = VitesseUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,7 +138,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1610;
+				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					B55EFC012635BF4D002DF429 = {
 						CreatedOnToolsVersion = 12.4;
@@ -196,9 +187,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				B55EFC062635BF4D002DF429 /* AppDelegate.swift in Sources */,
+				B53B67002F118F9800975359 /* Stats.swift in Sources */,
+				B53B67022F11A43A00975359 /* ExtensionUIView.swift in Sources */,
 				B55EFC082635BF4D002DF429 /* SceneDelegate.swift in Sources */,
 				B53935FE263D9ED200C37623 /* StatsModalViewController.swift in Sources */,
+				B53B67082F11A4B200975359 /* ExtensionUIWindow.swift in Sources */,
+				B53B67042F11A46100975359 /* ExtensionUIViewController.swift in Sources */,
 				B5CF5FAA263B42C400DA78A3 /* ViewController.swift in Sources */,
+				B53B67062F11A48E00975359 /* ExtensionString.swift in Sources */,
 				B55EFC102635BF4D002DF429 /* Vitesse.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -294,6 +290,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = L3A73K7T3G;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -317,6 +314,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -359,6 +357,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = L3A73K7T3G;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -375,6 +374,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -388,16 +388,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 113;
-				DEVELOPMENT_TEAM = L3A73K7T3G;
+				CURRENT_PROJECT_VERSION = 114;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.17;
+				MARKETING_VERSION = 1.18;
 				PRODUCT_BUNDLE_IDENTIFIER = JK.Vitesse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -411,16 +410,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 113;
-				DEVELOPMENT_TEAM = L3A73K7T3G;
+				CURRENT_PROJECT_VERSION = 114;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.17;
+				MARKETING_VERSION = 1.18;
 				PRODUCT_BUNDLE_IDENTIFIER = JK.Vitesse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

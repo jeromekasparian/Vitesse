@@ -7,6 +7,13 @@
 
 import UIKit
 
+protocol StatsModalDelegate: AnyObject {
+    func statsModalViewControllerDidTapEffacerSession(_ viewController: StatsModalViewController)
+    func statsModalViewControllerDidTapEffacerTotal(_ viewController: StatsModalViewController)
+    func afficherStatsReelles(_ viewController: StatsModalViewController)
+//    func statsModalViewControllerDidTapOK(_ viewController: StatsModalViewController)
+}
+
 class StatsModalViewController: UIViewController {
     
     @IBOutlet var labelVitesseMax: UILabel!
@@ -15,7 +22,6 @@ class StatsModalViewController: UIViewController {
     @IBOutlet var labelDistanceTotaleSession: UILabel!
     @IBOutlet var boutonEffacerSession: UIButton!
     @IBOutlet var boutonEffacerTotal: UIButton!
-//    @IBOutlet var affichageTempsSession: UILabel!
     @IBOutlet var switchAffichageTeteHaute: UISwitch!
     @IBOutlet var labelAffichageTeteHaute: UILabel!
     @IBOutlet var boutonOK: UIButton!
@@ -25,13 +31,19 @@ class StatsModalViewController: UIViewController {
     @IBOutlet var labelTitreTrajetEnCours: UILabel!
     @IBOutlet var labelPasLocalisationToujours: UILabel!
     
+//    var stats = Stats()
+    var autoriserAffichageTeteHaute = true
+    var userDefaults = UserDefaults.standard
+    var locationToujoursAutorisee: Bool = false
+    var demoMode = false // pour faire les captures d'écran pour l'app store
+
     var alerteLocationToujoursDejaAffichee: Bool = false
     let keyAlerteLocationToujoursDejaAffichee = "keyAlerteLocationToujoursDejaAffichee"
+    var delegate: StatsModalDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         alerteLocationToujoursDejaAffichee = userDefaults.value(forKey: keyAlerteLocationToujoursDejaAffichee) as? Bool ?? false
-        statsEstOuvert = true
         stoppeLuminositeMax()
         switchAffichageTeteHaute.isOn = autoriserAffichageTeteHaute
         boutonEffacerSession.setTitle("", for: .normal)
@@ -52,7 +64,7 @@ class StatsModalViewController: UIViewController {
         boutonEffacerTotal.setTitle("", for: .normal)
         //        boutonEffacerSession.setImage(UIImage(systemName: "xmark"), for: .normal)
         afficherStats()
-        NotificationCenter.default.addObserver(self, selector: #selector(afficherStats), name: NSNotification.Name(rawValue: notificationMiseAJourStats), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(afficherStats), name: NSNotification.Name(rawValue: notificationMiseAJourStats), object: nil)
         // Do any additional setup after loading the view.
         
         // mise en place de la détection du swipe down pour fermer le tiroir des stats
@@ -78,7 +90,7 @@ class StatsModalViewController: UIViewController {
             userDefaults.set(true, forKey: keyAlerteLocationToujoursDejaAffichee)
         }
         DispatchQueue.main.async {
-            self.labelPasLocalisationToujours.isHidden = locationToujoursAutorisee
+            self.labelPasLocalisationToujours.isHidden = self.locationToujoursAutorisee
         }
     }
     @IBAction func changeAutorisationTeteHaute(){
@@ -87,17 +99,17 @@ class StatsModalViewController: UIViewController {
     }
     
     @IBAction func fermerStats () {
+//        statsModalViewControllerDidTapOK(self)
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func effacerSession() {
-        vitesseMaxSession = 0.0
-        distanceTotaleSession = 0.0
-        denivelePositifSession = 0.0
-        deniveleNegatifSession = 0.0
-//        premierTempsValide = 0.0 // Date(timeIntervalSinceNow: 0.0).timeIntervalSince1970
-        tempsSession = 0.0
-//        timeStampDernierePosition = 0.0
+        delegate?.statsModalViewControllerDidTapEffacerSession(self)
+//        vitesseMaxSession = 0.0
+//        distanceTotaleSession = 0.0
+//        denivelePositifSession = 0.0
+//        deniveleNegatifSession = 0.0
+//        tempsSession = 0.0
         afficherStats()
     }
     
@@ -112,20 +124,21 @@ class StatsModalViewController: UIViewController {
     }
     
     @objc func effacerToutVraiment() {
-        vitesseMaxSession = 0.0
-        distanceTotaleSession = 0.0
-        denivelePositifSession = 0.0
-        deniveleNegatifSession = 0.0
-        vitesseMax = 0.0
-        distanceTotale = 0.0
-//        premierTempsValide = 0.0 // Date(timeIntervalSinceNow: 0.0).timeIntervalSince1970
-        tempsSession = 0.0
+        delegate?.statsModalViewControllerDidTapEffacerTotal(self)
+//        vitesseMaxSession = 0.0
+//        distanceTotaleSession = 0.0
+//        denivelePositifSession = 0.0
+//        deniveleNegatifSession = 0.0
+//        vitesseMax = 0.0
+//        distanceTotale = 0.0
+////        premierTempsValide = 0.0 // Date(timeIntervalSinceNow: 0.0).timeIntervalSince1970
+//        tempsSession = 0.0
         afficherStats()
     }
     
     @objc func afficherStats(){
         DispatchQueue.main.async {
-            if demoMode {
+            if self.demoMode {
                 self.labelVitesseMax.text = "112 km/h"
                 self.labelVitesseMaxSession.text = "83 km/h"
                 self.labelDistanceTotale.text = "1848.5 km"
@@ -134,47 +147,7 @@ class StatsModalViewController: UIViewController {
                 self.labelVitesseMoyenne.text = NSLocalizedString("Moyenne ", comment: "") + "37 km/h"
             }
             else {
-                self.labelVitesseMax.text = (vitesseMax >= 100.0 ? String(format: "Max %3.0f ", vitesseMax * facteurUnites[unite]) + textesUnites[unite] : String(format: "Max %4.1f ", vitesseMax * facteurUnites[unite]) + textesUnites[unite]).replacingOccurrences(of: " ", with: "\u{2007}")
-                self.labelVitesseMaxSession.text = (vitesseMaxSession >= 100.0 ? String(format: "Max %3.0f ", vitesseMaxSession * facteurUnites[unite]) + textesUnites[unite] : String(format: "Max %4.1f ", vitesseMaxSession * facteurUnites[unite]) + textesUnites[unite]).replacingOccurrences(of: " ", with: "\u{2007}")
-                if (unite == 0) { self.labelDistanceTotale.text = String(format: "%4.0f ", distanceTotale * facteurUnitesDistance[unite]).replacingOccurrences(of: " ", with: "\u{2007}") }
-                else { self.labelDistanceTotale.text = String(format: "%.1f ", distanceTotale * facteurUnitesDistance[unite]).replacingOccurrences(of: " ", with: "\u{2007}") }
-                self.labelDistanceTotale.text?.append(textesUnitesDistance[unite])
-                if (unite == 0) { self.labelDistanceTotaleSession.text = String(format: "%.0f ", distanceTotaleSession * facteurUnitesDistance[unite]).replacingOccurrences(of: " ", with: "\u{2007}").replacingOccurrences(of: " ", with: "\u{2007}") }
-                else { self.labelDistanceTotaleSession.text = String(format: "%.1f ", distanceTotaleSession * facteurUnitesDistance[unite]).replacingOccurrences(of: " ", with: "\u{2007}") }
-                self.labelDistanceTotaleSession.text?.append(textesUnitesDistance[unite])
-                if self.view.frame.width > self.view.frame.height {
-                    self.labelDeniveleSession.text = (String(format: "➚ %4.0f", denivelePositifSession  * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite] + String(format: ", ➘ %4.0f", deniveleNegatifSession * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite]).replacingOccurrences(of: " ", with: "\u{2007}").replacingOccurrences(of: ",", with: ", ") //.replacingOccurrences(of: "➚", with: "➚ ").replacingOccurrences(of: "➘", with: "➘ ")
-                } else {
-                    self.labelDeniveleSession.text = (String(format: "➚ %4.0f", denivelePositifSession  * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite] + "\n➘ " + String(format: "%4.0f", deniveleNegatifSession * facteurUnitesAltitude[unite]) + textesUnitesAltitude[unite]).replacingOccurrences(of: " ", with: "\u{2007}")
-                }
-                //            if (premierTempsValide == 0.0) || !debugMode {
-                //                affichageTempsSession.isHidden = true
-                //            }
-                //            else {
-                //                let tempsSession = abs(Int(Date(timeIntervalSince1970: premierTempsValide).timeIntervalSinceNow))
-                let secondes = Int(tempsSession) % 60
-                let minutesTot = Int(tempsSession) / 60
-                let minutes = minutesTot % 60
-                let heures = minutesTot / 60
-                var message = heures > 0 ? String(format:NSLocalizedString("Trajet (%d h %02d min", comment: ""), heures, minutes) : String(format:NSLocalizedString("Trajet (%02d min", comment: ""), minutes)
-                if debugMode {
-                    message = message.appending(String(format:" %02d s", secondes))
-                    //                    if tempsSession < 0 {
-                    //                        affichageTempsSession.textColor = .red
-                    //                    }
-                }
-                message = message + ")"
-                self.labelTitreTrajetEnCours.text = message
-                //            affichageTempsSession.text = message
-                //                affichageTempsSession.isHidden = false
-                let vitesseMoyenne = distanceTotaleSession / tempsSession
-                if vitesseMoyenne.isFinite && tempsSession >= 10.0 && vitesseMoyenne < vitesseMaxSession {
-                    self.labelVitesseMoyenne.text = (vitesseMoyenne < 100.0 ? NSLocalizedString("Moyenne ", comment: "") + String(format: "%4.1f ", vitesseMoyenne * facteurUnites[unite]) + textesUnites[unite] :
-                                                    NSLocalizedString("Moyenne ", comment: "") + String(format: "%3.0f ", vitesseMoyenne * facteurUnites[unite]) + textesUnites[unite]).replacingOccurrences(of: " ", with: "\u{2007}")
-                } else {
-                    self.labelVitesseMoyenne.text = NSLocalizedString("Moyenne ", comment: "") + " ---  " + textesUnites[unite]
-                }
-                //            }
+                self.delegate?.afficherStatsReelles(self)
             }
         }
     }
@@ -191,7 +164,6 @@ class StatsModalViewController: UIViewController {
     
     
     override func viewWillDisappear(_ animated: Bool) {
-        statsEstOuvert = false
         super.viewWillDisappear(true)
     }
     

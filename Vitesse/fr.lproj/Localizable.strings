@@ -23,6 +23,8 @@
 "m"="m";
 "km"="km";
 "mi"="mi";
+"kn"="kn";
+"nm"="nm";
 
 "Localisation perdue" = "Vitesse indisponible ou précision insuffisante";
 "Erreur de localisation" = "Erreur de localisation";
