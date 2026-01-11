@@ -45,12 +45,13 @@ let penteMaximaleCredible: Double = 0.3
 //var premierTempsValide = 0.0
 let precisionVerticaleMinimale: Double = 10.0 // précision minimale sur l'altitude pour qu'on la prenne en compte
 let textesUnites: [String] = [NSLocalizedString("m/s", comment: "vistesse : m/s"), NSLocalizedString("km/h", comment: "vitesse : km/h"), NSLocalizedString("mph", comment: "vitesse : mph"), NSLocalizedString("kn", comment: "vitesse : nœuds")]
-let facteurUnitesVitesses: [Double] = [1.0, 3.6, 2.2369362920544, 1.94552529]
 let textesUnitesDistance: [String] = [NSLocalizedString("m", comment: "distance : m"), NSLocalizedString("km", comment: "distance : km"), NSLocalizedString("mi", comment: "distance : mi"), NSLocalizedString("mn", comment: "distance : miles nautiques")]
 let textesUnitesAltitude: [String] = [" " + NSLocalizedString("m", comment: "m"), " " + NSLocalizedString("m", comment: "m"), NSLocalizedString("'", comment: "pied") + " ", NSLocalizedString("'", comment: "pied") + " "]
 
+let facteurUnitesVitesses: [Double] = [1.0, 3.6, 2.2369362920544, 1.94552529]
 let facteurUnitesDistance: [Double] = [1.0, 0.001, 0.00062137, 0.00053996]
 let facteurUnitesAltitude: [Double] = [1.0, 1.0, 3.2808, 3.2808]
+
 let autoriseAffichageTeteHauteBlanc = false
 let tempsMaxEntrePositions = 5.0 // temps en secondes au-delà duquel on considère qu'on a perdu la position
 let nbPositionsMiniAuDemarrage = 5 // nombre de positions qu'on lit avant de les prendre en compte.
@@ -74,7 +75,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     let radiansEnDegres = 180.0 / 3.14159
     var positionTeteHaute: Bool = false
     var anciennePositionTeteHaute: Bool = false
-    var locationPrecedente: CLLocation! = nil
+    var locationPrecedente: CLLocation?
     var altitudePrecedente: Double = .nan
     var altitudeActuelle: Double = .nan
     var distancePourAltitudeActuelle: Double = .nan
@@ -253,15 +254,12 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             // Fallback on earlier versions
             boutonOuvreStats.setImage(UIImage(named: "chevron.compact.up"), for: .normal)
         }
+// par défaut on désactive le mode miroir au premier lancement.
+        self.autoriserAffichageTeteHaute = self.userDefaults.value(forKey: keyAutoriserAffichageTeteHaute) as? Bool ?? false
+   
         let alert = UIAlertController(title: NSLocalizedString("Pour votre sécurité", comment: "Titre alerte"), message: NSLocalizedString("avant de conduire, assurez-vous que le mode Avion ou \"Ne pas déranger en voiture\" est activé", comment: "Contenu de l'alerte de sécurité"), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "bouton OK"), style: .default, handler: {_ in self.gereDroitsLocalisation(origineViewDidLoad: true, origineViewDidAppear: false)}))
         DispatchQueue.main.async{
-            if (self.stats.distanceTotale > 0) || (self.stats.vitesseMax > 0){  // Transition : si on a déjà utilisé l'app, on garde le comportement précédent...
-                self.autoriserAffichageTeteHaute = self.userDefaults.value(forKey: keyAutoriserAffichageTeteHaute) as? Bool ?? true
-            }
-            else { // ... sinon par défaut on désactive le mode miroir au premier lancement.
-                self.autoriserAffichageTeteHaute = self.userDefaults.value(forKey: keyAutoriserAffichageTeteHaute) as? Bool ?? false
-            }
             self.present(alert, animated: true)
             
             //            self.gabaritAffichageVitesse.isHidden = false
@@ -368,12 +366,16 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     }
     
     
-    func gereOrientation(motion:CMDeviceMotion?,error:Error?) {
+    func gereOrientation(motion: CMDeviceMotion?, error: Error?) {
         let tangage = motion!.attitude.pitch * radiansEnDegres  // basculement vers l'avant
         let roulis = motion!.attitude.roll * radiansEnDegres    // basculement vers le côté
         let commencerPositionTeteHaute = (abs(roulis) < inclinaisonMax) && (abs(roulis) > abs(tangage)) && (UIWindow.isLandscape) && autoriserAffichageTeteHaute // UIDevice.current.orientation.isLandscape est l'orientation physique de l'appareil, quand on est plus ou moins à plat il dit "à plat"
-        let arreterPositionTeteHaute = (abs(roulis) > inclinaisonMax + 5.0) || (abs(roulis + 5.0) < abs(tangage))
-        if commencerPositionTeteHaute {positionTeteHaute = true} else if arreterPositionTeteHaute {positionTeteHaute = false}
+        let arreterPositionTeteHaute = (abs(roulis) > inclinaisonMax + 5.0) || (abs(roulis + 5.0) < abs(tangage)) || !autoriserAffichageTeteHaute
+        if commencerPositionTeteHaute {
+            positionTeteHaute = true
+        } else if arreterPositionTeteHaute {
+            positionTeteHaute = false
+        }
         DispatchQueue.main.async{
             if (self.positionTeteHaute != self.anciennePositionTeteHaute) {
                 self.affichageVitesse.flipX()
@@ -543,8 +545,8 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     //    CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let nombreLocations = locations.count
-        let location:CLLocation = locations.last!
-        var laVitesseLue = location.speed
+        guard let location: CLLocation = locations.last else {return}
+//        var laVitesseLue = location.speed
         nombrePositionsLues = nombrePositionsLues + 1
         // au-delà de 12 heures en arrière-plan, on réinitialise le trajet
         if (location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) > tempsAvantReinitialisationAuto {
@@ -553,67 +555,68 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 statsModalViewController?.afficherStats()
             }
         }
-        let vitesseOK = ((laVitesseLue >= 0 && laVitesseLue < 1) || location.course >= 0)
-        && (location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) < dureeMaxiTunnel
-        && ((nombrePositionsLues >= nbPositionsMiniAuDemarrage) || (location.horizontalAccuracy <= 10))
-        laVitesseLue = (laVitesseLue >= 0 && location.speedAccuracy > 0) ? laVitesseLue : 0.0
-        var laDistance = -3.33
+        let directionOK = location.course >= 0 || (location.speed >= 0 && location.speed < 1)
+        let pasTunnelLong = location.timestamp.timeIntervalSince1970 - timeStampDernierePosition < dureeMaxiTunnel
+        let localisationsNombreusesOuPrecises = nombrePositionsLues >= nbPositionsMiniAuDemarrage || location.horizontalAccuracy <= 10
+        let deplacementDepuisDernierePosition = locationPrecedente?.distance(from: location) ?? 0.0
+        let deplacementSelonVitesse = location.speed * location.timestamp.timeIntervalSince(locationPrecedente?.timestamp ?? Date(timeIntervalSince1970: 0))
+        let ratioDeplacements = deplacementSelonVitesse / deplacementDepuisDernierePosition
+        let deplacementVraisemblable = ratioDeplacements > 0.67 || ratioDeplacements < 1.5
+        let vitesseOK = directionOK && pasTunnelLong && localisationsNombreusesOuPrecises && location.courseAccuracy >= 0 && deplacementVraisemblable
+        
+//        laVitesseLue = (laVitesseLue >= 0 && location.speedAccuracy > 0) ? laVitesseLue : 0.0
         var pente: Double = .nan
-        if vitesseOK {
-            if locationPrecedente != nil && !altitudePrecedente.isNaN && laVitesseLue > vitesseMiniPourActiverCompteur && timeStampDernierePosition > 0.0 { //&& distanceTotaleSession > distanceMiniAvantComptageTemps {
-                laDistance =  location.distance(from: locationPrecedente)
-                stats.distanceTotale = stats.distanceTotale + laDistance
-                stats.distanceTotaleSession = stats.distanceTotaleSession + laDistance
+        if vitesseOK && location.speed > vitesseMiniPourActiverCompteur && timeStampDernierePosition > 0.0 {
+                stats.distanceTotale = stats.distanceTotale + deplacementDepuisDernierePosition
+                stats.distanceTotaleSession = stats.distanceTotaleSession + deplacementDepuisDernierePosition
                 stats.distanceTotale = max(stats.distanceTotale, stats.distanceTotaleSession)
                 stats.tempsSession = stats.tempsSession + location.timestamp.timeIntervalSince1970 - timeStampDernierePosition
-                if (laVitesseLue > stats.vitesseMax) {stats.vitesseMax = laVitesseLue}
-                if (laVitesseLue > stats.vitesseMaxSession) {stats.vitesseMaxSession = laVitesseLue}
-            }
+                if location.speed > stats.vitesseMax {
+                    stats.vitesseMax = location.speed
+                }
+                if location.speed > stats.vitesseMaxSession {
+                    stats.vitesseMaxSession = location.speed
+                }
         } // if vitesseOK
         if location.verticalAccuracy <= precisionVerticaleMinimale {
             if altitudeActuelle.isNaN {
                 altitudeActuelle = location.altitude
-                distancePourAltitudeActuelle = laDistance
+                distancePourAltitudeActuelle = deplacementDepuisDernierePosition
                 nombreAltitudesMoyennees = 1
             } else if nombreAltitudesMoyennees <= 10 {
                 altitudeActuelle = (location.altitude + (altitudeActuelle * Double(nombreAltitudesMoyennees))) / Double(nombreAltitudesMoyennees + 1)
-                distancePourAltitudeActuelle = (laDistance + (distancePourAltitudeActuelle * Double(nombreAltitudesMoyennees))) / Double(nombreAltitudesMoyennees + 1)
+                distancePourAltitudeActuelle = (deplacementDepuisDernierePosition + (distancePourAltitudeActuelle * Double(nombreAltitudesMoyennees))) / Double(nombreAltitudesMoyennees + 1)
                 nombreAltitudesMoyennees = nombreAltitudesMoyennees + 1
             } else {
                 altitudeActuelle = 0.1 * location.altitude + 0.9 * altitudeActuelle // moyenne glissante avec amortissement, pour "lisser" les fluctuations de l'altitude
-                distancePourAltitudeActuelle = 0.1 * laDistance + 0.9 * distancePourAltitudeActuelle // moyenne glissante avec amortissement, pour "lisser" les fluctuations de l'altitude
+                distancePourAltitudeActuelle = 0.1 * deplacementDepuisDernierePosition + 0.9 * distancePourAltitudeActuelle // moyenne glissante avec amortissement, pour "lisser" les fluctuations de l'altitude
                 nombreAltitudesMoyennees = nombreAltitudesMoyennees + 1
             }
             if vitesseOK {
                 let denivele = altitudeActuelle - altitudePrecedente
-                if abs(denivele) <= laDistance * penteMaximaleCredible && nombreAltitudesMoyennees >= 10 {
+                if abs(denivele) <= deplacementDepuisDernierePosition * penteMaximaleCredible && nombreAltitudesMoyennees >= 10 {
                     if denivele > 0 {
                         stats.denivelePositifSession = stats.denivelePositifSession + denivele
                     } else {
                         stats.deniveleNegatifSession = stats.deniveleNegatifSession - denivele
                     }
-                    pente = denivele / laDistance
+                    pente = denivele / deplacementDepuisDernierePosition
                 }
             } // if vitesseOK
         }
-        afficherVitesse(vitesse: laVitesseLue * facteurUnitesVitesses[unite], precisionOK: vitesseOK, pente: pente)  // course (= le cap) est -1 la plupart du temps pendant que le système affine la localisaiton lorsqu'il vient d'avoir le droit d'y accéder
+        afficherVitesse(vitesse: location.speed * facteurUnitesVitesses[unite], precisionOK: vitesseOK, pente: pente)  // course (= le cap) est -1 la plupart du temps pendant que le système affine la localisaiton lorsqu'il vient d'avoir le droit d'y accéder
         print("temps", Date().timeIntervalSince(dateDernierBoutonReactiveChevron))
-        if laVitesseLue > vitesseMiniPourCacherChevron && Date().timeIntervalSince(dateDernierBoutonReactiveChevron) > tempsMiniAffichageChevron && !boutonOuvreStats.isHidden {
+        if location.speed > vitesseMiniPourCacherChevron && Date().timeIntervalSince(dateDernierBoutonReactiveChevron) > tempsMiniAffichageChevron && !boutonOuvreStats.isHidden {
             DispatchQueue.main.async {
                 self.boutonOuvreStats.isHidden = true
             }
-        } else if laVitesseLue < 0.2 && vitesseOK && boutonOuvreStats.isHidden {
+        } else if location.speed < 0.2 && vitesseOK && boutonOuvreStats.isHidden {
             DispatchQueue.main.async {
                 self.boutonOuvreStats.isHidden = false
             }
         }
         var affichageSecret = ""
-        if #available(iOS 10.0, *) {
-            affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %d ∆t %.0f N %d\nh %.2f ∆h %.0f ➚ %.2f <h> %.2f", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, laDistance, Int(location.timestamp.timeIntervalSince1970) % 1000, location.timestamp.timeIntervalSince1970 - timeStampDernierePosition, nombreLocations, location.altitude, location.verticalAccuracy, altitudeActuelle - altitudePrecedente, altitudeActuelle)
-        } else { // Fallback on earlier versions
-            affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %d ∆t %.0f N %d\nh %.2f ∆h %.0f ➚ %.2f <h> %.2f", location.speed, location.course, location.horizontalAccuracy, laDistance, Int(location.timestamp.timeIntervalSince1970) % 1000, location.timestamp.timeIntervalSince1970 - timeStampDernierePosition, nombreLocations, location.altitude, location.verticalAccuracy, altitudeActuelle - altitudePrecedente, altitudeActuelle)
-        }
-        affichageSecret = affichageSecret + String(format: "\nv %.1f m/s t %.1f s", laVitesseLue, Date().timeIntervalSince(dateDernierBoutonReactiveChevron))
+        affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %d ∆t %.0f N %d\nh %.2f ∆h %.0f ➚ %.2f <h> %.2f\nv %.1f m/s t %.1f s", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, deplacementDepuisDernierePosition, Int(location.timestamp.timeIntervalSince1970) % 1000, location.timestamp.timeIntervalSince1970 - timeStampDernierePosition, nombreLocations, location.altitude, location.verticalAccuracy, altitudeActuelle - altitudePrecedente, altitudeActuelle, location.speed, Date().timeIntervalSince(dateDernierBoutonReactiveChevron))
         locationPrecedente = location
         altitudePrecedente = altitudeActuelle
         timeStampDernierePosition = location.timestamp.timeIntervalSince1970
@@ -653,6 +656,11 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     func statsModalViewControllerDidTapEffacerTotal(_ viewController: StatsModalViewController) {
         stats.effacerTout()
     }
+    
+    func actualiserAffichageTeteHaute(autoriserAffichageTeteHaute: Bool) {
+        self.autoriserAffichageTeteHaute = autoriserAffichageTeteHaute
+    }
+
     
     func afficherStatsReelles(_ viewController: StatsModalViewController) {
         viewController.labelVitesseMax.text = (self.stats.vitesseMax >= 100.0 ? String(format: "Max %3.0f ", self.stats.vitesseMax * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite] : String(format: "Max %4.1f ", self.stats.vitesseMax * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}")

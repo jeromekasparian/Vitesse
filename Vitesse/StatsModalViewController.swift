@@ -11,6 +11,7 @@ protocol StatsModalDelegate: AnyObject {
     func statsModalViewControllerDidTapEffacerSession(_ viewController: StatsModalViewController)
     func statsModalViewControllerDidTapEffacerTotal(_ viewController: StatsModalViewController)
     func afficherStatsReelles(_ viewController: StatsModalViewController)
+    func actualiserAffichageTeteHaute(autoriserAffichageTeteHaute: Bool)
 //    func statsModalViewControllerDidTapOK(_ viewController: StatsModalViewController)
 }
 
@@ -95,6 +96,7 @@ class StatsModalViewController: UIViewController {
     }
     @IBAction func changeAutorisationTeteHaute(){
         autoriserAffichageTeteHaute = switchAffichageTeteHaute.isOn
+        self.delegate?.actualiserAffichageTeteHaute(autoriserAffichageTeteHaute: switchAffichageTeteHaute.isOn)
         userDefaults.set(autoriserAffichageTeteHaute, forKey: keyAutoriserAffichageTeteHaute)
     }
     
