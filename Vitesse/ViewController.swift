@@ -41,15 +41,16 @@ let nomSegueOuvreStats = "OuvreStats"
 
   // le temps total de trajet, en secondes
 let penteMaximaleCredible: Double = 0.3
+let penteMinimalePourAffichage: Double = 0.02
 
 //var premierTempsValide = 0.0
 let precisionVerticaleMinimale: Double = 10.0 // précision minimale sur l'altitude pour qu'on la prenne en compte
-let textesUnites: [String] = [NSLocalizedString("m/s", comment: "vistesse : m/s"), NSLocalizedString("km/h", comment: "vitesse : km/h"), NSLocalizedString("mph", comment: "vitesse : mph"), NSLocalizedString("kn", comment: "vitesse : nœuds")]
-let textesUnitesDistance: [String] = [NSLocalizedString("m", comment: "distance : m"), NSLocalizedString("km", comment: "distance : km"), NSLocalizedString("mi", comment: "distance : mi"), NSLocalizedString("mn", comment: "distance : miles nautiques")]
+let textesUnites: [String] = [NSLocalizedString("m/s", comment: "vistesse : m/s"), NSLocalizedString("km/h", comment: "vitesse : km/h"), NSLocalizedString("mph", comment: "vitesse : mph"), NSLocalizedString("kt", comment: "vitesse : nœuds")]
+let textesUnitesDistance: [String] = [NSLocalizedString("km", comment: "distance : m"), NSLocalizedString("km", comment: "distance : km"), NSLocalizedString("mi", comment: "distance : mi"), NSLocalizedString("nm", comment: "distance : miles nautiques")]
 let textesUnitesAltitude: [String] = [" " + NSLocalizedString("m", comment: "m"), " " + NSLocalizedString("m", comment: "m"), NSLocalizedString("'", comment: "pied") + " ", NSLocalizedString("'", comment: "pied") + " "]
 
 let facteurUnitesVitesses: [Double] = [1.0, 3.6, 2.2369362920544, 1.94552529]
-let facteurUnitesDistance: [Double] = [1.0, 0.001, 0.00062137, 0.00053996]
+let facteurUnitesDistance: [Double] = [0.001, 0.001, 0.00062137, 0.00053996]
 let facteurUnitesAltitude: [Double] = [1.0, 1.0, 3.2808, 3.2808]
 
 let autoriseAffichageTeteHauteBlanc = false
@@ -507,7 +508,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         print("vitesse : \(vitesse) \(textesUnites[unite])")
         DispatchQueue.main.async{
             //            self.imageLocalisation.isHidden = true
-            if ((vitesse >= 0) && precisionOK) {
+            if (vitesse >= 0 || precisionOK) {
                 self.messagePublic.text = ""
                 self.imagePasLocalisation.isHidden = true
                 self.roueAttente.stopAnimating()  //isHidden = true
@@ -518,7 +519,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 else {
                     self.affichageVitesse.text = String(format:"%d", Int(vitesse))
                 }
-                if pente.isNaN || abs(pente) < 0.01 || abs(pente) > penteMaximaleCredible {
+                if !self.debugMode && (pente.isNaN || abs(pente) < penteMinimalePourAffichage || abs(pente) > penteMaximaleCredible) {
                     self.labelPente.text = ""
                 } else {
                     let flechePente = pente > 0 ? "➚" : "➘"
@@ -526,7 +527,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 }
                 self.localisationEstPerdue = false
                 self.nombrePasOK = 0
-            }  // Vitesse > 0 et precisionOK
+            }  // Vitesse >= 0 et precisionOK
             else {
                 //                if (self.imagePasLocalisation.isHidden) && (self.nombrePasOK >= 2) {
                 if (self.nombrePasOK >= 1) {
@@ -562,11 +563,12 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         let deplacementSelonVitesse = location.speed * location.timestamp.timeIntervalSince(locationPrecedente?.timestamp ?? Date(timeIntervalSince1970: 0))
         let ratioDeplacements = deplacementSelonVitesse / deplacementDepuisDernierePosition
         let deplacementVraisemblable = ratioDeplacements > 0.67 || ratioDeplacements < 1.5
-        let vitesseOK = directionOK && pasTunnelLong && localisationsNombreusesOuPrecises && location.courseAccuracy >= 0 && deplacementVraisemblable
+        let vitesseOKPourAffichage = directionOK && pasTunnelLong && localisationsNombreusesOuPrecises && location.courseAccuracy >= 0
+        let vitesseOKPourStats = vitesseOKPourAffichage && deplacementVraisemblable
         
 //        laVitesseLue = (laVitesseLue >= 0 && location.speedAccuracy > 0) ? laVitesseLue : 0.0
         var pente: Double = .nan
-        if vitesseOK && location.speed > vitesseMiniPourActiverCompteur && timeStampDernierePosition > 0.0 {
+        if vitesseOKPourStats && location.speed > vitesseMiniPourActiverCompteur && timeStampDernierePosition > 0.0 {
                 stats.distanceTotale = stats.distanceTotale + deplacementDepuisDernierePosition
                 stats.distanceTotaleSession = stats.distanceTotaleSession + deplacementDepuisDernierePosition
                 stats.distanceTotale = max(stats.distanceTotale, stats.distanceTotaleSession)
@@ -592,25 +594,25 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 distancePourAltitudeActuelle = 0.1 * deplacementDepuisDernierePosition + 0.9 * distancePourAltitudeActuelle // moyenne glissante avec amortissement, pour "lisser" les fluctuations de l'altitude
                 nombreAltitudesMoyennees = nombreAltitudesMoyennees + 1
             }
-            if vitesseOK {
+            if vitesseOKPourStats {
                 let denivele = altitudeActuelle - altitudePrecedente
-                if abs(denivele) <= deplacementDepuisDernierePosition * penteMaximaleCredible && nombreAltitudesMoyennees >= 10 {
+                if abs(denivele) <= distancePourAltitudeActuelle * penteMaximaleCredible && nombreAltitudesMoyennees >= 10 {
                     if denivele > 0 {
                         stats.denivelePositifSession = stats.denivelePositifSession + denivele
                     } else {
                         stats.deniveleNegatifSession = stats.deniveleNegatifSession - denivele
                     }
-                    pente = denivele / deplacementDepuisDernierePosition
+                    pente = denivele / distancePourAltitudeActuelle
                 }
             } // if vitesseOK
         }
-        afficherVitesse(vitesse: location.speed * facteurUnitesVitesses[unite], precisionOK: vitesseOK, pente: pente)  // course (= le cap) est -1 la plupart du temps pendant que le système affine la localisaiton lorsqu'il vient d'avoir le droit d'y accéder
+        afficherVitesse(vitesse: location.speed * facteurUnitesVitesses[unite], precisionOK: vitesseOKPourAffichage, pente: pente)
         print("temps", Date().timeIntervalSince(dateDernierBoutonReactiveChevron))
         if location.speed > vitesseMiniPourCacherChevron && Date().timeIntervalSince(dateDernierBoutonReactiveChevron) > tempsMiniAffichageChevron && !boutonOuvreStats.isHidden {
             DispatchQueue.main.async {
                 self.boutonOuvreStats.isHidden = true
             }
-        } else if location.speed < 0.2 && vitesseOK && boutonOuvreStats.isHidden {
+        } else if location.speed < 0.2 && boutonOuvreStats.isHidden {  //  && vitesseOKPourAffichage
             DispatchQueue.main.async {
                 self.boutonOuvreStats.isHidden = false
             }
@@ -665,11 +667,12 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     func afficherStatsReelles(_ viewController: StatsModalViewController) {
         viewController.labelVitesseMax.text = (self.stats.vitesseMax >= 100.0 ? String(format: "Max %3.0f ", self.stats.vitesseMax * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite] : String(format: "Max %4.1f ", self.stats.vitesseMax * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}")
         viewController.labelVitesseMaxSession.text = (self.stats.vitesseMaxSession >= 100.0 ? String(format: "Max %3.0f ", self.stats.vitesseMaxSession * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite] : String(format: "Max %4.1f ", self.stats.vitesseMaxSession * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}")
-        if (self.unite == 0) { viewController.labelDistanceTotale.text = String(format: "%4.0f ", self.stats.distanceTotale * facteurUnitesDistance[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}") }
-        else { viewController.labelDistanceTotale.text = String(format: "%.1f ", self.stats.distanceTotale * facteurUnitesDistance[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}") }
-        viewController.labelDistanceTotale.text?.append(textesUnitesDistance[self.unite])
-        if (self.unite == 0) { viewController.labelDistanceTotaleSession.text = String(format: "%.0f ", self.stats.distanceTotaleSession * facteurUnitesDistance[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}").replacingOccurrences(of: " ", with: "\u{2007}") }
-        else { viewController.labelDistanceTotaleSession.text = String(format: "%.1f ", self.stats.distanceTotaleSession * facteurUnitesDistance[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}") }
+        viewController.labelDistanceTotale.text = String(format: "%.1f ", self.stats.distanceTotale * facteurUnitesDistance[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}")
+        if debugMode {
+            viewController.labelDistanceTotaleSession.text = String(format: "%.3f ", self.stats.distanceTotaleSession * facteurUnitesDistance[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}").replacingOccurrences(of: " ", with: "\u{2007}")
+        } else {
+            viewController.labelDistanceTotaleSession.text = String(format: "%.1f ", self.stats.distanceTotaleSession * facteurUnitesDistance[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}")
+        }
         viewController.labelDistanceTotaleSession.text?.append(textesUnitesDistance[self.unite])
         if self.view.frame.width > self.view.frame.height {
             viewController.labelDeniveleSession.text = (String(format: "➚ %4.0f", self.stats.denivelePositifSession  * facteurUnitesAltitude[self.unite]) + textesUnitesAltitude[self.unite] + String(format: ", ➘ %4.0f", self.stats.deniveleNegatifSession * facteurUnitesAltitude[self.unite]) + textesUnitesAltitude[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}").replacingOccurrences(of: ",", with: ", ") //.replacingOccurrences(of: "➚", with: "➚ ").replacingOccurrences(of: "➘", with: "➘ ")
