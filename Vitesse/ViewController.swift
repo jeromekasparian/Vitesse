@@ -37,6 +37,7 @@ let keyDistanceTotale = "distanceTotale"
 let keyAutoriserAffichageTeteHaute = "autoriserAffichageTeteHaute"
 //let notificationMiseAJourStats = "miseAJourStats"
 let keyEnregistrerStats = "keyEnregistrerStats"
+let keyMontrerAlerteDemarrage = "keyMontrerAlerteDemarrage"
 let nomSegueOuvreStats = "OuvreStats"
 
   // le temps total de trajet, en secondes
@@ -78,9 +79,11 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     var anciennePositionTeteHaute: Bool = false
     var locationPrecedente: CLLocation?
     var altitudePrecedente: Double = .nan
-    var altitudeActuelle: Double = .nan
-    var distancePourAltitudeActuelle: Double = .nan
-    var nombreAltitudesMoyennees: Int = 0
+//    var altitudeActuelle: Double = .nan
+    var altitudesPourMoyenne: [Double] = []
+    var distancesPourMoyenne: [Double] = []
+//    var distancePourAltitudeActuelle: Double = .nan
+    let nombreAltitudesAMoyenner: Int = 10
     var affichageTeteHauteBlanc = false
     var timer = Timer()
     var nombrePasOK = 0 // nombre de vitesses pas ok reçues à la suite
@@ -95,7 +98,8 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     var nombrePositionsLues = 0
     var timeStampDernierePosition = 0.0
     var localisationEstPerdue = false
-
+    var montrerAlerteDemarrage: Bool = true
+    
     var stats = Stats()
     var unite: Int = 1 // par défaut, km/h
     var autoriserAffichageTeteHaute = true
@@ -123,9 +127,9 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         unite = (unite + 1) % facteurUnitesAltitude.count
         userDefaults.set(unite, forKey: keyUnite)
         affichageUnite.setTitle(textesUnites[unite], for: .normal) // = textesUnites[unite]
-        if (affichageVitesse.text != "") {
-            let laVitesse = Double(affichageVitesse.text?.floatValue ?? -1.0)
-            afficherVitesse(vitesse: laVitesse, precisionOK: true, pente: .nan)
+        if (affichageVitesse.text != "" && locationPrecedente != nil) {
+//            let laVitesse = Double(affichageVitesse.text?.floatValue ?? -1.0)
+            afficherVitesse(vitesse: locationPrecedente!.speed * facteurUnitesVitesses[unite], precisionOK: true, pente: .nan)
         }
     }
     
@@ -187,6 +191,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     }
     
     override func viewDidLoad() {
+//        print("regression", regressionLineaire(x: [1,2,3,4], y: [1.1,1.2,1.3,1.4]))
         //        justLoaded = true
         debugMode = debugMode && autoriseDebug
         if #available(iOS 13.0, *) {
@@ -257,14 +262,20 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         }
 // par défaut on désactive le mode miroir au premier lancement.
         self.autoriserAffichageTeteHaute = self.userDefaults.value(forKey: keyAutoriserAffichageTeteHaute) as? Bool ?? false
-   
-        let alert = UIAlertController(title: NSLocalizedString("Pour votre sécurité", comment: "Titre alerte"), message: NSLocalizedString("avant de conduire, assurez-vous que le mode Avion ou \"Ne pas déranger en voiture\" est activé", comment: "Contenu de l'alerte de sécurité"), preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "bouton OK"), style: .default, handler: {_ in self.gereDroitsLocalisation(origineViewDidLoad: true, origineViewDidAppear: false)}))
-        DispatchQueue.main.async{
-            self.present(alert, animated: true)
-            
-            //            self.gabaritAffichageVitesse.isHidden = false
-            //            self.gabaritAffichageVitesse.text = String(format:"\u{2007}%d",5)
+        
+        montrerAlerteDemarrage = userDefaults.value(forKey: keyMontrerAlerteDemarrage) as? Bool ?? montrerAlerteDemarrage
+        if montrerAlerteDemarrage {
+            let alert = UIAlertController(title: NSLocalizedString("Pour votre sécurité", comment: "Titre alerte"), message: NSLocalizedString("avant de conduire, assurez-vous que le mode Avion ou \"Ne pas déranger en voiture\" est activé", comment: "Contenu de l'alerte de sécurité"), preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Ne plus afficher", comment: ""), style: .default, handler: {_ in self.montrerAlerteDemarrage = false
+                self.userDefaults.set(self.montrerAlerteDemarrage, forKey: keyMontrerAlerteDemarrage)
+            }))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "bouton OK"), style: .default, handler: {_ in self.gereDroitsLocalisation(origineViewDidLoad: true, origineViewDidAppear: false)}))
+            DispatchQueue.main.async{
+                self.present(alert, animated: true)
+                
+                //            self.gabaritAffichageVitesse.isHidden = false
+                //            self.gabaritAffichageVitesse.text = String(format:"\u{2007}%d",5)
+            }
         }
         scheduledTimerWithTimeInterval()
         super.viewDidLoad()
@@ -310,9 +321,11 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             }
             locationPrecedente = nil
             altitudePrecedente = .nan
-            altitudeActuelle = .nan
-            distancePourAltitudeActuelle = .nan
-            nombreAltitudesMoyennees = 0
+            altitudesPourMoyenne = []
+            distancesPourMoyenne = []
+//            altitudeActuelle = .nan
+//            distancePourAltitudeActuelle = .nan
+//            nombreAltitudesMoyennees = 0
             timeStampDernierePosition = 0.0
         }
     }
@@ -545,7 +558,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     
     //    CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let nombreLocations = locations.count
+//        let nombreLocations = locations.count
         guard let location: CLLocation = locations.last else {return}
 //        var laVitesseLue = location.speed
         nombrePositionsLues = nombrePositionsLues + 1
@@ -567,7 +580,6 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         let vitesseOKPourStats = vitesseOKPourAffichage && deplacementVraisemblable
         
 //        laVitesseLue = (laVitesseLue >= 0 && location.speedAccuracy > 0) ? laVitesseLue : 0.0
-        var pente: Double = .nan
         if vitesseOKPourStats && location.speed > vitesseMiniPourActiverCompteur && timeStampDernierePosition > 0.0 {
                 stats.distanceTotale = stats.distanceTotale + deplacementDepuisDernierePosition
                 stats.distanceTotaleSession = stats.distanceTotaleSession + deplacementDepuisDernierePosition
@@ -580,33 +592,32 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                     stats.vitesseMaxSession = location.speed
                 }
         } // if vitesseOK
+        var denivele: Double = .nan
+        var pentePourAffichage: Double = .nan
         if location.verticalAccuracy <= precisionVerticaleMinimale {
-            if altitudeActuelle.isNaN {
-                altitudeActuelle = location.altitude
-                distancePourAltitudeActuelle = deplacementDepuisDernierePosition
-                nombreAltitudesMoyennees = 1
-            } else if nombreAltitudesMoyennees <= 10 {
-                altitudeActuelle = (location.altitude + (altitudeActuelle * Double(nombreAltitudesMoyennees))) / Double(nombreAltitudesMoyennees + 1)
-                distancePourAltitudeActuelle = (deplacementDepuisDernierePosition + (distancePourAltitudeActuelle * Double(nombreAltitudesMoyennees))) / Double(nombreAltitudesMoyennees + 1)
-                nombreAltitudesMoyennees = nombreAltitudesMoyennees + 1
-            } else {
-                altitudeActuelle = 0.1 * location.altitude + 0.9 * altitudeActuelle // moyenne glissante avec amortissement, pour "lisser" les fluctuations de l'altitude
-                distancePourAltitudeActuelle = 0.1 * deplacementDepuisDernierePosition + 0.9 * distancePourAltitudeActuelle // moyenne glissante avec amortissement, pour "lisser" les fluctuations de l'altitude
-                nombreAltitudesMoyennees = nombreAltitudesMoyennees + 1
+            altitudesPourMoyenne.append(location.altitude)
+            distancesPourMoyenne.append((distancesPourMoyenne.last ?? 0.0) + deplacementDepuisDernierePosition)
+            if altitudesPourMoyenne.count > nombreAltitudesAMoyenner {
+                altitudesPourMoyenne.removeFirst(altitudesPourMoyenne.count - nombreAltitudesAMoyenner)
             }
+            if distancesPourMoyenne.count > nombreAltitudesAMoyenner {
+                distancesPourMoyenne.removeFirst(distancesPourMoyenne.count - nombreAltitudesAMoyenner)
+            }
+            let (pente, _, altitude) = regressionLineaire(x: distancesPourMoyenne, y: altitudesPourMoyenne)
+            pentePourAffichage = pente
             if vitesseOKPourStats {
-                let denivele = altitudeActuelle - altitudePrecedente
-                if abs(denivele) <= distancePourAltitudeActuelle * penteMaximaleCredible && nombreAltitudesMoyennees >= 10 {
+                denivele = altitude - altitudePrecedente
+                if !denivele.isNaN && abs(denivele) <= deplacementDepuisDernierePosition * penteMaximaleCredible && altitudesPourMoyenne.count >= nombreAltitudesAMoyenner / 2 {
                     if denivele > 0 {
                         stats.denivelePositifSession = stats.denivelePositifSession + denivele
                     } else {
                         stats.deniveleNegatifSession = stats.deniveleNegatifSession - denivele
                     }
-                    pente = denivele / distancePourAltitudeActuelle
                 }
+                altitudePrecedente = altitude
             } // if vitesseOK
         }
-        afficherVitesse(vitesse: location.speed * facteurUnitesVitesses[unite], precisionOK: vitesseOKPourAffichage, pente: pente)
+        afficherVitesse(vitesse: location.speed * facteurUnitesVitesses[unite], precisionOK: vitesseOKPourAffichage, pente: pentePourAffichage)
         print("temps", Date().timeIntervalSince(dateDernierBoutonReactiveChevron))
         if location.speed > vitesseMiniPourCacherChevron && Date().timeIntervalSince(dateDernierBoutonReactiveChevron) > tempsMiniAffichageChevron && !boutonOuvreStats.isHidden {
             DispatchQueue.main.async {
@@ -617,10 +628,9 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 self.boutonOuvreStats.isHidden = false
             }
         }
-        var affichageSecret = ""
-        affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %d ∆t %.0f N %d\nh %.2f ∆h %.0f ➚ %.2f <h> %.2f\nv %.1f m/s t %.1f s", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, deplacementDepuisDernierePosition, Int(location.timestamp.timeIntervalSince1970) % 1000, location.timestamp.timeIntervalSince1970 - timeStampDernierePosition, nombreLocations, location.altitude, location.verticalAccuracy, altitudeActuelle - altitudePrecedente, altitudeActuelle, location.speed, Date().timeIntervalSince(dateDernierBoutonReactiveChevron))
+//        let affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %d ∆t %.0f N %d\nh %.2f ∆h %.0f ➚ %.2f <h> %.2f\nv %.1f m/s t %.1f s", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, deplacementDepuisDernierePosition, Int(location.timestamp.timeIntervalSince1970) % 1000, location.timestamp.timeIntervalSince1970 - timeStampDernierePosition, nombreLocations, location.altitude, location.verticalAccuracy, denivele, altitudePrecedente, location.speed, Date().timeIntervalSince(dateDernierBoutonReactiveChevron))
+        let affichageSecret = String(format:"d %.1f, ➚ %.2f, %.2f%\n h %.2f ± %.0f, <h> %.2f", deplacementDepuisDernierePosition, denivele, pentePourAffichage * 100.0, location.altitude, location.verticalAccuracy, altitudePrecedente)
         locationPrecedente = location
-        altitudePrecedente = altitudeActuelle
         timeStampDernierePosition = location.timestamp.timeIntervalSince1970
         DispatchQueue.main.async{
             self.messageDebug.text = affichageSecret
@@ -647,6 +657,34 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         gereDroitsLocalisation(origineViewDidLoad: false, origineViewDidAppear: false)
     }
     
+    func regressionLineaire(x: [Double], y: [Double]) -> (Double, Double, Double) {
+        let longueur = x.count
+        if x.count == 1 && y.count == 1 {
+            return (.nan, .nan, y.first!)
+        }
+        /// renvoie la pente, l'ordonnée à l'origine et l'ordonnée à la fin
+        guard longueur == y.count && longueur >= 2 else {return (.nan, .nan, .nan)}
+            let xMoyen = x.reduce(0.0, +) / Double(longueur) //Double(x.count)
+            let yMoyen = y.reduce(0.0, +) / Double(longueur) // Double(y.count)
+//        print("xmoyen \(xMoyen) ymoyen \(yMoyen)")
+            let xReduit = x.map({$0 - xMoyen})
+            let yReduit = y.map({$0 - yMoyen})
+            let xxReduit = xReduit.map({pow($0, 2.0)})
+//            let yyReduit = y.map({pow($0, 2.0)})
+            var xyReduit = Array(repeating: 0.0, count: longueur)
+            for i in 0...longueur - 1 {
+                xyReduit[i] = xReduit[i] * yReduit[i]
+            }
+            let a = xyReduit.reduce(0.0, {$0 + $1})
+            let b = xxReduit.reduce(0.0, {$0 + $1})
+//            let ecartTypeXCarre = b / Double(longueur - 1)
+//            let ecartTypeYCarre = yyReduit.reduce(0.0, {$0 + $1}) / Double(longueur - 1)
+            let pente = a / b
+        let ordonneeALOrigine = pente.isNaN || pente.isInfinite ? yMoyen : yMoyen - pente * xMoyen
+        let ordonneeALaFin = pente.isNaN || pente.isInfinite ? yMoyen : ordonneeALOrigine + pente * x.last!
+            return(pente, ordonneeALOrigine, ordonneeALaFin)
+    }
+    
     override func didReceiveMemoryWarning() {
         enregistrerStats()
     }
@@ -667,7 +705,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     func afficherStatsReelles(_ viewController: StatsModalViewController) {
         viewController.labelVitesseMax.text = (self.stats.vitesseMax >= 100.0 ? String(format: "Max %3.0f ", self.stats.vitesseMax * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite] : String(format: "Max %4.1f ", self.stats.vitesseMax * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}")
         viewController.labelVitesseMaxSession.text = (self.stats.vitesseMaxSession >= 100.0 ? String(format: "Max %3.0f ", self.stats.vitesseMaxSession * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite] : String(format: "Max %4.1f ", self.stats.vitesseMaxSession * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}")
-        viewController.labelDistanceTotale.text = String(format: "%.1f ", self.stats.distanceTotale * facteurUnitesDistance[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}")
+        viewController.labelDistanceTotale.text = String(format: "%.1f ", self.stats.distanceTotale * facteurUnitesDistance[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}") + textesUnitesDistance[self.unite]
         if debugMode {
             viewController.labelDistanceTotaleSession.text = String(format: "%.3f ", self.stats.distanceTotaleSession * facteurUnitesDistance[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}").replacingOccurrences(of: " ", with: "\u{2007}")
         } else {
