@@ -43,6 +43,7 @@ let nomSegueOuvreStats = "OuvreStats"
   // le temps total de trajet, en secondes
 let penteMaximaleCredible: Double = 0.3
 let penteMinimalePourAffichage: Double = 0.02
+let distanceMiniPourPente: Double = 0.3
 
 //var premierTempsValide = 0.0
 let precisionVerticaleMinimale: Double = 10.0 // précision minimale sur l'altitude pour qu'on la prenne en compte
@@ -78,12 +79,24 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     var positionTeteHaute: Bool = false
     var anciennePositionTeteHaute: Bool = false
     var locationPrecedente: CLLocation?
+//    var altitudePrecedente8: Double = .nan
+    var altitudePrecedente10: Double = .nan
     var altitudePrecedente: Double = .nan
+//    var altitudePrecedente15: Double = .nan
 //    var altitudeActuelle: Double = .nan
-    var altitudesPourMoyenne: [Double] = []
-    var distancesPourMoyenne: [Double] = []
 //    var distancePourAltitudeActuelle: Double = .nan
-    let nombreAltitudesAMoyenner: Int = 10
+//    var nombreAltitudesMoyennees: Int = 0
+//    var altitudesPourMoyenne: [Double] = []
+//    var distancesPourMoyenne: [Double] = []
+//    var altitudes: [Double] = []
+//    var deltaAltitudes: [Double] = []
+//    var distances: [Double] = []
+//    var pentes8: [Double] = []
+//    var pentes10: [Double] = []
+//    var pentes15: [Double] = []
+    
+//    var distancePourAltitudeActuelle: Double = .nan
+    let nombreAltitudesAMoyenner: Int = 40
     var affichageTeteHauteBlanc = false
     var timer = Timer()
     var nombrePasOK = 0 // nombre de vitesses pas ok reçues à la suite
@@ -119,11 +132,21 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     @IBOutlet var labelPente: UILabel!
     @IBOutlet var boutonReactiveChevron: UIButton!
     
+//    var altitude8: Double = .nan
+    var altitude10: Double = .nan
+//    var altitude15: Double = .nan
+//    var distance8: Double = .nan
+    var distance10: Double = .nan
+//    var distance15: Double = .nan
+    var denivele10: Double = .nan
+    var position10: Double = .nan
+    var positionPrecedente10: Double = .nan
+    
     override var prefersHomeIndicatorAutoHidden: Bool {
         return true
     }
     
-    @IBAction func changeUnite () {
+    @IBAction func changeUnite() {
         unite = (unite + 1) % facteurUnitesAltitude.count
         userDefaults.set(unite, forKey: keyUnite)
         affichageUnite.setTitle(textesUnites[unite], for: .normal) // = textesUnites[unite]
@@ -140,6 +163,13 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 self.boutonOuvreStats.isHidden = false
             }
         }
+//        if debugMode {
+//            var texte = ""
+//            for i in 0..<distances.count {
+//                texte += String(format: "%.2f\t %.2f\t %.2f\n", distances[i], altitudes[i], pentes10[i])
+//            }
+//            UIPasteboard.general.string = texte
+//        }
     }
     
     @objc func enregistrerStats(){
@@ -199,23 +229,22 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         } else {
             imagePasLocalisation.image = UIImage(named: "location.slash.fill")
         }
-        DispatchQueue.main.async{
-            self.boutonReactiveChevron.setTitle("", for: .normal)
-            self.messagePublic.text = ""
-            self.messageDebug.isHidden = !self.debugMode
-            self.labelPente.isHidden = !self.debugMode
-            self.labelPente.text = ""
-            self.labelPente.font = UIFont.monospacedDigitSystemFont(ofSize: self.labelPente.font.pointSize, weight: .regular)
-            self.messageDebug.font = UIFont.monospacedDigitSystemFont(ofSize: self.messageDebug.font.pointSize, weight: .regular)
-            self.affichageVitesse.text = ""
-            self.adapterTailleAffichageVitesse()
-            self.unite = self.userDefaults.value(forKey: keyUnite) as? Int ?? 1
-            self.affichageUnite.setTitle(textesUnites[self.unite], for: .normal)
-            self.stats.vitesseMax = self.userDefaults.value(forKey: keyVitesseMax) as? Double ?? 0.0
-            self.stats.distanceTotale = self.userDefaults.value(forKey: keyDistanceTotale) as? Double ?? 0.0
-            self.imagePasLocalisation.isHidden = true
-            self.roueAttente.startAnimating()
-        }
+        self.boutonReactiveChevron.setTitle("", for: .normal)
+        self.messagePublic.text = ""
+        self.messageDebug.isHidden = !self.debugMode
+        self.labelPente.isHidden = !self.debugMode
+        self.labelPente.text = ""
+        self.labelPente.font = UIFont.monospacedDigitSystemFont(ofSize: self.labelPente.font.pointSize, weight: .regular)
+        self.messageDebug.font = UIFont.monospacedDigitSystemFont(ofSize: self.messageDebug.font.pointSize, weight: .regular)
+        self.affichageVitesse.text = ""
+        self.adapterTailleAffichageVitesse()
+        self.unite = self.userDefaults.value(forKey: keyUnite) as? Int ?? 1
+        self.affichageUnite.setTitle(textesUnites[self.unite], for: .normal)
+        self.stats.vitesseMax = self.userDefaults.value(forKey: keyVitesseMax) as? Double ?? 0.0
+        self.stats.distanceTotale = self.userDefaults.value(forKey: keyDistanceTotale) as? Double ?? 0.0
+        self.imagePasLocalisation.isHidden = true
+        self.roueAttente.startAnimating()
+        
         //        etatActuel = .indetermine
         // mise en place de la détection du swipe up pour ouvrir le tiroir des stats
         let swipeHaut = UISwipeGestureRecognizer(target:self, action: #selector(ouvreStats))
@@ -320,12 +349,9 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 statsModalViewController?.afficherStats()
             }
             locationPrecedente = nil
-            altitudePrecedente = .nan
-            altitudesPourMoyenne = []
-            distancesPourMoyenne = []
-//            altitudeActuelle = .nan
-//            distancePourAltitudeActuelle = .nan
-//            nombreAltitudesMoyennees = 0
+//            altitudePrecedente8 = .nan
+            altitudePrecedente10 = .nan
+//            altitudePrecedente15 = .nan
             timeStampDernierePosition = 0.0
         }
     }
@@ -390,6 +416,10 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         } else if arreterPositionTeteHaute {
             positionTeteHaute = false
         }
+        self.changerTeteHauteSiNecessaire()
+    }
+
+    func changerTeteHauteSiNecessaire() {
         DispatchQueue.main.async{
             if (self.positionTeteHaute != self.anciennePositionTeteHaute) {
                 self.affichageVitesse.flipX()
@@ -426,7 +456,6 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             else { // le téléphone est penché -> on affiche le texte en gris pour lecture directe
                 if luminositeEstForcee && UIApplication.shared.applicationState == .active { // on revient au contraste par défaut du système
                     stoppeLuminositeMax()
-//                    self.messageDebug.textColor = .red
                 }
                 self.affichageVitesse.textColor = UIScreen.main.brightness >= self.luminositeMinimalePourForcerAffichageBlanc ? .white : .lightGray
                 if self.affichageTeteHauteBlanc {
@@ -437,7 +466,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             }  // téléphone dressé
         } // DispatchQueue.main.async
     }
-    
+
     @objc func gereDroitsLocationDepuisNotification() {
         gereDroitsLocalisation(origineViewDidLoad : false, origineViewDidAppear: false)
     }
@@ -558,9 +587,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     
     //    CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        let nombreLocations = locations.count
         guard let location: CLLocation = locations.last else {return}
-//        var laVitesseLue = location.speed
         nombrePositionsLues = nombrePositionsLues + 1
         // au-delà de 12 heures en arrière-plan, on réinitialise le trajet
         if (location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) > tempsAvantReinitialisationAuto {
@@ -576,7 +603,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         let deplacementSelonVitesse = location.speed * location.timestamp.timeIntervalSince(locationPrecedente?.timestamp ?? Date(timeIntervalSince1970: 0))
         let ratioDeplacements = deplacementSelonVitesse / deplacementDepuisDernierePosition
         let deplacementVraisemblable = ratioDeplacements > 0.67 || ratioDeplacements < 1.5
-        let vitesseOKPourAffichage = directionOK && pasTunnelLong && localisationsNombreusesOuPrecises && location.courseAccuracy >= 0
+        let vitesseOKPourAffichage = directionOK && pasTunnelLong && localisationsNombreusesOuPrecises && location.courseAccuracy >= 0 && location.speedAccuracy >= 0
         let vitesseOKPourStats = vitesseOKPourAffichage && deplacementVraisemblable
         
 //        laVitesseLue = (laVitesseLue >= 0 && location.speedAccuracy > 0) ? laVitesseLue : 0.0
@@ -592,33 +619,53 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                     stats.vitesseMaxSession = location.speed
                 }
         } // if vitesseOK
+//        var denivele8: Double = .nan
+//        var denivele10: Double = .nan
+//        var denivele15: Double = .nan
         var denivele: Double = .nan
-        var pentePourAffichage: Double = .nan
-        if location.verticalAccuracy <= precisionVerticaleMinimale {
-            altitudesPourMoyenne.append(location.altitude)
-            distancesPourMoyenne.append((distancesPourMoyenne.last ?? 0.0) + deplacementDepuisDernierePosition)
-            if altitudesPourMoyenne.count > nombreAltitudesAMoyenner {
-                altitudesPourMoyenne.removeFirst(altitudesPourMoyenne.count - nombreAltitudesAMoyenner)
-            }
-            if distancesPourMoyenne.count > nombreAltitudesAMoyenner {
-                distancesPourMoyenne.removeFirst(distancesPourMoyenne.count - nombreAltitudesAMoyenner)
-            }
-            let (pente, _, altitude) = regressionLineaire(x: distancesPourMoyenne, y: altitudesPourMoyenne)
-            pentePourAffichage = pente
+        var pente: Double = .nan
+        var nombrePointsOK: Bool = false
+        var deltah: Double = .nan
+        var d: Double = .nan
+//        var altitude: Double = .nan
+//        var sigmaPentePourAffichage: Double = .nan
+//        var pentePourDebug: Double = .nan
+        if location.verticalAccuracy <= precisionVerticaleMinimale && location.verticalAccuracy >= 0.0 && !location.altitude.isNaN {
+
+//            altitudes.append(location.altitude)
+//            deltaAltitudes.append(location.verticalAccuracy)
+//            distances.append((distances.last ?? 0.0) + deplacementDepuisDernierePosition)
+
+            altitude10 = stats.moyenneGlissanteAltitude10.actualiser(location.altitude)
+//            distance10 = stats.moyenneGlissanteDistance10.actualiser(deplacementDepuisDernierePosition)
+            denivele10 = stats.moyenneGlissanteDenivele10.actualiser(location.altitude - altitudePrecedente)
+//            position10 = stats.moyenneGlissantePosition10.actualiser(distances.last!)
+            
+            d = position10 - positionPrecedente10
+            deltah = altitude10 - altitudePrecedente10
+            pente = deltah / d
+//            pentes10.append(deltah / d)
+//            pente = denivele10 / distance10
+            
             if vitesseOKPourStats {
-                denivele = altitude - altitudePrecedente
-                if !denivele.isNaN && abs(denivele) <= deplacementDepuisDernierePosition * penteMaximaleCredible && altitudesPourMoyenne.count >= nombreAltitudesAMoyenner / 2 {
+                denivele = altitude10 - altitudePrecedente10
+                // changer pour utiliser un autre moyennage
+                nombrePointsOK = stats.moyenneGlissanteAltitude10.valeurStable()
+                if abs(pente) <= penteMaximaleCredible && nombrePointsOK {
                     if denivele > 0 {
-                        stats.denivelePositifSession = stats.denivelePositifSession + denivele
+                        stats.denivelePositifSession = stats.denivelePositifSession + denivele10
                     } else {
-                        stats.deniveleNegatifSession = stats.deniveleNegatifSession - denivele
+                        stats.deniveleNegatifSession = stats.deniveleNegatifSession - denivele10
                     }
                 }
-                altitudePrecedente = altitude
+                altitudePrecedente10 = altitude10.isNaN ? altitudePrecedente10 : altitude10
+                altitudePrecedente = location.altitude.isNaN ? altitudePrecedente : location.altitude
+                positionPrecedente10 = position10.isNaN ? positionPrecedente10 : position10
+                
             } // if vitesseOK
         }
-        afficherVitesse(vitesse: location.speed * facteurUnitesVitesses[unite], precisionOK: vitesseOKPourAffichage, pente: pentePourAffichage)
-        print("temps", Date().timeIntervalSince(dateDernierBoutonReactiveChevron))
+        afficherVitesse(vitesse: location.speed * facteurUnitesVitesses[unite], precisionOK: vitesseOKPourAffichage, pente: pente)
+//        print("temps", Date().timeIntervalSince(dateDernierBoutonReactiveChevron))
         if location.speed > vitesseMiniPourCacherChevron && Date().timeIntervalSince(dateDernierBoutonReactiveChevron) > tempsMiniAffichageChevron && !boutonOuvreStats.isHidden {
             DispatchQueue.main.async {
                 self.boutonOuvreStats.isHidden = true
@@ -628,8 +675,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 self.boutonOuvreStats.isHidden = false
             }
         }
-//        let affichageSecret = String(format:"v %.2f ∆v %.1f, Ω %.1f, ∆x %.1f, \nd %.1f, t %d ∆t %.0f N %d\nh %.2f ∆h %.0f ➚ %.2f <h> %.2f\nv %.1f m/s t %.1f s", location.speed, location.speedAccuracy, location.course, location.horizontalAccuracy, deplacementDepuisDernierePosition, Int(location.timestamp.timeIntervalSince1970) % 1000, location.timestamp.timeIntervalSince1970 - timeStampDernierePosition, nombreLocations, location.altitude, location.verticalAccuracy, denivele, altitudePrecedente, location.speed, Date().timeIntervalSince(dateDernierBoutonReactiveChevron))
-        let affichageSecret = String(format:"d %.1f, ➚ %.2f, %.2f%\n h %.2f ± %.0f, <h> %.2f", deplacementDepuisDernierePosition, denivele, pentePourAffichage * 100.0, location.altitude, location.verticalAccuracy, altitudePrecedente)
+        let affichageSecret = String(format:"<d> %.1f, ∆h %.2f, ➚ %.1f%%\nd %.1f, h %.2f, <h> %.2f", d, deltah,  pente * 100.0, deplacementDepuisDernierePosition, location.altitude, altitude10)
         locationPrecedente = location
         timeStampDernierePosition = location.timestamp.timeIntervalSince1970
         DispatchQueue.main.async{
@@ -657,32 +703,41 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         gereDroitsLocalisation(origineViewDidLoad: false, origineViewDidAppear: false)
     }
     
-    func regressionLineaire(x: [Double], y: [Double]) -> (Double, Double, Double) {
+    func regressionLineaire(x: [Double], y: [Double]) -> (Double, Double, Double, Double) {
         let longueur = x.count
-        if x.count == 1 && y.count == 1 {
-            return (.nan, .nan, y.first!)
+        if longueur == 0 {
+            return (.nan, .nan, .nan, .nan)
+        }
+        if x.count == 1 && y.count == 1  {
+            return (.nan, .nan, y.first!, y.first!)
         }
         /// renvoie la pente, l'ordonnée à l'origine et l'ordonnée à la fin
-        guard longueur == y.count && longueur >= 2 else {return (.nan, .nan, .nan)}
-            let xMoyen = x.reduce(0.0, +) / Double(longueur) //Double(x.count)
-            let yMoyen = y.reduce(0.0, +) / Double(longueur) // Double(y.count)
-//        print("xmoyen \(xMoyen) ymoyen \(yMoyen)")
-            let xReduit = x.map({$0 - xMoyen})
-            let yReduit = y.map({$0 - yMoyen})
-            let xxReduit = xReduit.map({pow($0, 2.0)})
+        guard longueur == y.count && longueur >= 2 else {
+            return (.nan, .nan, .nan, .nan)
+        }
+        let xMoyen = x.reduce(0.0, +) / Double(longueur) //Double(x.count)
+        let yMoyen = y.reduce(0.0, +) / Double(longueur) // Double(y.count)
+        let xReduit = x.map({$0 - xMoyen})
+        let yReduit = y.map({$0 - yMoyen})
+        let xxReduit = xReduit.map({pow($0, 2.0)})
+        let yyReduit = yReduit.map({pow($0, 2.0)})
 //            let yyReduit = y.map({pow($0, 2.0)})
-            var xyReduit = Array(repeating: 0.0, count: longueur)
-            for i in 0...longueur - 1 {
-                xyReduit[i] = xReduit[i] * yReduit[i]
-            }
-            let a = xyReduit.reduce(0.0, {$0 + $1})
-            let b = xxReduit.reduce(0.0, {$0 + $1})
+        var xyReduit = Array(repeating: 0.0, count: longueur)
+        for i in 0...longueur - 1 {
+            xyReduit[i] = xReduit[i] * yReduit[i]
+        }
+        let a = xyReduit.reduce(0.0, {$0 + $1})
+        let b = xxReduit.reduce(0.0, {$0 + $1})
 //            let ecartTypeXCarre = b / Double(longueur - 1)
 //            let ecartTypeYCarre = yyReduit.reduce(0.0, {$0 + $1}) / Double(longueur - 1)
-            let pente = a / b
+        let pente = a / b
+        let ecartTypeXCarre = b / Double(longueur - 1)
+        let ecartTypeYCarre = yyReduit.reduce(0.0, {$0 + $1}) / Double(longueur - 1)
+        let ecartTypePente = sqrt((ecartTypeYCarre / ecartTypeXCarre - pow(pente, 2.0)) / Double(longueur - 2))  // Méthodes statistiques médecine-biologie statistique, p 191 et suivantes
         let ordonneeALOrigine = pente.isNaN || pente.isInfinite ? yMoyen : yMoyen - pente * xMoyen
         let ordonneeALaFin = pente.isNaN || pente.isInfinite ? yMoyen : ordonneeALOrigine + pente * x.last!
-            return(pente, ordonneeALOrigine, ordonneeALaFin)
+        let ordonneeAuMilieu = pente.isNaN || pente.isInfinite ? yMoyen : ordonneeALOrigine + pente * ((x.last! + x.first!) / 2.0)
+            return(pente, ecartTypePente, ordonneeALOrigine, ordonneeAuMilieu)
     }
     
     override func didReceiveMemoryWarning() {
@@ -739,8 +794,13 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         } else {
             viewController.labelVitesseMoyenne.text = NSLocalizedString("Moyenne ", comment: "") + " ---  " + textesUnites[self.unite]
         }
+        viewController.boutonUnite.setTitle(textesUnites[self.unite], for: .normal)
     }
 
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        changerTeteHauteSiNecessaire()
+    }
     
 //    func statsModalViewControllerDidTapOK(_ viewController: StatsModalViewController) {
 //        stats = viewController.stats

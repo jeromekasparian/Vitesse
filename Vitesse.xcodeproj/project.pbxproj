@@ -14,6 +14,7 @@
 		B53B67042F11A46100975359 /* ExtensionUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53B67032F11A46100975359 /* ExtensionUIViewController.swift */; };
 		B53B67062F11A48E00975359 /* ExtensionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53B67052F11A48E00975359 /* ExtensionString.swift */; };
 		B53B67082F11A4B200975359 /* ExtensionUIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53B67072F11A4B200975359 /* ExtensionUIWindow.swift */; };
+		B55B17712F2D4E0100417A70 /* MoyenneGlissante.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55B17702F2D4E0000417A70 /* MoyenneGlissante.swift */; };
 		B55EFC062635BF4D002DF429 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC052635BF4D002DF429 /* AppDelegate.swift */; };
 		B55EFC082635BF4D002DF429 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC072635BF4D002DF429 /* SceneDelegate.swift */; };
 		B55EFC0D2635BF4D002DF429 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B55EFC0B2635BF4D002DF429 /* Main.storyboard */; };
@@ -41,6 +42,7 @@
 		B53B67032F11A46100975359 /* ExtensionUIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIViewController.swift; sourceTree = "<group>"; };
 		B53B67052F11A48E00975359 /* ExtensionString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionString.swift; sourceTree = "<group>"; };
 		B53B67072F11A4B200975359 /* ExtensionUIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIWindow.swift; sourceTree = "<group>"; };
+		B55B17702F2D4E0000417A70 /* MoyenneGlissante.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoyenneGlissante.swift; sourceTree = "<group>"; };
 		B55EFC022635BF4D002DF429 /* Vitesse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vitesse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B55EFC052635BF4D002DF429 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B55EFC072635BF4D002DF429 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 				B53B67032F11A46100975359 /* ExtensionUIViewController.swift */,
 				B53B67072F11A4B200975359 /* ExtensionUIWindow.swift */,
 				B53B67052F11A48E00975359 /* ExtensionString.swift */,
+				B55B17702F2D4E0000417A70 /* MoyenneGlissante.swift */,
 				B53B66FF2F118F9800975359 /* Stats.swift */,
 				B53935FD263D9ED200C37623 /* StatsModalViewController.swift */,
 				B55EFC092635BF4D002DF429 /* ViewController.swift */,
@@ -194,6 +197,7 @@
 				B53B67082F11A4B200975359 /* ExtensionUIWindow.swift in Sources */,
 				B53B67042F11A46100975359 /* ExtensionUIViewController.swift in Sources */,
 				B5CF5FAA263B42C400DA78A3 /* ViewController.swift in Sources */,
+				B55B17712F2D4E0100417A70 /* MoyenneGlissante.swift in Sources */,
 				B53B67062F11A48E00975359 /* ExtensionString.swift in Sources */,
 				B55EFC102635BF4D002DF429 /* Vitesse.xcdatamodeld in Sources */,
 			);
@@ -388,7 +392,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 117;
+				CURRENT_PROJECT_VERSION = 118;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -410,7 +414,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 117;
+				CURRENT_PROJECT_VERSION = 118;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;

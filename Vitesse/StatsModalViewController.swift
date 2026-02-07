@@ -12,6 +12,7 @@ protocol StatsModalDelegate: AnyObject {
     func statsModalViewControllerDidTapEffacerTotal(_ viewController: StatsModalViewController)
     func afficherStatsReelles(_ viewController: StatsModalViewController)
     func actualiserAffichageTeteHaute(autoriserAffichageTeteHaute: Bool)
+    func changeUnite()
 //    func statsModalViewControllerDidTapOK(_ viewController: StatsModalViewController)
 }
 
@@ -31,7 +32,8 @@ class StatsModalViewController: UIViewController {
     @IBOutlet var labelDeniveleSession: UILabel!
     @IBOutlet var labelTitreTrajetEnCours: UILabel!
     @IBOutlet var labelPasLocalisationToujours: UILabel!
-    
+    @IBOutlet var boutonUnite: UIButton!
+
 //    var stats = Stats()
     var autoriserAffichageTeteHaute = true
     var userDefaults = UserDefaults.standard
@@ -170,6 +172,11 @@ class StatsModalViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
+        afficherStats()
+    }
+    
+    @IBAction func boutonUniteAppuye() {
+        delegate?.changeUnite()
         afficherStats()
     }
 }
