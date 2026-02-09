@@ -21,7 +21,7 @@ class Stats {
     let moyenneGlissanteDistance10 = MoyenneGlissante(nombrePointsAMoyenner: 10)
 //    let moyenneGlissanteDistance15 = MoyenneGlissante(nombrePointsAMoyenner: 15)
     let moyenneGlissanteDenivele10 = MoyenneGlissante(nombrePointsAMoyenner: 10)
-//    let moyenneGlissantePosition10 = MoyenneGlissante(nombrePointsAMoyenner: 10)
+    let moyenneGlissantePosition10 = MoyenneGlissante(nombrePointsAMoyenner: 10)
     
     func effacerSession() {
         self.distanceTotaleSession = 0.0
@@ -36,7 +36,7 @@ class Stats {
         self.moyenneGlissanteDistance10.reset()
 //        self.moyenneGlissanteDistance15.reset()
         self.moyenneGlissanteDenivele10.reset()
-//        self.moyenneGlissantePosition10.reset()
+        self.moyenneGlissantePosition10.reset()
     }
     
     func effacerTout() {

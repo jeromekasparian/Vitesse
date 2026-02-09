@@ -63,6 +63,8 @@ let vitesseMiniPourActiverCompteur = 0.2 // m/s : vitesse en-dessous de laquelle
 let dureeMaxiTunnel: Double = 3600 // secondes : temps maxi pendant lequel on peut perdre la localisation et, à l'arriver, incrémenter la distance, la durée et le dénivelé.
 @MainActor var luminositeEcranSysteme = UIScreen.main.brightness //CGFloat(0.0)
 @MainActor var luminositeEstForcee = false
+let radiansEnDegres = 180.0 / 3.14159
+let degresEnRadians = Double.pi / 180.0
 
 
 class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @MainActor StatsModalDelegate {
@@ -75,7 +77,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     //    let activityManager = CMMotionActivityManager()
     //    let inclinaisonMin = 5.0 // inclinaison min en degres (sur le roulis) pour dire qu'on est en mode tête haute
     let inclinaisonMax = 38.0 // inclinaison max en degres (sur le roulis) pour dire qu'on est en mode tête haute
-    let radiansEnDegres = 180.0 / 3.14159
+
     var positionTeteHaute: Bool = false
     var anciennePositionTeteHaute: Bool = false
     var locationPrecedente: CLLocation?
@@ -141,7 +143,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     var denivele10: Double = .nan
     var position10: Double = .nan
     var positionPrecedente10: Double = .nan
-    
+    var timerPenteOpenTopoData: Timer?
     override var prefersHomeIndicatorAutoHidden: Bool {
         return true
     }
@@ -210,6 +212,21 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         }
     }
     
+    @objc func penteOpenTopoData() {
+        guard debugMode && locationPrecedente != nil else {
+//            DispatchQueue.main.async {
+//                self.messageDebug.text = "conditions pas ok"
+//            }
+            return
+        }
+        Task {
+            let (pente, texte) = await locationPrecedente!.penteDeOpenTopoData()
+            DispatchQueue.main.async {
+                self.messageDebug.text = String(format: "➚ %.1f%%", pente * 100.0)
+            }
+        }
+    }
+    
     @objc func changeDemoMode() {
         demoMode = !demoMode
     }
@@ -219,6 +236,8 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             affichageTeteHauteBlanc = !affichageTeteHauteBlanc
         }
     }
+    
+
     
     override func viewDidLoad() {
 //        print("regression", regressionLineaire(x: [1,2,3,4], y: [1.1,1.2,1.3,1.4]))
@@ -307,6 +326,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             }
         }
         scheduledTimerWithTimeInterval()
+        timerPenteOpenTopoData = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.penteOpenTopoData), userInfo: nil, repeats: true)
         super.viewDidLoad()
         print("init ok")
     }
@@ -639,7 +659,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             altitude10 = stats.moyenneGlissanteAltitude10.actualiser(location.altitude)
 //            distance10 = stats.moyenneGlissanteDistance10.actualiser(deplacementDepuisDernierePosition)
             denivele10 = stats.moyenneGlissanteDenivele10.actualiser(location.altitude - altitudePrecedente)
-//            position10 = stats.moyenneGlissantePosition10.actualiser(distances.last!)
+            position10 = stats.moyenneGlissantePosition10.actualiser(stats.distanceTotaleSession)
             
             d = position10 - positionPrecedente10
             deltah = altitude10 - altitudePrecedente10
@@ -675,12 +695,12 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 self.boutonOuvreStats.isHidden = false
             }
         }
-        let affichageSecret = String(format:"<d> %.1f, ∆h %.2f, ➚ %.1f%%\nd %.1f, h %.2f, <h> %.2f", d, deltah,  pente * 100.0, deplacementDepuisDernierePosition, location.altitude, altitude10)
+//        let affichageSecret = String(format:"<d> %.1f, ∆h %.2f, ➚ %.1f%%\nd %.1f, h %.2f, <h> %.2f", d, deltah,  pente * 100.0, deplacementDepuisDernierePosition, location.altitude, altitude10)
         locationPrecedente = location
         timeStampDernierePosition = location.timestamp.timeIntervalSince1970
-        DispatchQueue.main.async{
-            self.messageDebug.text = affichageSecret
-        }
+//        DispatchQueue.main.async{
+//            self.messageDebug.text = affichageSecret
+//        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -735,7 +755,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         let ecartTypeYCarre = yyReduit.reduce(0.0, {$0 + $1}) / Double(longueur - 1)
         let ecartTypePente = sqrt((ecartTypeYCarre / ecartTypeXCarre - pow(pente, 2.0)) / Double(longueur - 2))  // Méthodes statistiques médecine-biologie statistique, p 191 et suivantes
         let ordonneeALOrigine = pente.isNaN || pente.isInfinite ? yMoyen : yMoyen - pente * xMoyen
-        let ordonneeALaFin = pente.isNaN || pente.isInfinite ? yMoyen : ordonneeALOrigine + pente * x.last!
+//        let ordonneeALaFin = pente.isNaN || pente.isInfinite ? yMoyen : ordonneeALOrigine + pente * x.last!
         let ordonneeAuMilieu = pente.isNaN || pente.isInfinite ? yMoyen : ordonneeALOrigine + pente * ((x.last! + x.first!) / 2.0)
             return(pente, ecartTypePente, ordonneeALOrigine, ordonneeAuMilieu)
     }

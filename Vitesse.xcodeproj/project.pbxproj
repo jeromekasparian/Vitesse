@@ -22,6 +22,8 @@
 		B55EFC122635BF51002DF429 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B55EFC112635BF51002DF429 /* Assets.xcassets */; };
 		B55EFC152635BF51002DF429 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B55EFC132635BF51002DF429 /* LaunchScreen.storyboard */; };
 		B593A48C263F1AF30072A2B3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B593A48A263F1AF30072A2B3 /* Localizable.strings */; };
+		B5971D602F37D6C5009A76C7 /* ExtensionCLLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5971D5F2F37D6C5009A76C7 /* ExtensionCLLocation.swift */; };
+		B5971D622F37D82B009A76C7 /* ExtensionDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5971D612F37D82B009A76C7 /* ExtensionDouble.swift */; };
 		B5CF5FAA263B42C400DA78A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC092635BF4D002DF429 /* ViewController.swift */; };
 		B5D801A52BBF5EBF0015D433 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B5D801A42BBF5EBF0015D433 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
@@ -52,6 +54,8 @@
 		B593A488263F1A820072A2B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B593A489263F1A820072A2B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B593A48B263F1AF30072A2B3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Vitesse/en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B5971D5F2F37D6C5009A76C7 /* ExtensionCLLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionCLLocation.swift; sourceTree = "<group>"; };
+		B5971D612F37D82B009A76C7 /* ExtensionDouble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDouble.swift; sourceTree = "<group>"; };
 		B5D801A42BBF5EBF0015D433 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		B5E2579A264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/Main.strings"; sourceTree = "<group>"; };
 		B5E2579B264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
@@ -95,10 +99,12 @@
 			children = (
 				B55EFC052635BF4D002DF429 /* AppDelegate.swift */,
 				B55EFC072635BF4D002DF429 /* SceneDelegate.swift */,
+				B5971D612F37D82B009A76C7 /* ExtensionDouble.swift */,
 				B53B67012F11A43A00975359 /* ExtensionUIView.swift */,
 				B53B67032F11A46100975359 /* ExtensionUIViewController.swift */,
 				B53B67072F11A4B200975359 /* ExtensionUIWindow.swift */,
 				B53B67052F11A48E00975359 /* ExtensionString.swift */,
+				B5971D5F2F37D6C5009A76C7 /* ExtensionCLLocation.swift */,
 				B55B17702F2D4E0000417A70 /* MoyenneGlissante.swift */,
 				B53B66FF2F118F9800975359 /* Stats.swift */,
 				B53935FD263D9ED200C37623 /* StatsModalViewController.swift */,
@@ -189,11 +195,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5971D622F37D82B009A76C7 /* ExtensionDouble.swift in Sources */,
 				B55EFC062635BF4D002DF429 /* AppDelegate.swift in Sources */,
 				B53B67002F118F9800975359 /* Stats.swift in Sources */,
 				B53B67022F11A43A00975359 /* ExtensionUIView.swift in Sources */,
 				B55EFC082635BF4D002DF429 /* SceneDelegate.swift in Sources */,
 				B53935FE263D9ED200C37623 /* StatsModalViewController.swift in Sources */,
+				B5971D602F37D6C5009A76C7 /* ExtensionCLLocation.swift in Sources */,
 				B53B67082F11A4B200975359 /* ExtensionUIWindow.swift in Sources */,
 				B53B67042F11A46100975359 /* ExtensionUIViewController.swift in Sources */,
 				B5CF5FAA263B42C400DA78A3 /* ViewController.swift in Sources */,
@@ -392,7 +400,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 118;
+				CURRENT_PROJECT_VERSION = 119;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -414,7 +422,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 118;
+				CURRENT_PROJECT_VERSION = 119;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
