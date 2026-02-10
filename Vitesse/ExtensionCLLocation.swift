@@ -25,7 +25,7 @@ extension CLLocation {
         }
         let pointDevant = self.decale(distance: decalagePourCalculePente, azimut: self.course)
         let pointDerriere = self.decale(distance: -decalagePourCalculePente, azimut: self.course)
-        let texteURL = "https://api.opentopodata.org/v1/test-dataset?locations=%f,%f%%7C%f,%f%%7C"
+        let texteURL = "https://api.opentopodata.org/v1/eudem25m?locations=%f,%f%%7C%f,%f%%7C"
         let texteURLComplet = String(format: texteURL, pointDerriere.coordinate.latitude, pointDerriere.coordinate.longitude, pointDevant.coordinate.latitude, pointDevant.coordinate.longitude)
         if let urlDEM = URL(string: texteURLComplet) {
             do {

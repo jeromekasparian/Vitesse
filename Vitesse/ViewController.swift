@@ -143,7 +143,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     var denivele10: Double = .nan
     var position10: Double = .nan
     var positionPrecedente10: Double = .nan
-    var timerPenteOpenTopoData: Timer?
+//    var timerPenteOpenTopoData: Timer?
     override var prefersHomeIndicatorAutoHidden: Bool {
         return true
     }
@@ -326,7 +326,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             }
         }
         scheduledTimerWithTimeInterval()
-        timerPenteOpenTopoData = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.penteOpenTopoData), userInfo: nil, repeats: true)
+//        timerPenteOpenTopoData = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.penteOpenTopoData), userInfo: nil, repeats: true)
         super.viewDidLoad()
         print("init ok")
     }
