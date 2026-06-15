@@ -47,6 +47,7 @@ let distanceMiniPourPente: Double = 0.3
 
 //var premierTempsValide = 0.0
 let precisionVerticaleMinimale: Double = 10.0 // précision minimale sur l'altitude pour qu'on la prenne en compte
+let precisionHorizontaleMinimalePourAltitudeOpenTopo: Double = 10.0 // m
 let textesUnites: [String] = [NSLocalizedString("m/s", comment: "vistesse : m/s"), NSLocalizedString("km/h", comment: "vitesse : km/h"), NSLocalizedString("mph", comment: "vitesse : mph"), NSLocalizedString("kt", comment: "vitesse : nœuds")]
 let textesUnitesDistance: [String] = [NSLocalizedString("km", comment: "distance : m"), NSLocalizedString("km", comment: "distance : km"), NSLocalizedString("mi", comment: "distance : mi"), NSLocalizedString("nm", comment: "distance : miles nautiques")]
 let textesUnitesAltitude: [String] = [" " + NSLocalizedString("m", comment: "m"), " " + NSLocalizedString("m", comment: "m"), NSLocalizedString("'", comment: "pied") + " ", NSLocalizedString("'", comment: "pied") + " "]
@@ -65,7 +66,7 @@ let dureeMaxiTunnel: Double = 3600 // secondes : temps maxi pendant lequel on pe
 @MainActor var luminositeEstForcee = false
 let radiansEnDegres = 180.0 / 3.14159
 let degresEnRadians = Double.pi / 180.0
-
+let pointsPourPente: Int = 10
 
 class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @MainActor StatsModalDelegate {
     
@@ -143,7 +144,9 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     var denivele10: Double = .nan
     var position10: Double = .nan
     var positionPrecedente10: Double = .nan
-//    var timerPenteOpenTopoData: Timer?
+    var points: [CLLocation] = []
+    
+    var timerPenteOpenTopoData: Timer?
     override var prefersHomeIndicatorAutoHidden: Bool {
         return true
     }
@@ -240,8 +243,6 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
 
     
     override func viewDidLoad() {
-//        print("regression", regressionLineaire(x: [1,2,3,4], y: [1.1,1.2,1.3,1.4]))
-        //        justLoaded = true
         debugMode = debugMode && autoriseDebug
         if #available(iOS 13.0, *) {
             roueAttente.style = .large
@@ -326,7 +327,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             }
         }
         scheduledTimerWithTimeInterval()
-//        timerPenteOpenTopoData = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.penteOpenTopoData), userInfo: nil, repeats: true)
+//        timerPenteOpenTopoData = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.penteOpenTopo), userInfo: nil, repeats: true)
         super.viewDidLoad()
         print("init ok")
     }
@@ -567,7 +568,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     
     
     func afficherVitesse(vitesse: Double, precisionOK: Bool, pente: Double) {
-        print("vitesse : \(vitesse) \(textesUnites[unite])")
+//        print("vitesse : \(vitesse) \(textesUnites[unite])")
         DispatchQueue.main.async{
             //            self.imageLocalisation.isHidden = true
             if (vitesse >= 0 || precisionOK) {
@@ -581,12 +582,12 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 else {
                     self.affichageVitesse.text = String(format:"%d", Int(vitesse))
                 }
-                if !self.debugMode && (pente.isNaN || abs(pente) < penteMinimalePourAffichage || abs(pente) > penteMaximaleCredible) {
-                    self.labelPente.text = ""
-                } else {
-                    let flechePente = pente > 0 ? "➚" : "➘"
-                    self.labelPente.text = String(format: flechePente + " %2.0f%%", abs(pente) * 100.0).replacingOccurrences(of: " ", with: "\u{2007}")
-                }
+//                if !self.debugMode && (pente.isNaN || abs(pente) < penteMinimalePourAffichage || abs(pente) > penteMaximaleCredible) {
+//                    self.labelPente.text = ""
+//                } else {
+//                    let flechePente = pente > 0 ? "➚" : "➘"
+//                    self.labelPente.text = String(format: flechePente + " %2.0f%%", abs(pente) * 100.0).replacingOccurrences(of: " ", with: "\u{2007}")
+//                }
                 self.localisationEstPerdue = false
                 self.nombrePasOK = 0
             }  // Vitesse >= 0 et precisionOK
@@ -595,7 +596,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 if (self.nombrePasOK >= 1) {
                     self.affichageVitesse.text = ""
                     self.affichePictoPasLocalisation()
-                    self.labelPente.text = ""
+//                    self.labelPente.text = ""
                     //                    self.roueAttente.startAnimating()  //isHidden = false
                     print("pas de signal")
                 }
@@ -608,6 +609,12 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     //    CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location: CLLocation = locations.last else {return}
+        if location.horizontalAccuracy <= precisionHorizontaleMinimalePourAltitudeOpenTopo {
+            points.append(location)
+        }
+        if points.count > pointsPourPente {
+            points.removeFirst(points.count - pointsPourPente)
+        }
         nombrePositionsLues = nombrePositionsLues + 1
         // au-delà de 12 heures en arrière-plan, on réinitialise le trajet
         if (location.timestamp.timeIntervalSince1970 - timeStampDernierePosition) > tempsAvantReinitialisationAuto {
@@ -825,7 +832,118 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
 //    func statsModalViewControllerDidTapOK(_ viewController: StatsModalViewController) {
 //        stats = viewController.stats
 //    }
-        
+      
+    
+    @objc func penteOpenTopo() {
+        guard debugMode && UIApplication.shared.applicationState == .active else {
+            print("penteOpenTopo background")
+            return
+        }
+        guard points.count >= 2 else {
+            DispatchQueue.main.async {
+                self.messageDebug.text = String(format: "penteOpenTopo %d points", self.points.count)
+            }
+            return
+        }
+        Task {
+            var distanceTot = 0.0
+            var texteURL = "https://api.opentopodata.org/v1/eudem25m?locations="
+            var pointPrecedent: CLLocation = points.first!
+            var distancesCumulees: [Double] = []
+            for point in points {
+                distanceTot = distanceTot + point.distance(from: pointPrecedent)
+                distancesCumulees.append(distanceTot)
+                texteURL.append(String(format: "%f,%f%%7C", point.coordinate.latitude, point.coordinate.longitude))
+                pointPrecedent = point
+            }
+            let precisionHorizontale = points.map({$0.horizontalAccuracy}).max() ?? .infinity
+            let precisionRelativeDeplacemnt = precisionHorizontale / distanceTot
+            var texteDebug = ""
+//            for distancesCumulee in distancesCumulees {
+//                texteDebug.append(String(format: "%.0f, ", distancesCumulee))
+//            }
+            texteDebug.append(String(format: "d %.1f m ", distanceTot))
+//            print("distances cumulées", distancesCumulees)
+            guard distanceTot > 10.0 && distanceTot < 500.0 else {
+                DispatchQueue.main.async {
+                    self.messageDebug.text = texteDebug + String(format: "penteOpenTopo distance %.1f", distanceTot)
+                    self.messageDebug.textColor = .systemRed
+                }
+                return
+            }
+            print("url", texteURL)
+            if let urlDEM = URL(string: texteURL) {
+                do {
+                    let (data, _) = try await URLSession.shared.data(from: urlDEM)
+                    let texte = String(data: data, encoding: .utf8) ?? ""
+                    print("texte réponse", texte)
+                    let statutOK = texte.contains("\"status\": \"OK\"")
+                    if statutOK {
+                        let elements = texte.components(separatedBy: "\"elevation\": ").dropFirst(1)
+                        guard elements.count >= 2 else {
+                            print("Pas assez d'éléments")
+                            DispatchQueue.main.async {
+                                self.messageDebug.text = texteDebug + String(format: "penteOpenTopo %d d'altitudes", elements.count)
+                                self.messageDebug.textColor = .systemRed
+                            }
+                            return
+                        }
+                        var altitudes: [Double] = []
+                        for element in elements {
+                            let nombre = element.components(separatedBy: ",").first ?? ""
+                            let altitude = Double(nombre) ?? .nan
+                            altitudes.append(altitude)
+                        }
+                        print("altitudes", altitudes)
+                        let (pente, ecartTypePente, _, _) = regressionLineaire(x: distancesCumulees, y: altitudes)
+                        print("pente", pente, " ± ", ecartTypePente)
+                        let deltaAltitude = abs((altitudes.max() ?? .infinity) - (altitudes.min() ?? -.infinity))
+                        let incertitudeRelative = ecartTypePente / abs(pente) + 0.1 / deltaAltitude + precisionRelativeDeplacemnt
+                        texteDebug.append(String(format: "∆x %.0f%%, ∆h %.0f%%, ∆➚ %.0f%%, ∆ %.0f%%, ", precisionRelativeDeplacemnt * 100.0, 0.1 / deltaAltitude * 100.0, ecartTypePente / abs(pente) * 100.0, incertitudeRelative * 100.0))
+//                        texteDebug.append("\n")
+//                        for altitude in altitudes {
+//                            texteDebug.append(String(format: "%.1f, ", altitude))
+//                        }
+                        let penteOK = abs(pente) > 0.02 && incertitudeRelative < 0.25
+                        DispatchQueue.main.async {
+                            self.messageDebug.text = texteDebug + String(format: "➚ %.1f ± %.1f%%", pente * 100.0, abs(pente) * incertitudeRelative * 100.0)
+                            self.messageDebug.textColor = penteOK ? .systemGreen : .systemOrange
+                            if penteOK {
+                                let flechePente = pente > 0 ? "➚" : "➘"
+                                self.labelPente.text = String(format: flechePente + " %2.0f%%", abs(pente) * 100.0).replacingOccurrences(of: " ", with: "\u{2007}")
+                            } else {
+                                self.labelPente.text = ""
+                            }
+                        }
+                        return
+                    } else {
+                        print("statut pas ok")
+                        DispatchQueue.main.async {
+                            self.messageDebug.text = texteDebug + String("penteOpenTopo Statut pas ok")
+                            self.messageDebug.textColor = .systemRed
+                        }
+                        return
+                    }
+                } catch {
+                    print("Erreur de lecture de l'altitude")
+                    DispatchQueue.main.async {
+                        self.messageDebug.text = String("penteOpenTopo Erreur lecture altitude")
+                        self.messageDebug.textColor = .systemRed
+                    }
+                    return
+                }
+                
+            } else {
+                print("penteOpenTopo autres")
+                DispatchQueue.main.async {
+                    self.messageDebug.text = String("penteOpenTopo autres")
+                    self.messageDebug.textColor = .systemRed
+                }
+                return
+            }
+        }
+    }
+    
 }
 
 
