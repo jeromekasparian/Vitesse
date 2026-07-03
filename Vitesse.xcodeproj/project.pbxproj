@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -24,9 +24,49 @@
 		B593A48C263F1AF30072A2B3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B593A48A263F1AF30072A2B3 /* Localizable.strings */; };
 		B5971D602F37D6C5009A76C7 /* ExtensionCLLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5971D5F2F37D6C5009A76C7 /* ExtensionCLLocation.swift */; };
 		B5971D622F37D82B009A76C7 /* ExtensionDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5971D612F37D82B009A76C7 /* ExtensionDouble.swift */; };
+		B5B3BF152FEB2F7F004B47CA /* Vitesse watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = B5B3BF142FEB2F7F004B47CA /* Vitesse watch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B5CF5FAA263B42C400DA78A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC092635BF4D002DF429 /* ViewController.swift */; };
 		B5D801A52BBF5EBF0015D433 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B5D801A42BBF5EBF0015D433 /* PrivacyInfo.xcprivacy */; };
+		B5FF4EC12FF1BF460012EAF1 /* ExtensionCLAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FF4EC02FF1BF460012EAF1 /* ExtensionCLAuthorizationStatus.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B5B3BF162FEB2F7F004B47CA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B55EFBFA2635BF4D002DF429 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B5B3BF132FEB2F7F004B47CA;
+			remoteInfo = "Vitesse watch Watch App";
+		};
+		B5B3BF242FEB2F80004B47CA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B55EFBFA2635BF4D002DF429 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B5B3BF132FEB2F7F004B47CA;
+			remoteInfo = "Vitesse watch Watch App";
+		};
+		B5B3BF2E2FEB2F80004B47CA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B55EFBFA2635BF4D002DF429 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B5B3BF132FEB2F7F004B47CA;
+			remoteInfo = "Vitesse watch Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B5B3BF372FEB2F80004B47CA /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				B5B3BF152FEB2F7F004B47CA /* Vitesse watch Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B51A55142A02FAA900536393 /* LICENCE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENCE.md; sourceTree = "<group>"; };
@@ -56,15 +96,47 @@
 		B593A48B263F1AF30072A2B3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Vitesse/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B5971D5F2F37D6C5009A76C7 /* ExtensionCLLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionCLLocation.swift; sourceTree = "<group>"; };
 		B5971D612F37D82B009A76C7 /* ExtensionDouble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDouble.swift; sourceTree = "<group>"; };
+		B5B3BF0F2FEB2F7F004B47CA /* Vitesse watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Vitesse watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5B3BF142FEB2F7F004B47CA /* Vitesse watch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Vitesse watch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5B3BF232FEB2F80004B47CA /* Vitesse watch Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Vitesse watch Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5B3BF2D2FEB2F80004B47CA /* Vitesse watch Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Vitesse watch Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5D801A42BBF5EBF0015D433 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		B5E2579A264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/Main.strings"; sourceTree = "<group>"; };
 		B5E2579B264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		B5E2579C264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "Vitesse/fr-FR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		B5E2579E264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		B5FF4EC02FF1BF460012EAF1 /* ExtensionCLAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionCLAuthorizationStatus.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		B5B3BF182FEB2F7F004B47CA /* Vitesse watch Watch App */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Vitesse watch Watch App"; sourceTree = "<group>"; };
+		B5B3BF262FEB2F80004B47CA /* Vitesse watch Watch AppTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Vitesse watch Watch AppTests"; sourceTree = "<group>"; };
+		B5B3BF302FEB2F80004B47CA /* Vitesse watch Watch AppUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Vitesse watch Watch AppUITests"; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B55EFBFF2635BF4D002DF429 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5B3BF112FEB2F7F004B47CA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5B3BF202FEB2F80004B47CA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5B3BF2A2FEB2F80004B47CA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -82,6 +154,9 @@
 				B51A55152A02FC2C00536393 /* README.md */,
 				B593A48A263F1AF30072A2B3 /* Localizable.strings */,
 				B55EFC042635BF4D002DF429 /* Vitesse */,
+				B5B3BF182FEB2F7F004B47CA /* Vitesse watch Watch App */,
+				B5B3BF262FEB2F80004B47CA /* Vitesse watch Watch AppTests */,
+				B5B3BF302FEB2F80004B47CA /* Vitesse watch Watch AppUITests */,
 				B55EFC032635BF4D002DF429 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +165,10 @@
 			isa = PBXGroup;
 			children = (
 				B55EFC022635BF4D002DF429 /* Vitesse.app */,
+				B5B3BF0F2FEB2F7F004B47CA /* Vitesse watch.app */,
+				B5B3BF142FEB2F7F004B47CA /* Vitesse watch Watch App.app */,
+				B5B3BF232FEB2F80004B47CA /* Vitesse watch Watch AppTests.xctest */,
+				B5B3BF2D2FEB2F80004B47CA /* Vitesse watch Watch AppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -99,6 +178,7 @@
 			children = (
 				B55EFC052635BF4D002DF429 /* AppDelegate.swift */,
 				B55EFC072635BF4D002DF429 /* SceneDelegate.swift */,
+				B5FF4EC02FF1BF460012EAF1 /* ExtensionCLAuthorizationStatus.swift */,
 				B5971D612F37D82B009A76C7 /* ExtensionDouble.swift */,
 				B53B67012F11A43A00975359 /* ExtensionUIView.swift */,
 				B53B67032F11A46100975359 /* ExtensionUIViewController.swift */,
@@ -139,6 +219,93 @@
 			productReference = B55EFC022635BF4D002DF429 /* Vitesse.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B5B3BF0E2FEB2F7F004B47CA /* Vitesse watch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B5B3BF3F2FEB2F80004B47CA /* Build configuration list for PBXNativeTarget "Vitesse watch" */;
+			buildPhases = (
+				B5B3BF0D2FEB2F7F004B47CA /* Resources */,
+				B5B3BF372FEB2F80004B47CA /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B5B3BF172FEB2F7F004B47CA /* PBXTargetDependency */,
+			);
+			name = "Vitesse watch";
+			packageProductDependencies = (
+			);
+			productName = "Vitesse watch";
+			productReference = B5B3BF0F2FEB2F7F004B47CA /* Vitesse watch.app */;
+			productType = "com.apple.product-type.application.watchapp2-container";
+		};
+		B5B3BF132FEB2F7F004B47CA /* Vitesse watch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B5B3BF3E2FEB2F80004B47CA /* Build configuration list for PBXNativeTarget "Vitesse watch Watch App" */;
+			buildPhases = (
+				B5B3BF102FEB2F7F004B47CA /* Sources */,
+				B5B3BF112FEB2F7F004B47CA /* Frameworks */,
+				B5B3BF122FEB2F7F004B47CA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B5B3BF182FEB2F7F004B47CA /* Vitesse watch Watch App */,
+			);
+			name = "Vitesse watch Watch App";
+			packageProductDependencies = (
+			);
+			productName = "Vitesse watch Watch App";
+			productReference = B5B3BF142FEB2F7F004B47CA /* Vitesse watch Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B5B3BF222FEB2F80004B47CA /* Vitesse watch Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B5B3BF402FEB2F80004B47CA /* Build configuration list for PBXNativeTarget "Vitesse watch Watch AppTests" */;
+			buildPhases = (
+				B5B3BF1F2FEB2F80004B47CA /* Sources */,
+				B5B3BF202FEB2F80004B47CA /* Frameworks */,
+				B5B3BF212FEB2F80004B47CA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B5B3BF252FEB2F80004B47CA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B5B3BF262FEB2F80004B47CA /* Vitesse watch Watch AppTests */,
+			);
+			name = "Vitesse watch Watch AppTests";
+			packageProductDependencies = (
+			);
+			productName = "Vitesse watch Watch AppTests";
+			productReference = B5B3BF232FEB2F80004B47CA /* Vitesse watch Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B5B3BF2C2FEB2F80004B47CA /* Vitesse watch Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B5B3BF412FEB2F80004B47CA /* Build configuration list for PBXNativeTarget "Vitesse watch Watch AppUITests" */;
+			buildPhases = (
+				B5B3BF292FEB2F80004B47CA /* Sources */,
+				B5B3BF2A2FEB2F80004B47CA /* Frameworks */,
+				B5B3BF2B2FEB2F80004B47CA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B5B3BF2F2FEB2F80004B47CA /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B5B3BF302FEB2F80004B47CA /* Vitesse watch Watch AppUITests */,
+			);
+			name = "Vitesse watch Watch AppUITests";
+			packageProductDependencies = (
+			);
+			productName = "Vitesse watch Watch AppUITests";
+			productReference = B5B3BF2D2FEB2F80004B47CA /* Vitesse watch Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -146,11 +313,25 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastSwiftUpdateCheck = 1240;
+				LastSwiftUpdateCheck = 2650;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					B55EFC012635BF4D002DF429 = {
 						CreatedOnToolsVersion = 12.4;
+					};
+					B5B3BF0E2FEB2F7F004B47CA = {
+						CreatedOnToolsVersion = 26.5;
+					};
+					B5B3BF132FEB2F7F004B47CA = {
+						CreatedOnToolsVersion = 26.5;
+					};
+					B5B3BF222FEB2F80004B47CA = {
+						CreatedOnToolsVersion = 26.5;
+						TestTargetID = B5B3BF132FEB2F7F004B47CA;
+					};
+					B5B3BF2C2FEB2F80004B47CA = {
+						CreatedOnToolsVersion = 26.5;
+						TestTargetID = B5B3BF132FEB2F7F004B47CA;
 					};
 				};
 			};
@@ -170,6 +351,10 @@
 			projectRoot = "";
 			targets = (
 				B55EFC012635BF4D002DF429 /* Vitesse */,
+				B5B3BF0E2FEB2F7F004B47CA /* Vitesse watch */,
+				B5B3BF132FEB2F7F004B47CA /* Vitesse watch Watch App */,
+				B5B3BF222FEB2F80004B47CA /* Vitesse watch Watch AppTests */,
+				B5B3BF2C2FEB2F80004B47CA /* Vitesse watch Watch AppUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -185,6 +370,34 @@
 				B593A48C263F1AF30072A2B3 /* Localizable.strings in Resources */,
 				B55EFC122635BF51002DF429 /* Assets.xcassets in Resources */,
 				B55EFC0D2635BF4D002DF429 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5B3BF0D2FEB2F7F004B47CA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5B3BF122FEB2F7F004B47CA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5B3BF212FEB2F80004B47CA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5B3BF2B2FEB2F80004B47CA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,13 +418,53 @@
 				B53B67082F11A4B200975359 /* ExtensionUIWindow.swift in Sources */,
 				B53B67042F11A46100975359 /* ExtensionUIViewController.swift in Sources */,
 				B5CF5FAA263B42C400DA78A3 /* ViewController.swift in Sources */,
+				B5FF4EC12FF1BF460012EAF1 /* ExtensionCLAuthorizationStatus.swift in Sources */,
 				B55B17712F2D4E0100417A70 /* MoyenneGlissante.swift in Sources */,
 				B53B67062F11A48E00975359 /* ExtensionString.swift in Sources */,
 				B55EFC102635BF4D002DF429 /* Vitesse.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B5B3BF102FEB2F7F004B47CA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5B3BF1F2FEB2F80004B47CA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5B3BF292FEB2F80004B47CA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B5B3BF172FEB2F7F004B47CA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B5B3BF132FEB2F7F004B47CA /* Vitesse watch Watch App */;
+			targetProxy = B5B3BF162FEB2F7F004B47CA /* PBXContainerItemProxy */;
+		};
+		B5B3BF252FEB2F80004B47CA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B5B3BF132FEB2F7F004B47CA /* Vitesse watch Watch App */;
+			targetProxy = B5B3BF242FEB2F80004B47CA /* PBXContainerItemProxy */;
+		};
+		B5B3BF2F2FEB2F80004B47CA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B5B3BF132FEB2F7F004B47CA /* Vitesse watch Watch App */;
+			targetProxy = B5B3BF2E2FEB2F80004B47CA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B52C729526487CA700185CBB /* Info.plist */ = {
@@ -400,7 +653,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 120;
+				CURRENT_PROJECT_VERSION = 122;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -408,7 +661,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.18;
+				MARKETING_VERSION = 1.19;
 				PRODUCT_BUNDLE_IDENTIFIER = JK.Vitesse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -422,7 +675,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 120;
+				CURRENT_PROJECT_VERSION = 122;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -430,11 +683,235 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.18;
+				MARKETING_VERSION = 1.19;
 				PRODUCT_BUNDLE_IDENTIFIER = JK.Vitesse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B5B3BF352FEB2F80004B47CA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L3A73K7T3G;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				INFOPLIST_KEY_CFBundleDisplayName = "Vitesse watch";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "jk.Vitesse-watch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B5B3BF362FEB2F80004B47CA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L3A73K7T3G;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				INFOPLIST_KEY_CFBundleDisplayName = "Vitesse watch";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "jk.Vitesse-watch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		B5B3BF382FEB2F80004B47CA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L3A73K7T3G;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Vitesse watch";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "jk.Vitesse-watch.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.7;
+			};
+			name = Debug;
+		};
+		B5B3BF392FEB2F80004B47CA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L3A73K7T3G;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Vitesse watch";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "jk.Vitesse-watch.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.7;
+			};
+			name = Release;
+		};
+		B5B3BF3A2FEB2F80004B47CA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L3A73K7T3G;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "jk.Vitesse-watch-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Vitesse watch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Vitesse watch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.5;
+			};
+			name = Debug;
+		};
+		B5B3BF3B2FEB2F80004B47CA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L3A73K7T3G;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "jk.Vitesse-watch-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Vitesse watch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Vitesse watch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.5;
+			};
+			name = Release;
+		};
+		B5B3BF3C2FEB2F80004B47CA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L3A73K7T3G;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "jk.Vitesse-watch-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "Vitesse watch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.5;
+			};
+			name = Debug;
+		};
+		B5B3BF3D2FEB2F80004B47CA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L3A73K7T3G;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "jk.Vitesse-watch-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "Vitesse watch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.5;
 			};
 			name = Release;
 		};
@@ -455,6 +932,42 @@
 			buildConfigurations = (
 				B55EFC302635BF52002DF429 /* Debug */,
 				B55EFC312635BF52002DF429 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B5B3BF3E2FEB2F80004B47CA /* Build configuration list for PBXNativeTarget "Vitesse watch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B5B3BF382FEB2F80004B47CA /* Debug */,
+				B5B3BF392FEB2F80004B47CA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B5B3BF3F2FEB2F80004B47CA /* Build configuration list for PBXNativeTarget "Vitesse watch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B5B3BF352FEB2F80004B47CA /* Debug */,
+				B5B3BF362FEB2F80004B47CA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B5B3BF402FEB2F80004B47CA /* Build configuration list for PBXNativeTarget "Vitesse watch Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B5B3BF3A2FEB2F80004B47CA /* Debug */,
+				B5B3BF3B2FEB2F80004B47CA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B5B3BF412FEB2F80004B47CA /* Build configuration list for PBXNativeTarget "Vitesse watch Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B5B3BF3C2FEB2F80004B47CA /* Debug */,
+				B5B3BF3D2FEB2F80004B47CA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

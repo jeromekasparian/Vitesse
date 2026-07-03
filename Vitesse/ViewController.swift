@@ -50,7 +50,7 @@ let precisionVerticaleMinimale: Double = 10.0 // précision minimale sur l'altit
 let precisionHorizontaleMinimalePourAltitudeOpenTopo: Double = 10.0 // m
 let textesUnites: [String] = [NSLocalizedString("m/s", comment: "vistesse : m/s"), NSLocalizedString("km/h", comment: "vitesse : km/h"), NSLocalizedString("mph", comment: "vitesse : mph"), NSLocalizedString("kt", comment: "vitesse : nœuds")]
 let textesUnitesDistance: [String] = [NSLocalizedString("km", comment: "distance : m"), NSLocalizedString("km", comment: "distance : km"), NSLocalizedString("mi", comment: "distance : mi"), NSLocalizedString("nm", comment: "distance : miles nautiques")]
-let textesUnitesAltitude: [String] = [" " + NSLocalizedString("m", comment: "m"), " " + NSLocalizedString("m", comment: "m"), NSLocalizedString("'", comment: "pied") + " ", NSLocalizedString("'", comment: "pied") + " "]
+let textesUnitesAltitude: [String] = [" " + NSLocalizedString("m", comment: "m"), " " + NSLocalizedString("m", comment: "m"), NSLocalizedString("'", comment: "pied") + " ", NSLocalizedString("'", comment: "pied") + " "]
 
 let facteurUnitesVitesses: [Double] = [1.0, 3.6, 2.2369362920544, 1.94552529]
 let facteurUnitesDistance: [Double] = [0.001, 0.001, 0.00062137, 0.00053996]
@@ -75,36 +75,18 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     var demoMode = false // pour faire les captures d'écran pour l'app store
 
     var locationManager: CLLocationManager! = CLLocationManager()
-    //    let activityManager = CMMotionActivityManager()
-    //    let inclinaisonMin = 5.0 // inclinaison min en degres (sur le roulis) pour dire qu'on est en mode tête haute
     let inclinaisonMax = 38.0 // inclinaison max en degres (sur le roulis) pour dire qu'on est en mode tête haute
 
     var positionTeteHaute: Bool = false
     var anciennePositionTeteHaute: Bool = false
     var locationPrecedente: CLLocation?
-//    var altitudePrecedente8: Double = .nan
     var altitudePrecedente10: Double = .nan
     var altitudePrecedente: Double = .nan
-//    var altitudePrecedente15: Double = .nan
-//    var altitudeActuelle: Double = .nan
-//    var distancePourAltitudeActuelle: Double = .nan
-//    var nombreAltitudesMoyennees: Int = 0
-//    var altitudesPourMoyenne: [Double] = []
-//    var distancesPourMoyenne: [Double] = []
-//    var altitudes: [Double] = []
-//    var deltaAltitudes: [Double] = []
-//    var distances: [Double] = []
-//    var pentes8: [Double] = []
-//    var pentes10: [Double] = []
-//    var pentes15: [Double] = []
     
-//    var distancePourAltitudeActuelle: Double = .nan
     let nombreAltitudesAMoyenner: Int = 40
     var affichageTeteHauteBlanc = false
     var timer = Timer()
     var nombrePasOK = 0 // nombre de vitesses pas ok reçues à la suite
-    //    var timeStampEntreeBackground: Double = .nan
-    //    var positionEntreeBackground: CLLocation! = nil
     
     let motionManager = CMMotionManager()
     var dateDernierBoutonReactiveChevron = Date()
@@ -135,12 +117,8 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     @IBOutlet var labelPente: UILabel!
     @IBOutlet var boutonReactiveChevron: UIButton!
     
-//    var altitude8: Double = .nan
     var altitude10: Double = .nan
-//    var altitude15: Double = .nan
-//    var distance8: Double = .nan
     var distance10: Double = .nan
-//    var distance15: Double = .nan
     var denivele10: Double = .nan
     var position10: Double = .nan
     var positionPrecedente10: Double = .nan
@@ -156,7 +134,6 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         userDefaults.set(unite, forKey: keyUnite)
         affichageUnite.setTitle(textesUnites[unite], for: .normal) // = textesUnites[unite]
         if (affichageVitesse.text != "" && locationPrecedente != nil) {
-//            let laVitesse = Double(affichageVitesse.text?.floatValue ?? -1.0)
             afficherVitesse(vitesse: locationPrecedente!.speed * facteurUnitesVitesses[unite], precisionOK: true, pente: .nan)
         }
     }
@@ -168,13 +145,6 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 self.boutonOuvreStats.isHidden = false
             }
         }
-//        if debugMode {
-//            var texte = ""
-//            for i in 0..<distances.count {
-//                texte += String(format: "%.2f\t %.2f\t %.2f\n", distances[i], altitudes[i], pentes10[i])
-//            }
-//            UIPasteboard.general.string = texte
-//        }
     }
     
     @objc func enregistrerStats(){
@@ -244,11 +214,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     
     override func viewDidLoad() {
         debugMode = debugMode && autoriseDebug
-        if #available(iOS 13.0, *) {
-            roueAttente.style = .large
-        } else {
-            imagePasLocalisation.image = UIImage(named: "location.slash.fill")
-        }
+        self.roueAttente.style = .large
         self.boutonReactiveChevron.setTitle("", for: .normal)
         self.messagePublic.text = ""
         self.messageDebug.isHidden = !self.debugMode
@@ -263,6 +229,12 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         self.stats.vitesseMax = self.userDefaults.value(forKey: keyVitesseMax) as? Double ?? 0.0
         self.stats.distanceTotale = self.userDefaults.value(forKey: keyDistanceTotale) as? Double ?? 0.0
         self.imagePasLocalisation.isHidden = true
+        if UITraitCollection.current.accessibilityContrast == .high {
+            self.affichageUnite.tintColor = .white
+            self.affichageVitesse.textColor = .white
+            self.imagePasLocalisation.tintColor = .white
+        }
+
         self.roueAttente.startAnimating()
         
         //        etatActuel = .indetermine
@@ -448,8 +420,6 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 switch self.affichageUnite.contentHorizontalAlignment {
                 case .left: self.affichageUnite.contentHorizontalAlignment = .right
                 case .right: self.affichageUnite.contentHorizontalAlignment = .left
-                    //                    case .leading: self.affichageUnite.contentHorizontalAlignment = .trailing
-                    //                    case .trailing: self.affichageUnite.contentHorizontalAlignment = .leading
                 default: print("cas par défaut")
                 }
                 self.anciennePositionTeteHaute = self.positionTeteHaute
@@ -478,7 +448,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 if luminositeEstForcee && UIApplication.shared.applicationState == .active { // on revient au contraste par défaut du système
                     stoppeLuminositeMax()
                 }
-                self.affichageVitesse.textColor = UIScreen.main.brightness >= self.luminositeMinimalePourForcerAffichageBlanc ? .white : .lightGray
+                self.affichageVitesse.textColor = UIScreen.main.brightness >= self.luminositeMinimalePourForcerAffichageBlanc || UITraitCollection.current.accessibilityContrast == .high ? .white : .lightGray
                 if self.affichageTeteHauteBlanc {
                     self.affichageVitesse.backgroundColor = .black
                     self.affichageUnite.backgroundColor = self.affichageVitesse.backgroundColor
@@ -499,83 +469,86 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     func gereDroitsLocalisation(origineViewDidLoad : Bool, origineViewDidAppear: Bool) {
         print("lancement viewDidLoad : \(origineViewDidLoad)")
         print("lancement viewDidAppear : \(origineViewDidAppear)")
-        
+        print("droits de localisation : ", CLLocationManager.authorizationStatus().toText())
         locationManager.delegate = self
-        
-        if (CLLocationManager.locationServicesEnabled()) { // la localisation est activée sur l'appareil
-            print("droits de localisation : ", CLLocationManager.authorizationStatus().rawValue)
-            //            locationManager.requestWhenInUseAuthorization()
-            locationManager.requestAlwaysAuthorization()
-            let statut = CLLocationManager.authorizationStatus()
-            switch statut {
-            case .authorizedAlways, .authorizedWhenInUse:  // l'app a l'autorisation d'accéder à la localisation
-                locationToujoursAutorisee = statut == .authorizedAlways
-                locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-                if statut == .authorizedAlways {
-                    locationManager.allowsBackgroundLocationUpdates = true
-                    locationManager.pausesLocationUpdatesAutomatically = true // après un certain temps sans bouger, il arrête les mises à jour de la localisation en tâche de fond.
-                    locationManager.activityType = .otherNavigation
-                    if #available(iOS 11.0, *) {
-                        locationManager.showsBackgroundLocationIndicator = true
-                    }
-                }
-                locationManager.startUpdatingLocation()
-                //            self.imagePasDeVitesse.image = UIImage(systemName: "location.fill")
-                DispatchQueue.main.async{
+                self.locationManager.requestAlwaysAuthorization()
+                let statut = CLLocationManager.authorizationStatus()
+                switch statut {
+                case .authorizedAlways, .authorizedWhenInUse:  // l'app a l'autorisation d'accéder à la localisation
+                    self.locationToujoursAutorisee = statut == .authorizedAlways
+                    self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
                     if statut == .authorizedAlways {
-                        self.messageDebug.text = "Localisation autorisée toujours"
-                        print("acces localisation toujours ok")
-                    } else {
-                        self.messageDebug.text = "Localisation autorisée app active"
-                        print("acces localisation app active ok")
-                        
+                        self.locationManager.allowsBackgroundLocationUpdates = true
+                        self.locationManager.pausesLocationUpdatesAutomatically = true // après un certain temps sans bouger, il arrête les mises à jour de la localisation en tâche de fond.
+                        self.locationManager.activityType = .otherNavigation
+                        if #available(iOS 11.0, *) {
+                            self.locationManager.showsBackgroundLocationIndicator = true
+                        }
                     }
-                    //                    if self.imagePasLocalisation.isHidden {
-                    self.affichageVitesse.text = ""
-                    self.affichePictoPasLocalisation()
-                    //                        self.roueAttente.startAnimating()  //isHidden = true
-                    //                    }
-                }
-            case .denied, .restricted:
-                print("acces localisation pas ok pour l'app")
-                locationToujoursAutorisee = false
-                DispatchQueue.main.async{
-                    let leMessage = NSLocalizedString("Pour afficher la vitesse, autorisez l'app à accéder à la localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'app n'est pas autorisée à accéder à la localisation")
-                    self.afficherAlerteRenvoiPreferences(titre: NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte"), message: leMessage, perfsDeLApp: true)
-                    self.affichageVitesse.text = ""
-                    self.affichePictoPasLocalisation()
-                }
-            case .notDetermined:
-                print("not determined")
-                locationToujoursAutorisee = false
-            default:
-                print("défaut")
-                locationToujoursAutorisee = false
-            } // switch
-        }  //  if (CLLocationManager.locationServicesEnabled())
-        else {
-            print("acces localisation pas ok pour le téléphone")
-            locationToujoursAutorisee = false
-            DispatchQueue.main.async{
-                //                self.present(alerte, animated: true)
-                let leMessage = NSLocalizedString("Pour afficher la vitesse, activez la localisation sur votre appareil \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'appareil n'est pas autorisé à lire la position")
-                self.afficherAlerteRenvoiPreferences(titre: NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte"), message: leMessage, perfsDeLApp: false)
-                self.affichageVitesse.text = ""
-                self.affichePictoPasLocalisation()
-            }
-        }
+                    self.locationManager.startUpdatingLocation()
+                    //            self.imagePasDeVitesse.image = UIImage(systemName: "location.fill")
+                    DispatchQueue.main.async{
+                        if statut == .authorizedAlways {
+                            self.messageDebug.text = "Localisation autorisée toujours"
+                            print("acces localisation toujours ok")
+                        } else {
+                            self.messageDebug.text = "Localisation autorisée app active"
+                            print("acces localisation app active ok")
+                            
+                        }
+                        //                    if self.imagePasLocalisation.isHidden {
+                        self.affichageVitesse.text = ""
+                        self.affichePictoPasLocalisation()
+                        //                        self.roueAttente.startAnimating()  //isHidden = true
+                        //                    }
+                    }
+                case .denied, .restricted:
+                    self.locationToujoursAutorisee = false
+                    DispatchQueue.main.async{
+                        self.affichageVitesse.text = ""
+                        self.affichePictoPasLocalisation()
+                    }
+                    DispatchQueue.global(qos: .default).async {
+                        if (CLLocationManager.locationServicesEnabled()) { // la localisation est activée sur l'appareil
+                            print("acces localisation pas ok pour l'app")
+                            Task{
+                                let leMessage = NSLocalizedString("Pour afficher la vitesse, autorisez l'app à accéder à la localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'app n'est pas autorisée à accéder à la localisation")
+                                await self.afficherAlerteRenvoiPreferences(titre: NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte"), message: leMessage, perfsDeLApp: true)
+                            }
+                        } else {
+                            Task{
+                                let leMessage = NSLocalizedString("Pour afficher la vitesse, activez la localisation sur votre appareil \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'appareil n'est pas autorisé à lire la position")
+                                await self.afficherAlerteRenvoiPreferences(titre: NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte"), message: leMessage, perfsDeLApp: false)
+                            }
+                        }
+                    }
+                case .notDetermined:
+                    print("not determined")
+                    self.locationToujoursAutorisee = false
+                default:
+                    print("défaut")
+                    self.locationToujoursAutorisee = false
+                } // switch
+//            }    if (CLLocationManager.locationServicesEnabled())
+//            else {
+//                print("acces localisation pas ok pour le téléphone")
+//                self.locationToujoursAutorisee = false
+//                DispatchQueue.main.async{
+//                    let leMessage = NSLocalizedString("Pour afficher la vitesse, activez la localisation sur votre appareil \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'appareil n'est pas autorisé à lire la position")
+//                    self.afficherAlerteRenvoiPreferences(titre: NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte"), message: leMessage, perfsDeLApp: false)
+//                    self.affichageVitesse.text = ""
+//                    self.affichePictoPasLocalisation()
+//                }
+//            }
     }
     
     
     func afficherVitesse(vitesse: Double, precisionOK: Bool, pente: Double) {
-//        print("vitesse : \(vitesse) \(textesUnites[unite])")
         DispatchQueue.main.async{
-            //            self.imageLocalisation.isHidden = true
             if (vitesse >= 0 || precisionOK) {
                 self.messagePublic.text = ""
                 self.imagePasLocalisation.isHidden = true
                 self.roueAttente.stopAnimating()  //isHidden = true
-                // //                self.affichageVitesse.text = String(format:"%.0f",vitesse)
                 if Int(vitesse) <= 9 {
                     self.affichageVitesse.text = String(format:"\u{2007}%d", Int(vitesse))  // \u{2007} = blanc de même largeur qu'un chiffre
                 }
@@ -592,12 +565,9 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 self.nombrePasOK = 0
             }  // Vitesse >= 0 et precisionOK
             else {
-                //                if (self.imagePasLocalisation.isHidden) && (self.nombrePasOK >= 2) {
                 if (self.nombrePasOK >= 1) {
                     self.affichageVitesse.text = ""
                     self.affichePictoPasLocalisation()
-//                    self.labelPente.text = ""
-                    //                    self.roueAttente.startAnimating()  //isHidden = false
                     print("pas de signal")
                 }
                 self.nombrePasOK = self.nombrePasOK + 1
@@ -635,54 +605,41 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         
 //        laVitesseLue = (laVitesseLue >= 0 && location.speedAccuracy > 0) ? laVitesseLue : 0.0
         if vitesseOKPourStats && location.speed > vitesseMiniPourActiverCompteur && timeStampDernierePosition > 0.0 {
-                stats.distanceTotale = stats.distanceTotale + deplacementDepuisDernierePosition
-                stats.distanceTotaleSession = stats.distanceTotaleSession + deplacementDepuisDernierePosition
-                stats.distanceTotale = max(stats.distanceTotale, stats.distanceTotaleSession)
-                stats.tempsSession = stats.tempsSession + location.timestamp.timeIntervalSince1970 - timeStampDernierePosition
-                if location.speed > stats.vitesseMax {
-                    stats.vitesseMax = location.speed
-                }
-                if location.speed > stats.vitesseMaxSession {
-                    stats.vitesseMaxSession = location.speed
-                }
+            stats.distanceTotale = stats.distanceTotale + deplacementDepuisDernierePosition
+            stats.distanceTotaleSession = stats.distanceTotaleSession + deplacementDepuisDernierePosition
+            stats.distanceTotale = max(stats.distanceTotale, stats.distanceTotaleSession)
+            stats.tempsSession = stats.tempsSession + location.timestamp.timeIntervalSince1970 - timeStampDernierePosition
+            if location.speed > stats.vitesseMax {
+                stats.vitesseMax = location.speed
+            }
+            if location.speed > stats.vitesseMaxSession {
+                stats.vitesseMaxSession = location.speed
+            }
         } // if vitesseOK
-//        var denivele8: Double = .nan
-//        var denivele10: Double = .nan
-//        var denivele15: Double = .nan
         var denivele: Double = .nan
         var pente: Double = .nan
         var nombrePointsOK: Bool = false
         var deltah: Double = .nan
         var d: Double = .nan
-//        var altitude: Double = .nan
-//        var sigmaPentePourAffichage: Double = .nan
-//        var pentePourDebug: Double = .nan
         if location.verticalAccuracy <= precisionVerticaleMinimale && location.verticalAccuracy >= 0.0 && !location.altitude.isNaN {
 
-//            altitudes.append(location.altitude)
-//            deltaAltitudes.append(location.verticalAccuracy)
-//            distances.append((distances.last ?? 0.0) + deplacementDepuisDernierePosition)
-
             altitude10 = stats.moyenneGlissanteAltitude10.actualiser(location.altitude)
-//            distance10 = stats.moyenneGlissanteDistance10.actualiser(deplacementDepuisDernierePosition)
             denivele10 = stats.moyenneGlissanteDenivele10.actualiser(location.altitude - altitudePrecedente)
             position10 = stats.moyenneGlissantePosition10.actualiser(stats.distanceTotaleSession)
             
             d = position10 - positionPrecedente10
             deltah = altitude10 - altitudePrecedente10
             pente = deltah / d
-//            pentes10.append(deltah / d)
-//            pente = denivele10 / distance10
             
             if vitesseOKPourStats {
                 denivele = altitude10 - altitudePrecedente10
                 // changer pour utiliser un autre moyennage
                 nombrePointsOK = stats.moyenneGlissanteAltitude10.valeurStable()
                 if abs(pente) <= penteMaximaleCredible && nombrePointsOK {
-                    if denivele > 0 {
-                        stats.denivelePositifSession = stats.denivelePositifSession + denivele10
+                    if denivele >= 0 {
+                        stats.denivelePositifSession = stats.denivelePositifSession + denivele
                     } else {
-                        stats.deniveleNegatifSession = stats.deniveleNegatifSession - denivele10
+                        stats.deniveleNegatifSession = stats.deniveleNegatifSession - denivele
                     }
                 }
                 altitudePrecedente10 = altitude10.isNaN ? altitudePrecedente10 : altitude10
@@ -692,7 +649,9 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             } // if vitesseOK
         }
         afficherVitesse(vitesse: location.speed * facteurUnitesVitesses[unite], precisionOK: vitesseOKPourAffichage, pente: pente)
-//        print("temps", Date().timeIntervalSince(dateDernierBoutonReactiveChevron))
+        if statsModalViewController != nil {
+            statsModalViewController?.afficherStats()
+        }
         if location.speed > vitesseMiniPourCacherChevron && Date().timeIntervalSince(dateDernierBoutonReactiveChevron) > tempsMiniAffichageChevron && !boutonOuvreStats.isHidden {
             DispatchQueue.main.async {
                 self.boutonOuvreStats.isHidden = true
@@ -702,6 +661,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 self.boutonOuvreStats.isHidden = false
             }
         }
+//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: notificationMiseAJourStats), object: nil)
 //        let affichageSecret = String(format:"<d> %.1f, ∆h %.2f, ➚ %.1f%%\nd %.1f, h %.2f, <h> %.2f", d, deltah,  pente * 100.0, deplacementDepuisDernierePosition, location.altitude, altitude10)
         locationPrecedente = location
         timeStampDernierePosition = location.timestamp.timeIntervalSince1970
@@ -712,18 +672,18 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         localisationEstPerdue = true
-        if CLLocationManager.locationServicesEnabled() { // la localisation est activée sur l'appareil
-            if CLLocationManager.authorizationStatus() != .denied && CLLocationManager.authorizationStatus() != .restricted {
-                DispatchQueue.main.async{
-                    //            self.messageSecret.isHidden = false
-                    self.messagePublic.text = NSLocalizedString("Erreur de localisation", comment: "Erreur de localisation")
-                    self.affichageVitesse.text = ""
-                    self.affichePictoPasLocalisation()
-                    //            self.imagePasLocalisation.isHidden = false
+//            if CLLocationManager.locationServicesEnabled() { // la localisation est activée sur l'appareil
+                if CLLocationManager.authorizationStatus() != .denied && CLLocationManager.authorizationStatus() != .restricted {
+                    DispatchQueue.main.async{
+                        //            self.messageSecret.isHidden = false
+                        self.messagePublic.text = NSLocalizedString("Erreur de localisation", comment: "Erreur de localisation")
+                        self.affichageVitesse.text = ""
+                        self.affichePictoPasLocalisation()
+                        //            self.imagePasLocalisation.isHidden = false
+                    }
                 }
-            }
-        }
-        print(error)
+//            }
+            print(error)
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -783,43 +743,38 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         self.autoriserAffichageTeteHaute = autoriserAffichageTeteHaute
     }
 
+    func texteAffichageValeur(prefixe: String, format: String, valeur: Double, unite: String) -> String {
+        return prefixe + String(format: format, valeur).replacingOccurrences(of: " ", with: "\u{2007}") + " " + unite  // .replacingOccurrences(of: " ", with: "\u{2007}")
+    }
     
     func afficherStatsReelles(_ viewController: StatsModalViewController) {
-        viewController.labelVitesseMax.text = (self.stats.vitesseMax >= 100.0 ? String(format: "Max %3.0f ", self.stats.vitesseMax * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite] : String(format: "Max %4.1f ", self.stats.vitesseMax * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}")
-        viewController.labelVitesseMaxSession.text = (self.stats.vitesseMaxSession >= 100.0 ? String(format: "Max %3.0f ", self.stats.vitesseMaxSession * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite] : String(format: "Max %4.1f ", self.stats.vitesseMaxSession * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}")
-        viewController.labelDistanceTotale.text = String(format: "%.1f ", self.stats.distanceTotale * facteurUnitesDistance[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}") + textesUnitesDistance[self.unite]
-        if debugMode {
-            viewController.labelDistanceTotaleSession.text = String(format: "%.3f ", self.stats.distanceTotaleSession * facteurUnitesDistance[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}").replacingOccurrences(of: " ", with: "\u{2007}")
-        } else {
-            viewController.labelDistanceTotaleSession.text = String(format: "%.1f ", self.stats.distanceTotaleSession * facteurUnitesDistance[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}")
-        }
-        viewController.labelDistanceTotaleSession.text?.append(textesUnitesDistance[self.unite])
-        if self.view.frame.width > self.view.frame.height {
-            viewController.labelDeniveleSession.text = (String(format: "➚ %4.0f", self.stats.denivelePositifSession  * facteurUnitesAltitude[self.unite]) + textesUnitesAltitude[self.unite] + String(format: ", ➘ %4.0f", self.stats.deniveleNegatifSession * facteurUnitesAltitude[self.unite]) + textesUnitesAltitude[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}").replacingOccurrences(of: ",", with: ", ") //.replacingOccurrences(of: "➚", with: "➚ ").replacingOccurrences(of: "➘", with: "➘ ")
-        } else {
-            viewController.labelDeniveleSession.text = (String(format: "➚ %4.0f", self.stats.denivelePositifSession  * facteurUnitesAltitude[self.unite]) + textesUnitesAltitude[self.unite] + "\n➘ " + String(format: "%4.0f", self.stats.deniveleNegatifSession * facteurUnitesAltitude[self.unite]) + textesUnitesAltitude[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}")
-        }
+        let formatVitesseMax = self.stats.vitesseMax >= 100.0 ? "%3.0f" : "%5.1f"
+        viewController.labelVitesseMax.text = texteAffichageValeur(prefixe: "Max ", format: formatVitesseMax, valeur: self.stats.vitesseMax * facteurUnitesVitesses[self.unite], unite: textesUnites[self.unite])
+        let formatVitesseMaxSession = self.stats.vitesseMaxSession >= 100.0 ? "%3.0f" : "%5.1f"
+        viewController.labelVitesseMaxSession.text = texteAffichageValeur(prefixe: "Max ", format: formatVitesseMaxSession, valeur: self.stats.vitesseMaxSession * facteurUnitesVitesses[self.unite], unite: textesUnites[self.unite])
+        viewController.labelDistanceTotale.text = texteAffichageValeur(prefixe: "", format: "%.1f", valeur: self.stats.distanceTotale * facteurUnitesDistance[self.unite], unite: textesUnitesDistance[self.unite])
+        let formatDistanceTotaleSession = debugMode ? "%.3f" : "%.1f"
+            viewController.labelDistanceTotaleSession.text = texteAffichageValeur(prefixe: "", format: formatDistanceTotaleSession, valeur: self.stats.distanceTotaleSession * facteurUnitesDistance[self.unite], unite: textesUnitesDistance[self.unite])
+        let separateur = self.view.frame.width > self.view.frame.height ? ", " : "\n"
+        
+        viewController.labelDeniveleSession.text = texteAffichageValeur(prefixe: "➚ ", format: "%4.0f", valeur: self.stats.denivelePositifSession * facteurUnitesAltitude[self.unite], unite: textesUnitesAltitude[self.unite]) + separateur + texteAffichageValeur(prefixe: "➘ ", format: "%4.0f", valeur: self.stats.deniveleNegatifSession * facteurUnitesAltitude[self.unite], unite: textesUnitesAltitude[self.unite])
         let secondes = Int(self.stats.tempsSession) % 60
         let minutesTot = Int(self.stats.tempsSession) / 60
         let minutes = minutesTot % 60
         let heures = minutesTot / 60
         var message = heures > 0 ? String(format:NSLocalizedString("Trajet (%d h %02d min", comment: ""), heures, minutes) : String(format:NSLocalizedString("Trajet (%02d min", comment: ""), minutes)
         if self.debugMode {
-            message = message.appending(String(format:" %02d s", secondes))
-            //                    if tempsSession < 0 {
-            //                        affichageTempsSession.textColor = .red
-            //                    }
+            message = message.appending(String(format:" %02d s", secondes))
         }
         message = message + ")"
         viewController.labelTitreTrajetEnCours.text = message
-        //            affichageTempsSession.text = message
-        //                affichageTempsSession.isHidden = false
         let vitesseMoyenne = self.stats.distanceTotaleSession / self.stats.tempsSession
         if vitesseMoyenne.isFinite && self.stats.tempsSession >= 10.0 && vitesseMoyenne < self.stats.vitesseMaxSession {
-            viewController.labelVitesseMoyenne.text = (vitesseMoyenne < 100.0 ? NSLocalizedString("Moyenne ", comment: "") + String(format: "%4.1f ", vitesseMoyenne * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite] :
-                                                NSLocalizedString("Moyenne ", comment: "") + String(format: "%3.0f ", vitesseMoyenne * facteurUnitesVitesses[self.unite]) + textesUnites[self.unite]).replacingOccurrences(of: " ", with: "\u{2007}")
+            let formatVitesseMoyenne = vitesseMoyenne >= 100.0 ? "%3.0f" : "%4.1f"
+
+            viewController.labelVitesseMoyenne.text = texteAffichageValeur(prefixe: NSLocalizedString("Moyenne ", comment: ""), format: formatVitesseMoyenne, valeur: vitesseMoyenne * facteurUnitesVitesses[self.unite], unite: textesUnites[self.unite])
         } else {
-            viewController.labelVitesseMoyenne.text = NSLocalizedString("Moyenne ", comment: "") + " ---  " + textesUnites[self.unite]
+            viewController.labelVitesseMoyenne.text = "" //NSLocalizedString("Moyenne ", comment: "") + " ---  "// + textesUnites[self.unite]
         }
         viewController.boutonUnite.setTitle(textesUnites[self.unite], for: .normal)
     }

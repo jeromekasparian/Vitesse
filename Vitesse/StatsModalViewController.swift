@@ -26,13 +26,15 @@ class StatsModalViewController: UIViewController {
     @IBOutlet var boutonEffacerTotal: UIButton!
     @IBOutlet var switchAffichageTeteHaute: UISwitch!
     @IBOutlet var labelAffichageTeteHaute: UILabel!
-    @IBOutlet var boutonOK: UIButton!
+//    @IBOutlet var boutonOK: UIButton!
     @IBOutlet var imageChevron: UIImageView!
     @IBOutlet var labelVitesseMoyenne: UILabel!
     @IBOutlet var labelDeniveleSession: UILabel!
     @IBOutlet var labelTitreTrajetEnCours: UILabel!
     @IBOutlet var labelPasLocalisationToujours: UILabel!
     @IBOutlet var boutonUnite: UIButton!
+    @IBOutlet var boutonPlaceholder1: UIButton!
+    @IBOutlet var boutonPlaceholder2: UIButton!
 
 //    var stats = Stats()
     var autoriserAffichageTeteHaute = true
@@ -50,25 +52,14 @@ class StatsModalViewController: UIViewController {
         stoppeLuminositeMax()
         switchAffichageTeteHaute.isOn = autoriserAffichageTeteHaute
         boutonEffacerSession.setTitle("", for: .normal)
-        if #available(iOS 13.0, *) {
-            boutonEffacerSession.setImage(UIImage(systemName: "delete.left", withConfiguration: UIImage.SymbolConfiguration(pointSize: 23)), for: .normal)
-//            boutonEffacerSession.tintColor = .label
-            boutonEffacerTotal.setImage(UIImage(systemName: "delete.left", withConfiguration: UIImage.SymbolConfiguration(pointSize: 23)), for: .normal)
-//            boutonEffacerTotal.tintColor = .label
-        } else {
-            // Fallback on earlier versions
-            boutonEffacerSession.setImage(UIImage(named: "delete.left"), for: .normal)
-//            boutonEffacerSession.tintColor = .black
-            boutonEffacerTotal.setImage(UIImage(named: "delete.left"), for: .normal)
-//            boutonEffacerTotal.tintColor = .black
-            boutonOK.isHidden = false
-            imageChevron.isHidden = true
-        }
+//            boutonEffacerSession.setImage(UIImage(systemName: "delete.left", withConfiguration: UIImage.SymbolConfiguration(pointSize: 23)), for: .normal)
+//            boutonEffacerTotal.setImage(UIImage(systemName: "delete.left", withConfiguration: UIImage.SymbolConfiguration(pointSize: 23)), for: .normal)
         boutonEffacerTotal.setTitle("", for: .normal)
-        //        boutonEffacerSession.setImage(UIImage(systemName: "xmark"), for: .normal)
+        boutonPlaceholder1.setTitle("", for: .normal)
+        boutonPlaceholder2.setTitle("", for: .normal)
         afficherStats()
 //        NotificationCenter.default.addObserver(self, selector: #selector(afficherStats), name: NSNotification.Name(rawValue: notificationMiseAJourStats), object: nil)
-        // Do any additional setup after loading the view.
+
         
         // mise en place de la détection du swipe down pour fermer le tiroir des stats
         let swipeBas = UISwipeGestureRecognizer(target:self, action: #selector(fermerStats))
@@ -109,11 +100,6 @@ class StatsModalViewController: UIViewController {
     
     @IBAction func effacerSession() {
         delegate?.statsModalViewControllerDidTapEffacerSession(self)
-//        vitesseMaxSession = 0.0
-//        distanceTotaleSession = 0.0
-//        denivelePositifSession = 0.0
-//        deniveleNegatifSession = 0.0
-//        tempsSession = 0.0
         afficherStats()
     }
     
@@ -129,14 +115,6 @@ class StatsModalViewController: UIViewController {
     
     @objc func effacerToutVraiment() {
         delegate?.statsModalViewControllerDidTapEffacerTotal(self)
-//        vitesseMaxSession = 0.0
-//        distanceTotaleSession = 0.0
-//        denivelePositifSession = 0.0
-//        deniveleNegatifSession = 0.0
-//        vitesseMax = 0.0
-//        distanceTotale = 0.0
-////        premierTempsValide = 0.0 // Date(timeIntervalSinceNow: 0.0).timeIntervalSince1970
-//        tempsSession = 0.0
         afficherStats()
     }
     
