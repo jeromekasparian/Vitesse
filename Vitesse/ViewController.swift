@@ -770,7 +770,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         viewController.labelTitreTrajetEnCours.text = message
         let vitesseMoyenne = self.stats.distanceTotaleSession / self.stats.tempsSession
         if vitesseMoyenne.isFinite && self.stats.tempsSession >= 10.0 && vitesseMoyenne < self.stats.vitesseMaxSession {
-            let formatVitesseMoyenne = vitesseMoyenne >= 100.0 ? "%3.0f" : "%4.1f"
+            let formatVitesseMoyenne = vitesseMoyenne >= 100.0 ? "%3.0f" : "%5.1f"
 
             viewController.labelVitesseMoyenne.text = texteAffichageValeur(prefixe: NSLocalizedString("Moyenne ", comment: ""), format: formatVitesseMoyenne, valeur: vitesseMoyenne * facteurUnitesVitesses[self.unite], unite: textesUnites[self.unite])
         } else {
