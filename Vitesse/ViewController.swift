@@ -479,7 +479,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                     self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
                     if statut == .authorizedAlways {
                         self.locationManager.allowsBackgroundLocationUpdates = true
-                        self.locationManager.pausesLocationUpdatesAutomatically = true // après un certain temps sans bouger, il arrête les mises à jour de la localisation en tâche de fond.
+                        self.locationManager.pausesLocationUpdatesAutomatically = false // true = après un certain temps sans bouger, il arrête les mises à jour de la localisation en tâche de fond.
                         self.locationManager.activityType = .otherNavigation
                         if #available(iOS 11.0, *) {
                             self.locationManager.showsBackgroundLocationIndicator = true
@@ -529,17 +529,6 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                     print("défaut")
                     self.locationToujoursAutorisee = false
                 } // switch
-//            }    if (CLLocationManager.locationServicesEnabled())
-//            else {
-//                print("acces localisation pas ok pour le téléphone")
-//                self.locationToujoursAutorisee = false
-//                DispatchQueue.main.async{
-//                    let leMessage = NSLocalizedString("Pour afficher la vitesse, activez la localisation sur votre appareil \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'appareil n'est pas autorisé à lire la position")
-//                    self.afficherAlerteRenvoiPreferences(titre: NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte"), message: leMessage, perfsDeLApp: false)
-//                    self.affichageVitesse.text = ""
-//                    self.affichePictoPasLocalisation()
-//                }
-//            }
     }
     
     
