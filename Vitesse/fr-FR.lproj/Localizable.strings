@@ -46,3 +46,5 @@
 "Autorisez la localisation en arrière-plan" = "Autorisez la localisation en arrière-plan";
 
 "L'app n'a pas accès à la localisation lorsqu'elle est en arrière-plan, les statistiques seront peu précises" = "L'app n'a pas accès à la localisation quand elle est en arrière-plan, les statistiques seront peu précises";
+
+"Actualiser les statistiques quand l'app est en arrière-plan" = "Actualiser les statistiques en arrière-plan";

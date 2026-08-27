@@ -12,6 +12,7 @@ protocol StatsModalDelegate: AnyObject {
     func statsModalViewControllerDidTapEffacerTotal(_ viewController: StatsModalViewController)
     func afficherStatsReelles(_ viewController: StatsModalViewController)
     func actualiserAffichageTeteHaute(autoriserAffichageTeteHaute: Bool)
+    func changeStatsInBackground(statsInBackground: Bool)
     func changeUnite()
 //    func statsModalViewControllerDidTapOK(_ viewController: StatsModalViewController)
 }
@@ -35,6 +36,7 @@ class StatsModalViewController: UIViewController {
     @IBOutlet var boutonUnite: UIButton!
     @IBOutlet var boutonPlaceholder1: UIButton!
     @IBOutlet var boutonPlaceholder2: UIButton!
+    @IBOutlet var switchStatsInBackground: UISwitch!
 
 //    var stats = Stats()
     var autoriserAffichageTeteHaute = true
@@ -45,9 +47,11 @@ class StatsModalViewController: UIViewController {
     var alerteLocationToujoursDejaAffichee: Bool = false
     let keyAlerteLocationToujoursDejaAffichee = "keyAlerteLocationToujoursDejaAffichee"
     var delegate: StatsModalDelegate?
+    var statsInBackground: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        switchStatsInBackground.isOn = statsInBackground
         alerteLocationToujoursDejaAffichee = userDefaults.value(forKey: keyAlerteLocationToujoursDejaAffichee) as? Bool ?? false
         stoppeLuminositeMax()
         switchAffichageTeteHaute.isOn = autoriserAffichageTeteHaute
@@ -59,7 +63,6 @@ class StatsModalViewController: UIViewController {
         boutonPlaceholder2.setTitle("", for: .normal)
         afficherStats()
 //        NotificationCenter.default.addObserver(self, selector: #selector(afficherStats), name: NSNotification.Name(rawValue: notificationMiseAJourStats), object: nil)
-
         
         // mise en place de la détection du swipe down pour fermer le tiroir des stats
         let swipeBas = UISwipeGestureRecognizer(target:self, action: #selector(fermerStats))
@@ -87,6 +90,12 @@ class StatsModalViewController: UIViewController {
             self.labelPasLocalisationToujours.isHidden = self.locationToujoursAutorisee
         }
     }
+    
+    @IBAction func changeStatsInBackground(){
+        self.delegate?.changeStatsInBackground(statsInBackground: switchStatsInBackground.isOn)
+        userDefaults.set(switchStatsInBackground.isOn, forKey: keyStatsInBackground)
+    }
+
     @IBAction func changeAutorisationTeteHaute(){
         autoriserAffichageTeteHaute = switchAffichageTeteHaute.isOn
         self.delegate?.actualiserAffichageTeteHaute(autoriserAffichageTeteHaute: switchAffichageTeteHaute.isOn)

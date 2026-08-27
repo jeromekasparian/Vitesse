@@ -167,7 +167,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Yfg-X5-FIM">
-                                <rect key="frame" x="16" y="3" width="288" height="258.5"/>
+                                <rect key="frame" x="16" y="3" width="288" height="309"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="JIz-qG-Bg6">
                                         <rect key="frame" x="0.0" y="5" width="288" height="25.5"/>
@@ -312,6 +312,26 @@
                                             </label>
                                         </subviews>
                                     </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ExN-S0-3i2">
+                                        <rect key="frame" x="0.0" y="266.5" width="288" height="42.5"/>
+                                        <subviews>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jge-8m-FKF">
+                                                <rect key="frame" x="0.0" y="7.5" width="63" height="28"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="61" id="fCQ-HU-4Mb"/>
+                                                </constraints>
+                                                <connections>
+                                                    <action selector="changeStatsInBackground" destination="vBm-dL-NJP" eventType="valueChanged" id="jWE-wj-8Gw"/>
+                                                </connections>
+                                            </switch>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Actualiser les statistiques en arrière-plan" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cw9-Zv-G19">
+                                                <rect key="frame" x="69" y="0.0" width="219" height="42.5"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="bwg-77-EIs" firstAttribute="height" secondItem="IZS-Qf-hau" secondAttribute="height" id="0FP-Dd-Sf9"/>
@@ -392,6 +412,7 @@
                         <outlet property="labelVitesseMaxSession" destination="QJS-Fs-B8p" id="Ulw-ZW-qRr"/>
                         <outlet property="labelVitesseMoyenne" destination="Aco-fK-MUH" id="EBa-Yt-2oC"/>
                         <outlet property="switchAffichageTeteHaute" destination="5EG-9b-MeP" id="boj-lg-dMm"/>
+                        <outlet property="switchStatsInBackground" destination="Jge-8m-FKF" id="IYV-qD-836"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s50-Ax-2bH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

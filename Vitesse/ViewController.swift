@@ -38,6 +38,7 @@ let keyAutoriserAffichageTeteHaute = "autoriserAffichageTeteHaute"
 //let notificationMiseAJourStats = "miseAJourStats"
 let keyEnregistrerStats = "keyEnregistrerStats"
 let keyMontrerAlerteDemarrage = "keyMontrerAlerteDemarrage"
+let keyStatsInBackground = "keyStatsInBackground"
 let nomSegueOuvreStats = "OuvreStats"
 
   // le temps total de trajet, en secondes
@@ -105,6 +106,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     let userDefaults = UserDefaults.standard
     var locationToujoursAutorisee: Bool = false
     var statsModalViewController: StatsModalViewController?
+    var statsInBackground: Bool = true
     
     @IBOutlet weak var affichageVitesse: UILabel!
     @IBOutlet weak var gabaritAffichageVitesse: UILabel!
@@ -163,6 +165,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             statsModalViewController!.userDefaults = userDefaults
             statsModalViewController!.locationToujoursAutorisee = locationToujoursAutorisee
             statsModalViewController!.demoMode = demoMode
+            statsModalViewController!.statsInBackground = statsInBackground
             statsModalViewController!.delegate = self
         }
     }
@@ -283,7 +286,9 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         }
 // par défaut on désactive le mode miroir au premier lancement.
         self.autoriserAffichageTeteHaute = self.userDefaults.value(forKey: keyAutoriserAffichageTeteHaute) as? Bool ?? false
-        
+        statsInBackground = userDefaults.value(forKey: keyStatsInBackground) as? Bool ?? statsInBackground
+        changeStatsInBackground(statsInBackground: statsInBackground)
+
         montrerAlerteDemarrage = userDefaults.value(forKey: keyMontrerAlerteDemarrage) as? Bool ?? montrerAlerteDemarrage
         if montrerAlerteDemarrage {
             let alert = UIAlertController(title: NSLocalizedString("Pour votre sécurité", comment: "Titre alerte"), message: NSLocalizedString("avant de conduire, assurez-vous que le mode Avion ou \"Ne pas déranger en voiture\" est activé", comment: "Contenu de l'alerte de sécurité"), preferredStyle: .alert)
@@ -293,13 +298,9 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "bouton OK"), style: .default, handler: {_ in self.gereDroitsLocalisation(origineViewDidLoad: true, origineViewDidAppear: false)}))
             DispatchQueue.main.async{
                 self.present(alert, animated: true)
-                
-                //            self.gabaritAffichageVitesse.isHidden = false
-                //            self.gabaritAffichageVitesse.text = String(format:"\u{2007}%d",5)
             }
         }
         scheduledTimerWithTimeInterval()
-//        timerPenteOpenTopoData = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.penteOpenTopo), userInfo: nil, repeats: true)
         super.viewDidLoad()
         print("init ok")
     }
@@ -479,7 +480,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                     self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
                     if statut == .authorizedAlways {
                         self.locationManager.allowsBackgroundLocationUpdates = true
-                        self.locationManager.pausesLocationUpdatesAutomatically = false // true = après un certain temps sans bouger, il arrête les mises à jour de la localisation en tâche de fond.
+                        self.locationManager.pausesLocationUpdatesAutomatically = statsInBackground // true = après un certain temps sans bouger, il arrête les mises à jour de la localisation en tâche de fond.
                         self.locationManager.activityType = .otherNavigation
                         if #available(iOS 11.0, *) {
                             self.locationManager.showsBackgroundLocationIndicator = true
@@ -730,6 +731,13 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     
     func actualiserAffichageTeteHaute(autoriserAffichageTeteHaute: Bool) {
         self.autoriserAffichageTeteHaute = autoriserAffichageTeteHaute
+    }
+
+    func changeStatsInBackground(statsInBackground: Bool) {
+        print("changestatsinbackground", statsInBackground)
+        self.statsInBackground = statsInBackground
+        self.locationManager.pausesLocationUpdatesAutomatically = !statsInBackground
+        self.locationManager.allowsBackgroundLocationUpdates = statsInBackground
     }
 
     func texteAffichageValeur(prefixe: String, format: String, valeur: Double, unite: String) -> String {

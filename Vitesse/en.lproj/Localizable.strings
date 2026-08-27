@@ -46,3 +46,5 @@
 
 "L'app n'a pas accès à la localisation lorsqu'elle est en arrière-plan, les statistiques seront peu précises" = "The app is not allowed to access location when in background, statistics will be inaccurate";
 
+
+"Actualiser les statistiques quand l'app est en arrière-plan" = "Update statistics is in background";
