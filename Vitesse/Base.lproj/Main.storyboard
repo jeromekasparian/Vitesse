@@ -347,6 +347,14 @@
                                 <color key="textColor" systemColor="systemRedColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nqS-Vn-wk2">
+                                <rect key="frame" x="16" y="386" width="288" height="61.5"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <connections>
+                                    <action selector="ouvreReglages" destination="vBm-dL-NJP" eventType="touchUpInside" id="fOD-64-lmm"/>
+                                </connections>
+                            </button>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ZX4-x1-u4o">
                                 <rect key="frame" x="16" y="455.5" width="288" height="86.5"/>
                                 <subviews>
@@ -386,18 +394,23 @@
                             <constraint firstItem="5jd-FF-f0J" firstAttribute="leading" secondItem="7nT-2R-PQm" secondAttribute="leading" constant="16" id="1Jd-Pe-sVl"/>
                             <constraint firstItem="ZX4-x1-u4o" firstAttribute="leading" secondItem="7nT-2R-PQm" secondAttribute="leading" constant="16" id="5Gh-8L-Vw7"/>
                             <constraint firstItem="ZX4-x1-u4o" firstAttribute="top" secondItem="5jd-FF-f0J" secondAttribute="bottom" constant="8" symbolic="YES" id="97A-BX-CwO"/>
+                            <constraint firstItem="5jd-FF-f0J" firstAttribute="trailing" secondItem="nqS-Vn-wk2" secondAttribute="trailing" id="AAh-KV-ZAp"/>
                             <constraint firstItem="7nT-2R-PQm" firstAttribute="bottom" secondItem="ZX4-x1-u4o" secondAttribute="bottom" constant="16" id="CWm-LG-KF2"/>
+                            <constraint firstItem="5jd-FF-f0J" firstAttribute="top" secondItem="nqS-Vn-wk2" secondAttribute="top" id="LLS-aH-HXU"/>
                             <constraint firstItem="Yfg-X5-FIM" firstAttribute="top" secondItem="7nT-2R-PQm" secondAttribute="top" constant="3" id="MRl-ha-ogG"/>
                             <constraint firstItem="7nT-2R-PQm" firstAttribute="trailing" secondItem="ZX4-x1-u4o" secondAttribute="trailing" constant="16" id="N3g-kL-PdE"/>
                             <constraint firstItem="7nT-2R-PQm" firstAttribute="trailing" secondItem="5jd-FF-f0J" secondAttribute="trailing" constant="16" id="VAZ-OP-YOt"/>
                             <constraint firstItem="7nT-2R-PQm" firstAttribute="trailing" secondItem="Yfg-X5-FIM" secondAttribute="trailing" constant="16" id="bTw-dB-IQh"/>
                             <constraint firstItem="Yfg-X5-FIM" firstAttribute="leading" secondItem="7nT-2R-PQm" secondAttribute="leading" constant="16" id="gMM-lv-hvP"/>
+                            <constraint firstItem="5jd-FF-f0J" firstAttribute="bottom" secondItem="nqS-Vn-wk2" secondAttribute="bottom" id="okF-yD-NVu"/>
                             <constraint firstItem="ZX4-x1-u4o" firstAttribute="top" secondItem="5jd-FF-f0J" secondAttribute="bottom" constant="8" symbolic="YES" id="qZS-nc-Cme"/>
+                            <constraint firstItem="5jd-FF-f0J" firstAttribute="leading" secondItem="nqS-Vn-wk2" secondAttribute="leading" id="u5X-XG-lx9"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="boutonEffacerSession" destination="Odv-QU-GcL" id="43P-La-Huw"/>
                         <outlet property="boutonEffacerTotal" destination="LMC-sH-TbR" id="t0A-B9-jHZ"/>
+                        <outlet property="boutonOuvrePrefs" destination="nqS-Vn-wk2" id="gSx-BF-uDB"/>
                         <outlet property="boutonPlaceholder1" destination="IZS-Qf-hau" id="UCz-qk-p0S"/>
                         <outlet property="boutonPlaceholder2" destination="bwg-77-EIs" id="dP8-Nl-K9S"/>
                         <outlet property="boutonUnite" destination="5u7-Hf-2IG" id="Ozi-Vc-tzD"/>

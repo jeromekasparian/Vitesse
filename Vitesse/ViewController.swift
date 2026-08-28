@@ -39,6 +39,8 @@ let keyAutoriserAffichageTeteHaute = "autoriserAffichageTeteHaute"
 let keyEnregistrerStats = "keyEnregistrerStats"
 let keyMontrerAlerteDemarrage = "keyMontrerAlerteDemarrage"
 let keyStatsInBackground = "keyStatsInBackground"
+let keyAlerteLocationToujoursDejaAffichee = "keyAlerteLocationToujoursDejaAffichee"
+//let keyMontrerAlertePasLocalisationEnBackground = "keyMontrerAlertePasLocalisationEnBackground"
 let nomSegueOuvreStats = "OuvreStats"
 
   // le temps total de trajet, en secondes
@@ -107,7 +109,9 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     var locationToujoursAutorisee: Bool = false
     var statsModalViewController: StatsModalViewController?
     var statsInBackground: Bool = true
-    
+    var alerteLocationToujoursDejaAffichee: Bool = false
+//    var montrerAlertePasLocalisationEnBackground: Bool = true
+
     @IBOutlet weak var affichageVitesse: UILabel!
     @IBOutlet weak var gabaritAffichageVitesse: UILabel!
     @IBOutlet var affichageUnite: UIButton!
@@ -166,6 +170,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             statsModalViewController!.locationToujoursAutorisee = locationToujoursAutorisee
             statsModalViewController!.demoMode = demoMode
             statsModalViewController!.statsInBackground = statsInBackground
+            statsModalViewController!.alerteLocationToujoursDejaAffichee = alerteLocationToujoursDejaAffichee
             statsModalViewController!.delegate = self
         }
     }
@@ -237,6 +242,8 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             self.affichageVitesse.textColor = .white
             self.imagePasLocalisation.tintColor = .white
         }
+        var alerteLocationToujoursDejaAffichee: Bool = false
+        alerteLocationToujoursDejaAffichee = userDefaults.value(forKey: keyAlerteLocationToujoursDejaAffichee) as? Bool ?? alerteLocationToujoursDejaAffichee
 
         self.roueAttente.startAnimating()
         
@@ -505,6 +512,9 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                     }
                 case .denied, .restricted:
                     self.locationToujoursAutorisee = false
+                    if self.statsModalViewController != nil {
+                        self.statsModalViewController!.locationToujoursAutorisee = self.locationToujoursAutorisee
+                    }
                     DispatchQueue.main.async{
                         self.affichageVitesse.text = ""
                         self.affichePictoPasLocalisation()
@@ -514,12 +524,12 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                             print("acces localisation pas ok pour l'app")
                             Task{
                                 let leMessage = NSLocalizedString("Pour afficher la vitesse, autorisez l'app à accéder à la localisation \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'app n'est pas autorisée à accéder à la localisation")
-                                await self.afficherAlerteRenvoiPreferences(titre: NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte"), message: leMessage, perfsDeLApp: true)
+                                await self.afficherAlerteRenvoiPreferences(titre: NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte"), message: leMessage, perfsDeLApp: true, optionNePlusMontrer: false)
                             }
                         } else {
                             Task{
                                 let leMessage = NSLocalizedString("Pour afficher la vitesse, activez la localisation sur votre appareil \nNB: l'app ne stocke pas votre position ; elle ne la transmet à personne", comment: "Si l'appareil n'est pas autorisé à lire la position")
-                                await self.afficherAlerteRenvoiPreferences(titre: NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte"), message: leMessage, perfsDeLApp: false)
+                                await self.afficherAlerteRenvoiPreferences(titre: NSLocalizedString("Autorisez la localisation", comment: "Titre de l'alerte"), message: leMessage, perfsDeLApp: false, optionNePlusMontrer: false)
                             }
                         }
                     }
@@ -530,6 +540,10 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                     print("défaut")
                     self.locationToujoursAutorisee = false
                 } // switch
+        if self.statsModalViewController != nil {
+            self.statsModalViewController!.locationToujoursAutorisee = self.locationToujoursAutorisee
+            self.statsModalViewController!.changeStatsInBackground()
+        }
     }
     
     
