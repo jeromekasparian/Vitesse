@@ -184,8 +184,9 @@ class StatsModalViewController: UIViewController {
     
     @IBAction func ouvreReglages() {
         print("ouvreReglages")
-        let urlAOuvrir = URL(string: UIApplication.openSettingsURLString)!  // url pour ouvrir les préférences de l'app appelante
-//        let urlAOuvrir = URL(string:"App-Prefs::root=Settings&path=General")!  // url pour les préférences générales du téléphone
-        UIApplication.shared.open(urlAOuvrir, options: [:], completionHandler: nil)
+        if let urlAOuvrir = URL(string: UIApplication.openSettingsURLString) {  // url pour ouvrir les préférences de l'app appelante
+            //        let urlAOuvrir = URL(string:"App-Prefs::root=Settings&path=General")!  // url pour les préférences générales du téléphone
+            UIApplication.shared.open(urlAOuvrir, options: [:], completionHandler: nil)
+        }
     }
 }

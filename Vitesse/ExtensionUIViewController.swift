@@ -18,15 +18,17 @@ extension ViewController {
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Ne plus afficher", comment: ""), style: .default, handler: {_ in self.userDefaults.set(true, forKey: keyAlerteLocationToujoursDejaAffichee)}))
             }
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Annuler", comment: "Alert Cancel button"), style: .cancel, handler: nil))
-            var urlAOuvrir: URL
+            var urlAOuvrir: URL?
             if perfsDeLApp {
-                urlAOuvrir = URL(string: UIApplication.openSettingsURLString)!  // url pour ouvrir les préférences de l'app appelante
+                urlAOuvrir = URL(string: UIApplication.openSettingsURLString)  // url pour ouvrir les préférences de l'app appelante
             } else {
-                urlAOuvrir = URL(string:"App-Prefs::root=Settings&path=General")!  // url pour ouvrir les l'app Préférences : à la racine sauf si elle est déjà ouverte sur une sous-page. A noter que c'est manifestement une url pas 100% publique de la part d'Apple, donc susceptible de dysfonctionner à l'avenir.
+                urlAOuvrir = URL(string:"App-Prefs::root=Settings&path=General")  // url pour ouvrir les l'app Préférences : à la racine sauf si elle est déjà ouverte sur une sous-page. A noter que c'est manifestement une url pas 100% publique de la part d'Apple, donc susceptible de dysfonctionner à l'avenir.
             }
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "Alert button to open Settings"), style: .`default`, handler: { _ in
-                                UIApplication.shared.open(urlAOuvrir, options: [:], completionHandler: nil)
-                            }))
+            if urlAOuvrir != nil {
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "Alert button to open Settings"), style: .`default`, handler: { _ in
+                    UIApplication.shared.open(urlAOuvrir!, options: [:], completionHandler: nil)
+                }))
+            }
             DispatchQueue.main.async {
                 self.present(alertController, animated: true, completion: nil)
             }

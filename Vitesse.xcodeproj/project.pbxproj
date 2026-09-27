@@ -21,12 +21,17 @@
 		B55EFC102635BF4D002DF429 /* Vitesse.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC0E2635BF4D002DF429 /* Vitesse.xcdatamodeld */; };
 		B55EFC122635BF51002DF429 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B55EFC112635BF51002DF429 /* Assets.xcassets */; };
 		B55EFC152635BF51002DF429 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B55EFC132635BF51002DF429 /* LaunchScreen.storyboard */; };
+		B586E223306850E80029F1BF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B52C72A826487F6D00185CBB /* InfoPlist.strings */; };
+		B586E2243068560A0029F1BF /* Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53B66FF2F118F9800975359 /* Stats.swift */; };
+		B586E225306857960029F1BF /* MoyenneGlissante.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55B17702F2D4E0000417A70 /* MoyenneGlissante.swift */; };
 		B593A48C263F1AF30072A2B3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B593A48A263F1AF30072A2B3 /* Localizable.strings */; };
 		B5971D602F37D6C5009A76C7 /* ExtensionCLLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5971D5F2F37D6C5009A76C7 /* ExtensionCLLocation.swift */; };
 		B5971D622F37D82B009A76C7 /* ExtensionDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5971D612F37D82B009A76C7 /* ExtensionDouble.swift */; };
 		B5B3BF152FEB2F7F004B47CA /* Vitesse watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = B5B3BF142FEB2F7F004B47CA /* Vitesse watch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B5CF5FAA263B42C400DA78A3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55EFC092635BF4D002DF429 /* ViewController.swift */; };
 		B5D801A52BBF5EBF0015D433 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B5D801A42BBF5EBF0015D433 /* PrivacyInfo.xcprivacy */; };
+		B5FC85B7306866D000C71C33 /* Constantes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC85B6306866D000C71C33 /* Constantes.swift */; };
+		B5FC85B8306866E300C71C33 /* Constantes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FC85B6306866D000C71C33 /* Constantes.swift */; };
 		B5FF4EC12FF1BF460012EAF1 /* ExtensionCLAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FF4EC02FF1BF460012EAF1 /* ExtensionCLAuthorizationStatus.swift */; };
 /* End PBXBuildFile section */
 
@@ -91,6 +96,7 @@
 		B55EFC092635BF4D002DF429 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B55EFC0F2635BF4D002DF429 /* Vitesse.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Vitesse.xcdatamodel; sourceTree = "<group>"; };
 		B55EFC112635BF51002DF429 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B586E2223068504F0029F1BF /* Vitesse-watch-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Vitesse-watch-Watch-App-Info.plist"; sourceTree = "<group>"; };
 		B593A488263F1A820072A2B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B593A489263F1A820072A2B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B593A48B263F1AF30072A2B3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Vitesse/en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -105,6 +111,7 @@
 		B5E2579B264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		B5E2579C264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "Vitesse/fr-FR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		B5E2579E264A847400D0FF4D /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		B5FC85B6306866D000C71C33 /* Constantes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constantes.swift; sourceTree = "<group>"; };
 		B5FF4EC02FF1BF460012EAF1 /* ExtensionCLAuthorizationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionCLAuthorizationStatus.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -149,10 +156,15 @@
 		B55EFBF92635BF4D002DF429 = {
 			isa = PBXGroup;
 			children = (
+				B586E2223068504F0029F1BF /* Vitesse-watch-Watch-App-Info.plist */,
 				B5D801A42BBF5EBF0015D433 /* PrivacyInfo.xcprivacy */,
 				B51A55142A02FAA900536393 /* LICENCE.md */,
 				B51A55152A02FC2C00536393 /* README.md */,
 				B593A48A263F1AF30072A2B3 /* Localizable.strings */,
+				B52C72A826487F6D00185CBB /* InfoPlist.strings */,
+				B5FC85B6306866D000C71C33 /* Constantes.swift */,
+				B55B17702F2D4E0000417A70 /* MoyenneGlissante.swift */,
+				B53B66FF2F118F9800975359 /* Stats.swift */,
 				B55EFC042635BF4D002DF429 /* Vitesse */,
 				B5B3BF182FEB2F7F004B47CA /* Vitesse watch Watch App */,
 				B5B3BF262FEB2F80004B47CA /* Vitesse watch Watch AppTests */,
@@ -185,15 +197,12 @@
 				B53B67072F11A4B200975359 /* ExtensionUIWindow.swift */,
 				B53B67052F11A48E00975359 /* ExtensionString.swift */,
 				B5971D5F2F37D6C5009A76C7 /* ExtensionCLLocation.swift */,
-				B55B17702F2D4E0000417A70 /* MoyenneGlissante.swift */,
-				B53B66FF2F118F9800975359 /* Stats.swift */,
 				B53935FD263D9ED200C37623 /* StatsModalViewController.swift */,
 				B55EFC092635BF4D002DF429 /* ViewController.swift */,
 				B55EFC0B2635BF4D002DF429 /* Main.storyboard */,
 				B55EFC112635BF51002DF429 /* Assets.xcassets */,
 				B55EFC132635BF51002DF429 /* LaunchScreen.storyboard */,
 				B52C729526487CA700185CBB /* Info.plist */,
-				B52C72A826487F6D00185CBB /* InfoPlist.strings */,
 				B55EFC0E2635BF4D002DF429 /* Vitesse.xcdatamodeld */,
 			);
 			path = Vitesse;
@@ -384,6 +393,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B586E223306850E80029F1BF /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,6 +428,7 @@
 				B53B67082F11A4B200975359 /* ExtensionUIWindow.swift in Sources */,
 				B53B67042F11A46100975359 /* ExtensionUIViewController.swift in Sources */,
 				B5CF5FAA263B42C400DA78A3 /* ViewController.swift in Sources */,
+				B5FC85B7306866D000C71C33 /* Constantes.swift in Sources */,
 				B5FF4EC12FF1BF460012EAF1 /* ExtensionCLAuthorizationStatus.swift in Sources */,
 				B55B17712F2D4E0100417A70 /* MoyenneGlissante.swift in Sources */,
 				B53B67062F11A48E00975359 /* ExtensionString.swift in Sources */,
@@ -429,6 +440,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5FC85B8306866E300C71C33 /* Constantes.swift in Sources */,
+				B586E2243068560A0029F1BF /* Stats.swift in Sources */,
+				B586E225306857960029F1BF /* MoyenneGlissante.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,7 +670,20 @@
 				CURRENT_PROJECT_VERSION = 128;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Location is required to display the speed. Background location is required to display accurate statistics. The app does not store your location, nor forwards it to anyone";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Location is required to display the speed. Background location is required to display accurate statistics. The app does not store your location, nor forwards it to anyone";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location is required to display the speed. The app does not store your location, nor forwards it to anyone";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiredDeviceCapabilities = gps;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -678,7 +705,20 @@
 				CURRENT_PROJECT_VERSION = 128;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Location is required to display the speed. Background location is required to display accurate statistics. The app does not store your location, nor forwards it to anyone";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Location is required to display the speed. Background location is required to display accurate statistics. The app does not store your location, nor forwards it to anyone";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location is required to display the speed. The app does not store your location, nor forwards it to anyone";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiredDeviceCapabilities = gps;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -701,6 +741,7 @@
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				INFOPLIST_KEY_CFBundleDisplayName = "Vitesse watch";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "jk.Vitesse-watch";
@@ -722,6 +763,7 @@
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				INFOPLIST_KEY_CFBundleDisplayName = "Vitesse watch";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "jk.Vitesse-watch";
@@ -745,7 +787,12 @@
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Vitesse-watch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Vitesse watch";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Location is required to display the speed. Background location is required to display accurate statistics. The app does not store your location, nor forwards it to anyone";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Location is required to display the speed. Background location is required to display accurate statistics. The app does not store your location, nor forwards it to anyone";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Location is required to display the speed. Background location is required to display accurate statistics. The app does not store your location, nor forwards it to anyone";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location is required to display the speed. Background location is required to display accurate statistics. The app does not store your location, nor forwards it to anyone";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKWatchOnly = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -766,7 +813,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 8.7;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Debug;
 		};
@@ -783,7 +830,12 @@
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Vitesse-watch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Vitesse watch";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Location is required to display the speed. Background location is required to display accurate statistics. The app does not store your location, nor forwards it to anyone";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Location is required to display the speed. Background location is required to display accurate statistics. The app does not store your location, nor forwards it to anyone";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Location is required to display the speed. Background location is required to display accurate statistics. The app does not store your location, nor forwards it to anyone";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location is required to display the speed. Background location is required to display accurate statistics. The app does not store your location, nor forwards it to anyone";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKWatchOnly = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -803,7 +855,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 8.7;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Release;
 		};
