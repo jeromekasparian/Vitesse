@@ -100,7 +100,6 @@ class InformationsVitesse: ObservableObject {
             if location.speed > stats.vitesseMaxSession {
                 stats.vitesseMaxSession = location.speed
             }
-//            print("altitude", location.altitude, location.verticalAccuracy, precisionVerticaleMinimale)
             if location.verticalAccuracy <= precisionVerticaleMinimale && location.verticalAccuracy >= 0.0 && !location.altitude.isNaN {
                 let d = position10 - positionPrecedente10
                 let denivele = altitude10 - altitudePrecedente10
@@ -113,7 +112,6 @@ class InformationsVitesse: ObservableObject {
                         stats.deniveleNegatifSession = stats.deniveleNegatifSession - denivele
                     }
                 }
-//                print("pente", d, denivele, pente, nombrePointsOK, stats.denivelePositifSession, stats.deniveleNegatifSession)
                 altitudePrecedente10 = altitude10.isNaN ? altitudePrecedente10 : altitude10
                 positionPrecedente10 = position10.isNaN ? positionPrecedente10 : position10
 
@@ -155,9 +153,4 @@ class InformationsVitesse: ObservableObject {
         timer.invalidate()
     }
     
-//    func enregistrerStats(){
-//        print("enregistrerStats")
-//        userDefaults.set(stats.distanceTotale, forKey: keyDistanceTotale)
-//        userDefaults.set(stats.vitesseMax, forKey: keyVitesseMax)
-//    }
 }

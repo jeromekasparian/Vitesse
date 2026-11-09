@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B523A98C309F93F000D3D753 /* ExtensionDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B523A98B309F93F000D3D753 /* ExtensionDate.swift */; };
 		B52C72A626487F6D00185CBB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B52C72A826487F6D00185CBB /* InfoPlist.strings */; };
 		B53935FE263D9ED200C37623 /* StatsModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53935FD263D9ED200C37623 /* StatsModalViewController.swift */; };
 		B53B67002F118F9800975359 /* Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53B66FF2F118F9800975359 /* Stats.swift */; };
@@ -76,6 +77,7 @@
 /* Begin PBXFileReference section */
 		B51A55142A02FAA900536393 /* LICENCE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENCE.md; sourceTree = "<group>"; };
 		B51A55152A02FC2C00536393 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B523A98B309F93F000D3D753 /* ExtensionDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDate.swift; sourceTree = "<group>"; };
 		B52C72462647D7D300185CBB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		B52C72472647D7D300185CBB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		B52C72482647D7D400185CBB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Vitesse/fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				B55EFC052635BF4D002DF429 /* AppDelegate.swift */,
 				B55EFC072635BF4D002DF429 /* SceneDelegate.swift */,
 				B5FF4EC02FF1BF460012EAF1 /* ExtensionCLAuthorizationStatus.swift */,
+				B523A98B309F93F000D3D753 /* ExtensionDate.swift */,
 				B5971D612F37D82B009A76C7 /* ExtensionDouble.swift */,
 				B53B67012F11A43A00975359 /* ExtensionUIView.swift */,
 				B53B67032F11A46100975359 /* ExtensionUIViewController.swift */,
@@ -427,6 +430,7 @@
 				B5971D602F37D6C5009A76C7 /* ExtensionCLLocation.swift in Sources */,
 				B53B67082F11A4B200975359 /* ExtensionUIWindow.swift in Sources */,
 				B53B67042F11A46100975359 /* ExtensionUIViewController.swift in Sources */,
+				B523A98C309F93F000D3D753 /* ExtensionDate.swift in Sources */,
 				B5CF5FAA263B42C400DA78A3 /* ViewController.swift in Sources */,
 				B5FC85B7306866D000C71C33 /* Constantes.swift in Sources */,
 				B5FF4EC12FF1BF460012EAF1 /* ExtensionCLAuthorizationStatus.swift in Sources */,
@@ -667,7 +671,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 131;
+				CURRENT_PROJECT_VERSION = 133;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
@@ -702,7 +706,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 131;
+				CURRENT_PROJECT_VERSION = 133;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Vitesse/Info.plist;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
@@ -737,7 +741,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 133;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				INFOPLIST_KEY_CFBundleDisplayName = "Vitesse watch";
@@ -759,7 +763,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 133;
 				DEVELOPMENT_TEAM = L3A73K7T3G;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				INFOPLIST_KEY_CFBundleDisplayName = "Vitesse watch";

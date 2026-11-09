@@ -36,7 +36,7 @@
                                 </constraints>
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="120"/>
                             </imageView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="gLo-zm-NSj">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="gLo-zm-NSj">
                                 <rect key="frame" x="100" y="224" width="120" height="120"/>
                                 <rect key="contentStretch" x="1" y="0.0" width="1" height="1"/>
                                 <constraints>
@@ -75,7 +75,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cxf-Lq-hgq">
                                 <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain"/>
                                 <connections>
                                     <action selector="boutonReactiveChevronAppuye" destination="BYZ-38-t0r" eventType="touchUpInside" id="b2o-3E-bmp"/>
                                     <action selector="boutonReactiveChevronAppuye" destination="BYZ-38-t0r" eventType="touchDown" id="wof-7R-1KG"/>
@@ -103,6 +103,14 @@
                                     <action selector="ouvrirStats" destination="BYZ-38-t0r" eventType="touchUpInside" id="PIG-fQ-WxQ"/>
                                 </connections>
                             </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hCe-42-NWD">
+                                <rect key="frame" x="90" y="214" width="140" height="140"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain"/>
+                                <connections>
+                                    <action selector="alertePasLocalisation" destination="BYZ-38-t0r" eventType="touchUpInside" id="a95-p9-HLP"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -113,7 +121,9 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Vza-qJ-9bm" secondAttribute="bottom" id="6ds-el-r4l"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6OV-Y5-NzA" secondAttribute="bottom" constant="20" id="7Mx-WY-Zi2"/>
                             <constraint firstItem="cxf-Lq-hgq" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="7Pc-ty-1eM"/>
+                            <constraint firstItem="hCe-42-NWD" firstAttribute="trailing" secondItem="KWs-Tq-NWu" secondAttribute="trailing" id="7i3-pw-iae"/>
                             <constraint firstItem="1fm-rp-JOI" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="8RO-JP-OG7"/>
+                            <constraint firstItem="hCe-42-NWD" firstAttribute="bottom" secondItem="KWs-Tq-NWu" secondAttribute="bottom" id="9Ib-Ba-rw9"/>
                             <constraint firstItem="Vza-qJ-9bm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="DBI-P6-bp8"/>
                             <constraint firstItem="6OV-Y5-NzA" firstAttribute="centerY" secondItem="nxA-fa-0pQ" secondAttribute="centerY" id="DGW-ka-7BB"/>
                             <constraint firstItem="1fm-rp-JOI" firstAttribute="trailing" secondItem="hWx-yi-vlX" secondAttribute="trailing" id="EYN-Yt-0t7"/>
@@ -131,11 +141,13 @@
                             <constraint firstItem="1fm-rp-JOI" firstAttribute="top" secondItem="hWx-yi-vlX" secondAttribute="top" id="isF-2o-Ec7"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vqO-TX-K1R" secondAttribute="trailing" constant="16" id="lZ7-u5-myh"/>
                             <constraint firstItem="1fm-rp-JOI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="nsd-ve-rF8"/>
+                            <constraint firstItem="hCe-42-NWD" firstAttribute="leading" secondItem="KWs-Tq-NWu" secondAttribute="leading" id="p6c-ns-KVx"/>
                             <constraint firstItem="cxf-Lq-hgq" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="ra5-4y-1yj"/>
                             <constraint firstItem="6OV-Y5-NzA" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="s9s-Qy-mo1"/>
                             <constraint firstItem="vqO-TX-K1R" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="uuD-13-BDJ"/>
                             <constraint firstItem="gLo-zm-NSj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="wAA-kY-Luc"/>
                             <constraint firstAttribute="centerX" secondItem="nxA-fa-0pQ" secondAttribute="trailing" id="wQt-Yl-Plq"/>
+                            <constraint firstItem="hCe-42-NWD" firstAttribute="top" secondItem="KWs-Tq-NWu" secondAttribute="top" id="xb4-lC-Enx"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6OV-Y5-NzA" secondAttribute="trailing" constant="20" id="y3B-kd-sqh"/>
                         </constraints>
                     </view>
@@ -144,6 +156,7 @@
                         <outlet property="affichageUnite" destination="6OV-Y5-NzA" id="rte-S2-Tno"/>
                         <outlet property="affichageVitesse" destination="1fm-rp-JOI" id="QjK-Ne-QgE"/>
                         <outlet property="boutonOuvreStats" destination="Vza-qJ-9bm" id="S9G-O0-QMZ"/>
+                        <outlet property="boutonPasLocalisation" destination="hCe-42-NWD" id="xAc-5G-1yJ"/>
                         <outlet property="boutonReactiveChevron" destination="cxf-Lq-hgq" id="Is9-WB-1pj"/>
                         <outlet property="gabaritAffichageVitesse" destination="hWx-yi-vlX" id="pZg-9q-L6X"/>
                         <outlet property="imagePasLocalisation" destination="KWs-Tq-NWu" id="4gE-F9-sAr"/>
@@ -445,10 +458,10 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.21960784310000001" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.2196078431372549" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

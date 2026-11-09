@@ -75,9 +75,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
 
     func gereDroitsLocalisation() -> Bool {
-//        print("droits de localisation : ", CLLocationManager.authorizationStatus().toText())
         self.locationManager.requestAlwaysAuthorization()
-        let statut = CLLocationManager.authorizationStatus()
+        let statut = self.locationManager.authorizationStatus
         switch statut {
         case .authorizedAlways, .authorizedWhenInUse:  // l'app a l'autorisation d'accéder à la localisation
             self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation

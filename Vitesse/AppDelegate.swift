@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.isIdleTimerDisabled = true
         luminositeEcranSysteme = UIScreen.main.brightness
         luminositeEstForcee = false
-//        print("didfinishlaunchingwithoptions")
         return true
     }
 

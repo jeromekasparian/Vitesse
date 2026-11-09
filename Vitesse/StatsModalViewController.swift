@@ -84,24 +84,9 @@ class StatsModalViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        DispatchQueue.main.async{
-//            self.labelPasLocalisationToujours.text = NSLocalizedString("L'app n'a pas accès à la localisation lorsqu'elle est en arrière-plan, les statistiques seront peu précises", comment: "")
-//            self.labelPasLocalisationToujours.isHidden = self.locationToujoursAutorisee && self.statsInBackground
-//            self.boutonOuvrePrefs.isHidden = self.locationToujoursAutorisee //&& self.statsInBackground
-//        }
-//        if !locationToujoursAutorisee && !alerteLocationToujoursDejaAffichee && statsInBackground {
-//            delegate?.afficherAlerteRenvoiPreferences(titre: NSLocalizedString("Autorisez la localisation en arrière-plan", comment: ""), message: NSLocalizedString("La localisation n'est pas autorisée lorsque l'app est en arrière-plan. Les statistiques risquent d'être fausses. Vous pouvez autoriser la localisation en arrière plan dans les préférences de l'app.", comment: ""), perfsDeLApp: true, optionNePlusMontrer: true)
-////            alerteLocationToujoursDejaAffichee = true
-////            userDefaults.set(true, forKey: keyAlerteLocationToujoursDejaAffichee)
-//        }
     }
     
     @IBAction func changeStatsInBackground(){
-//        if !locationToujoursAutorisee && !alerteLocationToujoursDejaAffichee && statsInBackground {
-//            delegate?.afficherAlerteRenvoiPreferences(titre: NSLocalizedString("Autorisez la localisation en arrière-plan", comment: ""), message: NSLocalizedString("La localisation n'est pas autorisée lorsque l'app est en arrière-plan. Les statistiques risquent d'être fausses. Vous pouvez autoriser la localisation en arrière plan dans les préférences de l'app.", comment: ""), perfsDeLApp: true, optionNePlusMontrer: true)
-////            alerteLocationToujoursDejaAffichee = true
-////            userDefaults.set(true, forKey: keyAlerteLocationToujoursDejaAffichee)
-//        }
         self.delegate?.changeStatsInBackground(statsInBackground: switchStatsInBackground.isOn)
         userDefaults.set(switchStatsInBackground.isOn, forKey: keyStatsInBackground)
         statsInBackground = switchStatsInBackground.isOn
