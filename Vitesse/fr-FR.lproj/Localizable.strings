@@ -50,3 +50,5 @@
 "Actualiser les statistiques quand l'app est en arrière-plan" = "Actualiser les statistiques en arrière-plan";
 "Total" = "Total";
 "Max" = "Max";
+
+"En attente de la position GPS" = "En attente du signal GPS";

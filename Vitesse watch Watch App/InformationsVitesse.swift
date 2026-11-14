@@ -53,6 +53,7 @@ class InformationsVitesse: ObservableObject {
         }
     }
 
+    // TODO voir s'il faut filtrer le comportement au repos, comme sur iOS 27 sur iPhone
     func nouvelleLocalisation() async {
         do {
             let location = try await self.locationManager.currentLocation

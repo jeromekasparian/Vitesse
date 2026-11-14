@@ -44,7 +44,8 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     
     var debugMode: Bool = false
     var demoMode = false // pour faire les captures d'écran pour l'app store
-
+    let keyModeDebug = "keyModeDebug"
+    
     var locationManager: CLLocationManager = CLLocationManager()
     let inclinaisonMax = 38.0 // inclinaison max en degres (sur le roulis) pour dire qu'on est en mode tête haute
 
@@ -160,6 +161,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             self.messageDebug.isHidden = !self.debugMode
             self.labelPente.isHidden = !self.debugMode
         }
+        UserDefaults.standard.set(debugMode, forKey: keyModeDebug)
     }
     
     @objc func penteOpenTopoData() {
@@ -191,6 +193,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        debugMode = UserDefaults.standard.value(forKey: keyModeDebug) as? Bool ?? debugMode
         debugMode = debugMode && autoriseDebug
         self.roueAttente.style = .large
         self.boutonReactiveChevron.setTitle("", for: .normal)
@@ -256,7 +259,8 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         self.autoriserAffichageTeteHaute = self.userDefaults.value(forKey: keyAutoriserAffichageTeteHaute) as? Bool ?? false
         statsInBackground = userDefaults.value(forKey: keyStatsInBackground) as? Bool ?? statsInBackground
         changeStatsInBackground(statsInBackground: statsInBackground)
-
+        roueAttente.startAnimating()
+        messagePublic.text = NSLocalizedString("En attente de la position GPS", comment: "")  // TODO Traduire
 //        activityManager.startActivityUpdates(to: .main) { activity in
 //            if let activity = activity {
 //                self.telEstStationnaire = activity.stationary
@@ -275,10 +279,12 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
             alert.addAction(UIAlertAction(title: NSLocalizedString("Ne plus afficher", comment: ""), style: .default, handler: {_ in self.montrerAlerteDemarrage = false
                 self.userDefaults.set(self.montrerAlerteDemarrage, forKey: keyMontrerAlerteDemarrage)
             }))
-            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "bouton OK"), style: .default, handler: {_ in self.gereDroitsLocalisation(origineViewDidLoad: true, origineViewDidAppear: false)}))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "bouton OK"), style: .default, handler: {_ in self.gereDroitsLocalisation(origineViewDidLoad: false, origineViewDidAppear: true)}))
             DispatchQueue.main.async{
                 self.present(alert, animated: true)
             }
+        } else {
+            gereDroitsLocalisation(origineViewDidLoad: false, origineViewDidAppear: true)
         }
         scheduledTimerWithTimeInterval()
 
@@ -567,7 +573,7 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
         let deltaV = location.speedAccuracy
         var immobileEtPerduVitesse = false
         if #available(iOS 27.0, *) { // jusqu'à iOS 26, l'immobilité renvoie une vitesse nulle
-            immobileEtPerduVitesse = location.speed == -1 && (distance < 1.0)
+            immobileEtPerduVitesse = location.speed == -1 && (distance <= 1.0)
             if immobileEtPerduVitesse {
                 vitesse = 0
             }
@@ -626,9 +632,16 @@ class ViewController: UIViewController, @MainActor CLLocationManagerDelegate, @M
                 
             } // if vitesseOK
         }
-        DispatchQueue.main.async {
-            self.messageDebug.text = Date().GMTenTexte() + String(format: " AfficherVitesse, v %.1f ± %.0f, %.1f < %.0f m", vitesse, deltaV, distance, location.horizontalAccuracy)
-        }
+//        DispatchQueue.main.async {
+//            var message = Date().GMTenTexte() + String(format: " v %.1f ± %.0f, ∆x %.0f m, ∆° %.0f, N %d", vitesse, deltaV, location.horizontalAccuracy, location.courseAccuracy, self.nombrePositionsLues)
+//            if !vitesseOKPourAffichage {
+//                message = message + "\n"
+//                message = message + (directionOK ? "" : "Direction ! ")
+//                message = message + (pasTunnelLong ? "" : "Tunnel ! ")
+//                message = message + (localisationsNombreusesOuPrecises ? "" : "Nombreuses ou précises ! ")
+//            }
+//            self.messageDebug.text = message
+//        }
         afficherVitesse(vitesse: vitesse * facteurUnitesVitesses[unite], precisionOK: vitesseOKPourAffichage, pente: pente)
         if statsModalViewController != nil {
             statsModalViewController?.afficherStats()
